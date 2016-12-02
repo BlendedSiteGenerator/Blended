@@ -1,3 +1,0 @@
-pip install Click
-pip install colorama
-pip install .

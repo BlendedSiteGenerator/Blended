@@ -1,9 +1,9 @@
 from setuptools import setup
 
 setup(name='blended',
-      version='0.1',
+      version='1.0',
       description='Python website generator',
-      url='jmroper.com',
+      url='http://jmroper.com',
       author='John Roper',
       author_email='johnroper100@gmail.com',
       license='GPL3.0',
@@ -11,5 +11,6 @@ setup(name='blended',
       install_requires=[
           'Click',
           'colorama',
+          'markdown',
       ],
       zip_safe=False)

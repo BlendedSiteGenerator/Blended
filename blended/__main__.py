@@ -1,6 +1,9 @@
 import os
+import sys
 import shutil
+import fileinput
 import click
+import markdown
 
 cwd = os.getcwd()
 
@@ -16,6 +19,7 @@ def init():
     wdesc = raw_input("Website Description: ")
     wlic = raw_input("Website License: ")
     aname = raw_input("Author(s) Name(s): ")
+    wlan = raw_input("Website Language: ")
 
     templ_dir = os.path.join(cwd, "templates")
     if not os.path.exists(templ_dir):
@@ -36,6 +40,7 @@ def init():
     conf_file.write('website_description = "'+wdesc+'"\n')
     conf_file.write('website_license = "'+wlic+'"\n')
     conf_file.write('author_name = "'+aname+'"\n')
+    conf_file.write('website_language = "'+wlan+'"\n')
     conf_file.write('\n')
     conf_file.close()
     
@@ -47,16 +52,36 @@ def purge():
     print("Purging the Blended files!")
 
     templ_dir = os.path.join(cwd, "templates")
-    shutil.rmtree(templ_dir)
+    if os.path.exists(templ_dir):
+        shutil.rmtree(templ_dir)
 
     cont_dir = os.path.join(cwd, "content")
-    shutil.rmtree(cont_dir)
+    if os.path.exists(cont_dir):
+        shutil.rmtree(cont_dir)
 
     build_dir = os.path.join(cwd, "build")
-    shutil.rmtree(build_dir)
+    if os.path.exists(build_dir):
+        shutil.rmtree(build_dir)
     
     conf_file_dir = os.path.join(cwd, "conf.py")
-    os.remove(conf_file_dir)
+    if os.path.exists(conf_file_dir):
+        os.remove(conf_file_dir)
+
+@cli.command('build', short_help='Build the Blended files into a website')
+def build():
+    """Blends the generated files and outputs a html website"""
+
+    conf_file_dir = os.path.join(cwd, "conf.py")
+    if not os.path.exists(conf_file_dir):
+        sys.exit("Configuration file not found! Have you run the init command?")
+    else:
+        print("Building your Blended files into a website!")
+
+    build_dir = os.path.join(cwd, "build")
+    if not os.path.exists(build_dir):
+        os.makedirs(build_dir)
+    
+    print("The files are built! You can find them in the build/ directory")
 
 if __name__ == '__main__':
     cli()
