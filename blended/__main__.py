@@ -75,12 +75,18 @@ def build():
     if not os.path.exists(conf_file_dir):
         sys.exit("Configuration file not found! Have you run the init command?")
     else:
+        sys.path.insert(0, cwd)
+        from conf import website_name, website_description, author_name, website_language
         print("Building your Blended files into a website!")
 
     build_dir = os.path.join(cwd, "build")
     if not os.path.exists(build_dir):
         os.makedirs(build_dir)
     
+    home_templ_dir = os.path.join(cwd, "templates", "home.html")
+    if os.path.exists(home_templ_dir):
+        print("hi")
+
     print("The files are built! You can find them in the build/ directory")
 
 if __name__ == '__main__':
