@@ -81,7 +81,7 @@ def build():
         sys.exit("There dosen't seem to be a configuration file. Have you run the init command?")
     else:
         sys.path.insert(0, cwd)
-        from conf import website_name, website_description, author_name, website_language
+        from conf import website_name, website_description, website_license, author_name, website_language
 
     print("Building your Blended files into a website!")
     
@@ -103,6 +103,8 @@ def build():
     if os.path.exists(home_templ_dir):
         home_templ_file = open(home_templ_dir, "r")
         home_working_file.write(home_templ_file.read())
+    else:
+        sys.exit("There dosen't seem to be a home page template. You must have one to blend your pages.")
 
     home_working_file.write(footer_file.read())
 
@@ -127,6 +129,8 @@ def build():
             content_templ_file1 = content_templ_file.read()
             content_templ_file2 = content_templ_file1.replace("{page_content}", text_cont1)
             currents_working_file.write(content_templ_file2)
+        else:
+            sys.exit("There dosen't seem to be a content page template. You must have one to blend your pages.")
 
         # Write the footer
         currents_working_file.write(footer_file.read())
@@ -138,6 +142,8 @@ def build():
     for filename in os.listdir(os.path.join(cwd, "build")):
         for line in fileinput.input(os.path.join(cwd, "build", filename), inplace=1):
             line = line.replace("{website_name}", website_name)
+            line = line.replace("{website_description}", website_description)
+            line = line.replace("{website_license}", website_license)
             line = line.replace("{website_language}", website_language)
             line = line.replace("{author_name}", author_name)
             print line.rstrip('\n')

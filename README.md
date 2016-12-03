@@ -30,3 +30,25 @@ This will help you start up a new website. If you need help, run:
 `blended --help`
 
 and you will see all of the commands that are available.
+
+## Working with templates
+
+Each Blended website requires four files:
+
+* header.html
+* footer.html
+* home_page.html
+* content_page.html
+
+in these files you place the markup for each section to be generated.
+
+You have some variables that you can use in your templates to pull in values while building:
+
+* `{website_name}`
+* `{website_description}`
+* `{author_name}`
+* `{website_language}`
+* `{website_license}`
+* `{page_content}` (can only be used in content_page.html)
+
+Wherever you put these variables in the templates, they will be replaced by the values in your config.py file. The variables must stay within the curley brackets.
