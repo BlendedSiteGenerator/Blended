@@ -1,9 +1,17 @@
 # Blended
 Static Website Generator Using HTML and Python
 
-## Build and Install
+## Installing
 
-To build and install Blended run:
+To install Blended from PyPi (recommended) run:
+
+`pip install blended`
+
+To build and install Blended from source run:
+
+`git clone https://github.com/johnroper100/Blended.git`
+
+`cd Blended`
 
 `pip install Click`
 
@@ -13,8 +21,12 @@ To build and install Blended run:
 
 ## Running
 
-To run blended after you have installed it, run:
+To use Blended after you have installed it, run:
 
-`python -m blended`
+`blended init`
 
-that will have you all the commands that you can use.
+This will help you start up a new website. If you need help, run:
+
+`blended --help`
+
+and you will see all of the commands that are available.
