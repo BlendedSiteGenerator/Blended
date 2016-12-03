@@ -68,6 +68,10 @@ def purge():
     conf_file_dir = os.path.join(cwd, "conf.py")
     if os.path.exists(conf_file_dir):
         os.remove(conf_file_dir)
+    
+    conf2_file_dir = os.path.join(cwd, "conf.pyc")
+    if os.path.exists(conf2_file_dir):
+        os.remove(conf2_file_dir)
 
 @cli.command('build', short_help='Build the Blended files into a website')
 def build():
@@ -75,20 +79,31 @@ def build():
 
     conf_file_dir = os.path.join(cwd, "conf.py")
     if not os.path.exists(conf_file_dir):
-        sys.exit("Configuration file not found! Have you run the init command?")
+        sys.exit("There dosen't seem to be a configuration file. Have you run the init command?")
     else:
         sys.path.insert(0, cwd)
         from conf import website_type, website_name, website_description, author_name, website_language
-        print("Building your Blended files into a website!")
+    
+    print("Building your Blended files into a website!")
 
     build_dir = os.path.join(cwd, "build")
     if not os.path.exists(build_dir):
         os.makedirs(build_dir)
     
     if website_type == "html":
+        current_working_file = open(os.path.join(cwd, "build", "index.html"), "w")
+        
+        header_file = open(os.path.join(cwd, "templates", "header.html"), "r")
+        footer_file = open(os.path.join(cwd, "templates", "footer.html"), "r")
+        
+        current_working_file.write(header_file.read())
+
         home_templ_dir = os.path.join(cwd, "templates", "home.html")
         if os.path.exists(home_templ_dir):
-            print("hi")
+            print("home template exists")
+        
+        current_working_file.write(footer_file.read())
+        
 
     print("The files are built! You can find them in the build/ directory")
 
