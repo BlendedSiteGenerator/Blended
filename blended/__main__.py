@@ -91,27 +91,34 @@ def build():
     build_dir = os.path.join(cwd, "build")
     if not os.path.exists(build_dir):
         os.makedirs(build_dir)
-
-    current_working_file = open(os.path.join(cwd, "build", "index.html"), "w")
-
+    
     header_file = open(os.path.join(cwd, "templates", "header.html"), "r")
     footer_file = open(os.path.join(cwd, "templates", "footer.html"), "r")
 
-    current_working_file.write(header_file.read())
+    home_working_file = open(os.path.join(cwd, "build", "index.html"), "w")
+
+    home_working_file.write(header_file.read())
 
     home_templ_dir = os.path.join(cwd, "templates", "home.html")
     if os.path.exists(home_templ_dir):
         home_templ_file = open(home_templ_dir, "r")
-        current_working_file.write(home_templ_file.read())
+        home_working_file.write(home_templ_file.read())
 
-    current_working_file.write(footer_file.read())
+    home_working_file.write(footer_file.read())
     
-    current_working_file.close()
+    home_working_file.close()
     
-    for line in fileinput.input(os.path.join(cwd, "build", "index.html"), inplace=1):
-        line = line.replace("{website_name}", website_name)
-        line = line.replace("{website_language}", website_language)
-        print line.rstrip('\n')
+    for filename in os.listdir(os.path.join(cwd, "content")):
+        current_working_file = open(os.path.join(cwd, "build", filename), "w")
+        current_working_file.write(header_file.read())
+        current_working_file.write(footer_file.read())
+        current_working_file.close()
+    
+    for filename in os.listdir(os.path.join(cwd, "build")):
+        for line in fileinput.input(os.path.join(cwd, "build", filename), inplace=1):
+            line = line.replace("{website_name}", website_name)
+            line = line.replace("{website_language}", website_language)
+            print line.rstrip('\n')
 
     print("The files are built! You can find them in the build/ directory. Run the view command to see what you have created in a web browser.")
 
