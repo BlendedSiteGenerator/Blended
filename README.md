@@ -9,8 +9,6 @@ To build and install Blended run:
 
 `pip install colorama`
 
-`pip install markdown`
-
 `pip install .`
 
 ## Running

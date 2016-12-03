@@ -11,6 +11,5 @@ setup(name='blended',
       install_requires=[
           'Click',
           'colorama',
-          'markdown',
       ],
       zip_safe=False)
