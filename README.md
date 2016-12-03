@@ -1,5 +1,5 @@
 # Blended
-Static Website Generator Using HTML and Python
+Static Site Generation Using HTML and Python
 
 ## Installing
 

@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(name='blended',
       version='1.2',
-      description='Python HTML flat-file website generator',
+      description='Static Site Generation Using HTML and Python',
       url='https://github.com/johnroper100/Blended',
       author='John Roper',
       author_email='johnroper100@gmail.com',
