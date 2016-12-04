@@ -3,8 +3,9 @@ import sys
 import shutil
 import fileinput
 import webbrowser
-import click
 import fileinput
+import click
+from random import randint
 
 cwd = os.getcwd()
 
@@ -146,6 +147,10 @@ def build():
             line = line.replace("{website_license}", website_license)
             line = line.replace("{website_language}", website_language)
             line = line.replace("{author_name}", author_name)
+            line = line.replace("{random_number}", randint(0,100000000))
+            line = line.replace("{build_date}", datetime.datetime.now().date())
+            line = line.replace("{build_time}", datetime.datetime.now().time())
+            line = line.replace("{build_datetime}", datetime.datetime.now())
             print line.rstrip('\n')
         fileinput.close()
 

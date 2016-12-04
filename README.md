@@ -50,6 +50,10 @@ You have some variables that you can use in your templates to pull in values whi
 * `{website_language}`
 * `{website_license}`
 * `{page_content}` (can only be used in content_page.html)
+* `{random_number}`
+* `{build_date}`
+* `{build_time}`
+* `{build_datetime}`
 
 Wherever you put these variables in the templates, they will be replaced by the values in your config.py file. The variables must stay within the curley brackets.
 
