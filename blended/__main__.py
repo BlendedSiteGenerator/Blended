@@ -23,7 +23,7 @@ def init():
     wlic = raw_input("Website License: ")
     aname = raw_input("Author(s) Name(s): ")
     wlan = raw_input("Website Language: ")
-    tname = raw_input("Template Name: ")
+    tname = raw_input("Template Name (Leave blank if you don't know): ")
 
     templ_dir = os.path.join(cwd, "templates")
     if not os.path.exists(templ_dir):
@@ -41,7 +41,6 @@ def init():
     conf_file.write('website_license = "'+wlic+'"\n')
     conf_file.write('author_name = "'+aname+'"\n')
     conf_file.write('website_language = "'+wlan+'"\n')
-    conf_file.write('template_name = "'+tname+'"\n')
     conf_file.write('\n')
     conf_file.close()
 
@@ -83,7 +82,7 @@ def build():
         sys.exit("There dosen't seem to be a configuration file. Have you run the init command?")
     else:
         sys.path.insert(0, cwd)
-        from conf import website_name, website_description, website_license, author_name, website_language, template_name
+        from conf import website_name, website_description, website_license, author_name, website_language
 
     print("Building your Blended files into a website!")
     
@@ -94,14 +93,14 @@ def build():
     else:
         os.makedirs(build_dir)
 
-    header_file = open(os.path.join(cwd, "templates", template_name, "header.html"), "r")
-    footer_file = open(os.path.join(cwd, "templates", template_name, "footer.html"), "r")
+    header_file = open(os.path.join(cwd, "templates", "header.html"), "r")
+    footer_file = open(os.path.join(cwd, "templates", "footer.html"), "r")
 
     home_working_file = open(os.path.join(cwd, "build", "index.html"), "w")
 
     home_working_file.write(header_file.read())
 
-    home_templ_dir = os.path.join(cwd, "templates", template_name, "home_page.html")
+    home_templ_dir = os.path.join(cwd, "templates", "home_page.html")
     if os.path.exists(home_templ_dir):
         home_templ_file = open(home_templ_dir, "r")
         home_working_file.write(home_templ_file.read())
@@ -113,8 +112,8 @@ def build():
     home_working_file.close()
 
     for filename in os.listdir(os.path.join(cwd, "content")):
-        header_file = open(os.path.join(cwd, "templates", template_name, "header.html"), "r")
-        footer_file = open(os.path.join(cwd, "templates", template_name, "footer.html"), "r")
+        header_file = open(os.path.join(cwd, "templates", "header.html"), "r")
+        footer_file = open(os.path.join(cwd, "templates", "footer.html"), "r")
         currents_working_file = open(os.path.join(cwd, "build", filename), "w")
 
         # Write the header
@@ -125,7 +124,7 @@ def build():
         text_cont1 = text_content.read()
 
         # Write the text content into the content template and onto the built file
-        content_templ_dir = os.path.join(cwd, "templates", template_name, "content_page.html")
+        content_templ_dir = os.path.join(cwd, "templates", "content_page.html")
         if os.path.exists(content_templ_dir):
             content_templ_file = open(content_templ_dir, "r")
             content_templ_file1 = content_templ_file.read()
@@ -148,12 +147,11 @@ def build():
             line = line.replace("{website_license}", website_license)
             line = line.replace("{website_language}", website_language)
             line = line.replace("{author_name}", author_name)
-            line = line.replace("{template_name}", template_name)
             print line.rstrip('\n')
         fileinput.close()
 
     # Copy the asset folder to the build folder
-    shutil.copytree(os.path.join(cwd, "templates", template_name, "assets"), os.path.join(cwd, "build", "assets"))
+    shutil.copytree(os.path.join(cwd, "templates", "assets"), os.path.join(cwd, "build", "assets"))
 
     print("The files are built! You can find them in the build/ directory. Run the view command to see what you have created in a web browser.")
 
