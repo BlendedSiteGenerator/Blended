@@ -33,12 +33,12 @@ and you will see all of the commands that are available.
 
 ## Working with templates
 
-Each Blended website requires four files:
+Each Blended website uses four template files:
 
-* header.html
-* footer.html
-* home_page.html
-* content_page.html
+* header.html (Required)
+* footer.html (Required)
+* home_page.html (Not required but the site looks better)
+* content_page.html (Not required but the site looks better)
 
 in these files you place the markup for each section to be generated.
 
@@ -49,7 +49,7 @@ You have some variables that you can use in your templates to pull in values whi
 * `{author_name}`
 * `{website_language}`
 * `{website_license}`
-* `{page_content}` (can only be used in content_page.html)
+* `{page_content}` (can only be used in the content_page.html template file)
 * `{random_number}`
 * `{build_date}`
 * `{build_time}`
