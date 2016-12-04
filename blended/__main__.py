@@ -23,7 +23,6 @@ def init():
     wlic = raw_input("Website License: ")
     aname = raw_input("Author(s) Name(s): ")
     wlan = raw_input("Website Language: ")
-    tname = raw_input("Template Name (Leave blank if you don't know): ")
 
     templ_dir = os.path.join(cwd, "templates")
     if not os.path.exists(templ_dir):
