@@ -189,6 +189,41 @@ def build_files():
 
         # Close the build file
         currents_working_file.close()
+    
+    nav1_dir = os.path.join(cwd, "templates", "nav1.html")
+    if os.path.exists(nav1_dir):
+        nav1_file = open(nav1_dir, "r")
+        nav1_cont = nav1_file.read()
+    else:
+        nav1_cont = ""
+
+    nav2_dir = os.path.join(cwd, "templates", "nav2.html")
+    if os.path.exists(nav2_dir):
+        nav2_file = open(nav2_dir, "r")
+        nav2_cont = nav2_file.read()
+    else:
+        nav2_cont = ""
+
+    nav3_dir = os.path.join(cwd, "templates", "nav3.html")
+    if os.path.exists(nav3_dir):
+        nav3_file = open(nav3_dir, "r")
+        nav3_cont = nav3_file.read()
+    else:
+        nav3_cont = ""
+
+    nav4_dir = os.path.join(cwd, "templates", "nav4.html")
+    if os.path.exists(nav4_dir):
+        nav4_file = open(nav4_dir, "r")
+        nav4_cont = nav4_file.read()
+    else:
+        nav4_cont = ""
+
+    nav5_dir = os.path.join(cwd, "templates", "nav5.html")
+    if os.path.exists(nav5_dir):
+        nav5_file = open(nav5_dir, "r")
+        nav5_cont = nav5_file.read()
+    else:
+        nav5_cont = ""
 
     # Replace global variables such as site name and language
     for filename in os.listdir(os.path.join(cwd, "build")):
@@ -203,6 +238,11 @@ def build_files():
             line = line.replace("{build_time}", str(datetime.datetime.now().time()))
             line = line.replace("{build_datetime}", str(datetime.datetime.now()))
             line = line.replace("{page_list}", page_list)
+            line = line.replace("{nav1}", nav1_cont)
+            line = line.replace("{nav2}", nav2_cont)
+            line = line.replace("{nav3}", nav3_cont)
+            line = line.replace("{nav4}", nav4_cont)
+            line = line.replace("{nav5}", nav5_cont)
             print line.rstrip('\n')
         fileinput.close()
 
