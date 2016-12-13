@@ -228,6 +228,11 @@ def build_files():
     # Replace global variables such as site name and language
     for filename in os.listdir(os.path.join(cwd, "build")):
         for line in fileinput.input(os.path.join(cwd, "build", filename), inplace=1):
+            line = line.replace("{nav1}", nav1_cont)
+            line = line.replace("{nav2}", nav2_cont)
+            line = line.replace("{nav3}", nav3_cont)
+            line = line.replace("{nav4}", nav4_cont)
+            line = line.replace("{nav5}", nav5_cont)
             line = line.replace("{website_name}", website_name)
             line = line.replace("{website_description}", website_description)
             line = line.replace("{website_license}", website_license)
@@ -238,11 +243,6 @@ def build_files():
             line = line.replace("{build_time}", str(datetime.datetime.now().time()))
             line = line.replace("{build_datetime}", str(datetime.datetime.now()))
             line = line.replace("{page_list}", page_list)
-            line = line.replace("{nav1}", nav1_cont)
-            line = line.replace("{nav2}", nav2_cont)
-            line = line.replace("{nav3}", nav3_cont)
-            line = line.replace("{nav4}", nav4_cont)
-            line = line.replace("{nav5}", nav5_cont)
             print line.rstrip('\n')
         fileinput.close()
 
