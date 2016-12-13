@@ -39,6 +39,7 @@ Each Blended website uses four template files:
 * footer.html (Required)
 * home_page.html (Not required but the site looks better)
 * content_page.html (Not required but the site looks better)
+* nav(1-5).html (You can have up to 5 nav templates ex. nav2.html)
 
 in these files you place the markup for each section to be generated.
 
@@ -49,11 +50,12 @@ You have some variables that you can use in your templates to pull in values whi
 * `{author_name}`
 * `{website_language}`
 * `{website_license}`
-* `{page_content}` (can only be used in the content_page.html template file)
+* `{page_content}` (Can only be used in the content_page.html template file)
 * `{random_number}`
 * `{build_date}`
 * `{build_time}`
 * `{build_datetime}`
+* `{nav(1-5)}` (Cse to place navbars. You can have up to 5 different templates ex. `{nav2}`)
 
 Wherever you put these variables in the templates, they will be replaced by the values in your config.py file. The variables must stay within the curley brackets.
 
