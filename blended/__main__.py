@@ -267,8 +267,16 @@ class Watcher:
 
     def run(self):
         event_handler = Handler()
-        self.observer.schedule(event_handler, self.DIRECTORY_TO_WATCH, recursive=True)
+        threads = []
+        paths = [os.path.join(cwd, "content"), os.path.join(cwd, "templates")]
+
+        for i in paths:
+            targetPath = str(i)
+            self.observer.schedule(event_handler, targetPath, recursive=True)
+            threads.append(self.observer)
+        
         self.observer.start()
+
         try:
             while True:
                 time.sleep(5)
@@ -308,7 +316,7 @@ def interactive():
 
     build_files()
 
-    print("Watching the content directory for changes, press CTRL+C to stop...\n")
+    print("Watching the content and templates directories for changes, press CTRL+C to stop...\n")
 
     w = Watcher()
     w.run()
