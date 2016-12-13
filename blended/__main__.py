@@ -14,7 +14,12 @@ from watchdog.events import FileSystemEventHandler
 
 # Very important, get the directory that the user wants run commands in
 cwd = os.getcwd()
-app_version = pkg_resources.require("blended")[0].version
+
+try:
+    app_version = pkg_resources.require("blended")[0].version
+except:
+    app_version = "NOTSET"
+    print("WARNING: app_version not set.\n")
 
 @click.group()
 def cli():
@@ -109,8 +114,6 @@ def build_files():
     else:
         sys.path.insert(0, cwd)
         from config import website_name, website_description, website_license, author_name, website_language, home_page_list
-
-    print("Building your Blended files into a website!")
     
     # Create the build folder
     build_dir = os.path.join(cwd, "build")
@@ -210,6 +213,8 @@ def build_files():
 def build():
     """Blends the generated files and outputs a html website"""
 
+    print("Building your Blended files into a website!")
+
     build_files()
 
     print("The files are built! You can find them in the build/ directory. Run the view command to see what you have created in a web browser.")
@@ -229,7 +234,7 @@ class Watcher:
                 time.sleep(5)
         except:
             self.observer.stop()
-            print "Error: observer stopped"
+            print "\nObserver stopped."
 
         self.observer.join()
 
@@ -250,11 +255,20 @@ class Handler(FileSystemEventHandler):
             build_files()
             print "%s modified" % event.src_path
 
+        elif event.event_type == 'deleted':
+            # Taken any action here when a file is modified.
+            build_files()
+            print "%s deleted" % event.src_path
+
 @cli.command('interactive', short_help='Build the Blended files into a website on each file change')
 def interactive():
-    """Blends the generated files and outputs a html website"""
+    """Blends the generated files and outputs a html website on file change"""
+
+    print("Building your Blended files into a website!")
 
     build_files()
+
+    print("Watching the content directory for changes, press CTRL+C to stop...\n")
 
     w = Watcher()
     w.run()
