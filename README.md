@@ -1,5 +1,5 @@
 # Blended
-Static Site Generation Using HTML and Python
+Static Site Generation Using HTML and Python. Blended is a command line tool that helps you easily create HTML websites by mimicing the templating system used by PHP and WordPress. Blended supports interactive (on file change) building as well as a standatrd build command. Websites created using Blended are easy to manage ande deploy.
 
 ## Installing
 
