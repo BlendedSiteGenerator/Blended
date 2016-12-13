@@ -46,6 +46,7 @@ def init():
     config_file.write('website_license = "'+wlic+'"\n')
     config_file.write('author_name = "'+aname+'"\n')
     config_file.write('website_language = "'+wlan+'"\n')
+    config_file.write('home_page_list = "no"\n')
     config_file.write('\n')
     config_file.close()
 
@@ -93,7 +94,7 @@ def build():
         sys.exit("There dosen't seem to be a configuration file. Have you run the init command?")
     else:
         sys.path.insert(0, cwd)
-        from config import website_name, website_description, website_license, author_name, website_language
+        from config import website_name, website_description, website_license, author_name, website_language, home_page_list
 
     print("Building your Blended files into a website!")
     
@@ -125,22 +126,24 @@ def build():
         page_list = page_list + '<li class="page-list-item"><a href="'+filename+'">'+filename.replace(".html", "")+'</a></li>\n'
     page_list = page_list + '</ul>'
 
-    # Open the home page file (index.html) for writing
-    home_working_file = open(os.path.join(cwd, "build", "index.html"), "w")
+    if home_page_list == "yes":
+        # Open the home page file (index.html) for writing
+        home_working_file = open(os.path.join(cwd, "build", "index.html"), "w")
 
-    home_working_file.write(header_file.read())
+        home_working_file.write(header_file.read())
 
-    # Make sure there is actually a home page template file
-    home_templ_dir = os.path.join(cwd, "templates", "home_page.html")
-    if os.path.exists(home_templ_dir):
-        home_templ_file = open(home_templ_dir, "r")
-        home_working_file.write(home_templ_file.read())
-    else:
-        home_working_file.write(page_list)
+        # Make sure there is actually a home page template file
+        home_templ_dir = os.path.join(cwd, "templates", "home_page.html")
+        if os.path.exists(home_templ_dir):
+            home_templ_file = open(home_templ_dir, "r")
+            home_working_file.write(home_templ_file.read())
+        else:
+            print("No home page template file found. Writing page list to index.html")
+            home_working_file.write(page_list)
 
-    home_working_file.write(footer_file.read())
+        home_working_file.write(footer_file.read())
 
-    home_working_file.close()
+        home_working_file.close()
 
     for filename in os.listdir(os.path.join(cwd, "content")):
         header_file = open(header_file_dir, "r")
