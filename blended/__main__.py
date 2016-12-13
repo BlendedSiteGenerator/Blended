@@ -8,6 +8,9 @@ import datetime
 import click
 from random import randint
 import pkg_resources
+import time
+from watchdog.observers import Observer
+from watchdog.events import FileSystemEventHandler
 
 # Very important, get the directory that the user wants run commands in
 cwd = os.getcwd()
@@ -98,10 +101,7 @@ def purge():
     if os.path.exists(config2_file_dir):
         os.remove(config2_file_dir)
 
-@cli.command('build', short_help='Build the Blended files into a website')
-def build():
-    """Blends the generated files and outputs a html website"""
-
+def build_files():
     # Make sure there is actually a configuration file
     config_file_dir = os.path.join(cwd, "config.py")
     if not os.path.exists(config_file_dir):
@@ -206,8 +206,58 @@ def build():
     # Copy the asset folder to the build folder
     shutil.copytree(os.path.join(cwd, "templates", "assets"), os.path.join(cwd, "build", "assets"))
 
+@cli.command('build', short_help='Build the Blended files into a website')
+def build():
+    """Blends the generated files and outputs a html website"""
+
+    build_files()
+
     print("The files are built! You can find them in the build/ directory. Run the view command to see what you have created in a web browser.")
 
+class Watcher:
+    DIRECTORY_TO_WATCH = os.path.join(cwd, "content")
+
+    def __init__(self):
+        self.observer = Observer()
+
+    def run(self):
+        event_handler = Handler()
+        self.observer.schedule(event_handler, self.DIRECTORY_TO_WATCH, recursive=True)
+        self.observer.start()
+        try:
+            while True:
+                time.sleep(5)
+        except:
+            self.observer.stop()
+            print "Error: observer stopped"
+
+        self.observer.join()
+
+class Handler(FileSystemEventHandler):
+
+    @staticmethod
+    def on_any_event(event):
+        if event.is_directory:
+            return None
+
+        elif event.event_type == 'created':
+            # Take any action here when a file is first created.
+            build_files()
+            print "%s created" % event.src_path
+
+        elif event.event_type == 'modified':
+            # Taken any action here when a file is modified.
+            build_files()
+            print "%s modified" % event.src_path
+
+@cli.command('interactive', short_help='Build the Blended files into a website on each file change')
+def interactive():
+    """Blends the generated files and outputs a html website"""
+
+    build_files()
+
+    w = Watcher()
+    w.run()
 
 @cli.command('view', short_help='View the finished Blended website')
 def view():
