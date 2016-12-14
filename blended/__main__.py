@@ -224,6 +224,13 @@ def build_files():
         nav5_cont = nav5_file.read()
     else:
         nav5_cont = ""
+    
+    nav6_dir = os.path.join(cwd, "templates", "nav6.html")
+    if os.path.exists(nav6_dir):
+        nav6_file = open(nav6_dir, "r")
+        nav6_cont = nav6_file.read()
+    else:
+        nav6_cont = ""
 
     # Replace global variables such as site name and language
     for filename in os.listdir(os.path.join(cwd, "build")):
@@ -233,6 +240,7 @@ def build_files():
             line = line.replace("{nav3}", nav3_cont)
             line = line.replace("{nav4}", nav4_cont)
             line = line.replace("{nav5}", nav5_cont)
+            line = line.replace("{nav6}", nav6_cont)
             line = line.replace("{website_name}", website_name)
             line = line.replace("{website_description}", website_description)
             line = line.replace("{website_license}", website_license)
