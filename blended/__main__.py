@@ -9,6 +9,7 @@ import click
 from random import randint
 import pkg_resources
 import time
+import markdown
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
@@ -35,11 +36,20 @@ def version():
 def init():
     """Initiates a new website"""
     print("Blended: Static Website Generator -\n")
-    wname = raw_input("Website Name: ")
-    wdesc = raw_input("Website Description: ")
-    wlan = raw_input("Website Language: ")
-    wlic = raw_input("Website License: ")
-    aname = raw_input("Author(s) Name(s): ")
+    if (sys.version_info > (3, 0)):
+        wname = input("Website Name: ")
+        wdesc = input("Website Description: ")
+        wlan = input("Website Language: ")
+        wlic = input("Website License: ")
+        aname = input("Author(s) Name(s): ")
+        stype = input("Source Type (html/md): ")
+    else:
+        wname = raw_input("Website Name: ")
+        wdesc = raw_input("Website Description: ")
+        wlan = raw_input("Website Language: ")
+        wlic = raw_input("Website License: ")
+        aname = raw_input("Author(s) Name(s): ")
+        stype = raw_input("Source Type (html/md): ")
 
     # Create the templates folder
     templ_dir = os.path.join(cwd, "templates")
@@ -60,6 +70,7 @@ def init():
     config_file.write('website_license = "'+wlic+'"\n')
     config_file.write('author_name = "'+aname+'"\n')
     config_file.write('website_language = "'+wlan+'"\n')
+    config_file.write('source_type = "'+stype+'"\n')
     config_file.write('home_page_list = "no"\n')
     config_file.write('\n')
     config_file.close()
@@ -113,7 +124,7 @@ def build_files():
         sys.exit("There dosen't seem to be a configuration file. Have you run the init command?")
     else:
         sys.path.insert(0, cwd)
-        from config import website_name, website_description, website_license, author_name, website_language, home_page_list
+        from config import website_name, website_description, website_license, author_name, website_language, home_page_list, source_type
     
     # Create the build folder
     build_dir = os.path.join(cwd, "build")
@@ -140,7 +151,7 @@ def build_files():
     # Create the html page listing
     page_list = '<ul class="page-list">\n'
     for filename in os.listdir(os.path.join(cwd, "content")):
-        page_list = page_list + '<li class="page-list-item"><a href="'+filename+'">'+filename.replace(".html", "")+'</a></li>\n'
+        page_list = page_list + '<li class="page-list-item"><a href="'+filename+'">'+filename.replace("."+source_type, "")+'</a></li>\n'
     page_list = page_list + '</ul>'
 
     if home_page_list == "yes":
@@ -165,14 +176,20 @@ def build_files():
     for filename in os.listdir(os.path.join(cwd, "content")):
         header_file = open(header_file_dir, "r")
         footer_file = open(footer_file_dir, "r")
-        currents_working_file = open(os.path.join(cwd, "build", filename), "w")
+        newFilename = filename.replace("."+source_type, ".html")
+        currents_working_file = open(os.path.join(cwd, "build", newFilename), "w")
 
         # Write the header
         currents_working_file.write(header_file.read())
 
         # Get the actual stuff we want to put on the page
         text_content = open(os.path.join(cwd, "content", filename), "r")
-        text_cont1 = text_content.read()
+        if source_type == "html":
+            text_cont1 = text_content.read()
+        elif source_type == "md":
+            text_cont1 = "\n"+markdown.markdown(text_content.read())+"\n"
+        else:
+            print(source_type+" is not a valid source_type!")
 
         # Write the text content into the content template and onto the build file
         content_templ_dir = os.path.join(cwd, "templates", "content_page.html")
@@ -251,11 +268,12 @@ def build_files():
             line = line.replace("{build_time}", str(datetime.datetime.now().time()))
             line = line.replace("{build_datetime}", str(datetime.datetime.now()))
             line = line.replace("{page_list}", page_list)
-            print line.rstrip('\n')
+            print(line.rstrip('\n'))
         fileinput.close()
 
     # Copy the asset folder to the build folder
-    shutil.copytree(os.path.join(cwd, "templates", "assets"), os.path.join(cwd, "build", "assets"))
+    if os.path.exists(os.path.join(cwd, "templates", "assets")):
+        shutil.copytree(os.path.join(cwd, "templates", "assets"), os.path.join(cwd, "build", "assets"))
 
 @cli.command('build', short_help='Build the Blended files into a website')
 def build():
@@ -290,7 +308,7 @@ class Watcher:
                 time.sleep(5)
         except:
             self.observer.stop()
-            print "\nObserver stopped."
+            print("\nObserver stopped.")
 
         self.observer.join()
 
@@ -304,17 +322,17 @@ class Handler(FileSystemEventHandler):
         elif event.event_type == 'created':
             # Take any action here when a file is first created.
             build_files()
-            print "%s created" % event.src_path
+            print("%s created" % event.src_path)
 
         elif event.event_type == 'modified':
             # Taken any action here when a file is modified.
             build_files()
-            print "%s modified" % event.src_path
+            print("%s modified" % event.src_path)
 
         elif event.event_type == 'deleted':
             # Taken any action here when a file is modified.
             build_files()
-            print "%s deleted" % event.src_path
+            print("%s deleted" % event.src_path)
 
 @cli.command('interactive', short_help='Build the Blended files into a website on each file change')
 def interactive():

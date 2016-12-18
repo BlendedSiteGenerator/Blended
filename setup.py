@@ -11,6 +11,8 @@ setup(name='blended',
       install_requires=[
           'Click',
           'colorama',
+          'watchdog',
+          'markdown',
       ],
       entry_points={
           'console_scripts': [
