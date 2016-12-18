@@ -1,5 +1,5 @@
 # Blended
-Static Site Generation Using HTML and Python. Blended is a command line tool that helps you easily create HTML websites by mimicing the templating system used by PHP and WordPress. Blended supports interactive (on file change) building as well as a standatrd build command. Websites created using Blended are easy to manage ande deploy.
+Static Site Generation Using HTML and Python. Blended is a command line tool that helps you easily create HTML websites by mimicing the templating system used by PHP and WordPress. Blended is able to build from HTML, Markdown, and Plain Text (txt) source files at the same time. Blended also supports interactive (on file change) building as well as a standard build command. Websites created using Blended are easy to manage and deploy.
 
 ## Installing
 
@@ -12,10 +12,6 @@ To build and install Blended from source run:
 `git clone https://github.com/johnroper100/Blended.git`
 
 `cd Blended`
-
-`pip install Click`
-
-`pip install colorama`
 
 `pip install .`
 
@@ -41,7 +37,7 @@ Each Blended website uses four template files:
 * content_page.html (Not required but the site looks better)
 * nav(1-6).html (You can have up to 6 different nav templates. For example, `nav2.html`)
 
-in these files you place the markup for each section to be generated.
+In these files you place the markup for each section to be generated.
 
 You have some variables that you can use in your templates to pull in values while building:
 
@@ -60,3 +56,5 @@ You have some variables that you can use in your templates to pull in values whi
 Wherever you put these variables in the templates, they will be replaced by the values in your config.py file. The variables must stay within the curley brackets.
 
 There is a simple starter template for Blended called blended-simple. You can download it to use and take a look at from it's own [GitHub page](https://github.com/johnroper100/blended-simple).
+
+There is also a full render managment dashboard built with Blended. You can download it from [GitHub](https://github.com/johnroper100/RenderManagementDashboard).
