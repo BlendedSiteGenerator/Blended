@@ -45,14 +45,12 @@ def init():
         wlan = input("Website Language: ")
         wlic = input("Website License: ")
         aname = input("Author(s) Name(s): ")
-        stype = input("Source Type (html/md): ")
     else:
         wname = raw_input("Website Name: ")
         wdesc = raw_input("Website Description: ")
         wlan = raw_input("Website Language: ")
         wlic = raw_input("Website License: ")
         aname = raw_input("Author(s) Name(s): ")
-        stype = raw_input("Source Type (html/md): ")
 
     # Create the templates folder
     templ_dir = os.path.join(cwd, "templates")
@@ -73,7 +71,6 @@ def init():
     config_file.write('website_license = "'+wlic+'"\n')
     config_file.write('author_name = "'+aname+'"\n')
     config_file.write('website_language = "'+wlan+'"\n')
-    config_file.write('source_type = "'+stype+'" # (html/md)\n')
     config_file.write('home_page_list = "no"\n')
     config_file.write('\n')
     config_file.close()
@@ -130,7 +127,7 @@ def build_files():
         sys.exit("There dosen't seem to be a configuration file. Have you run the init command?")
     else:
         sys.path.insert(0, cwd)
-        from config import website_name, website_description, website_license, author_name, website_language, home_page_list, source_type
+        from config import website_name, website_description, website_license, author_name, website_language, home_page_list
 
     # Create the build folder
     build_dir = os.path.join(cwd, "build")
@@ -157,7 +154,16 @@ def build_files():
     # Create the html page listing
     page_list = '<ul class="page-list">\n'
     for filename in os.listdir(os.path.join(cwd, "content")):
-        page_list = page_list + '<li class="page-list-item"><a href="'+filename+'">'+filename.replace("."+source_type, "")+'</a></li>\n'
+        if ".html" in filename:
+            newFilename = filename
+            newFilename2 = filename.replace(".html", "")
+        elif ".md" in filename:
+            newFilename = filename.replace(".md", ".html")
+            newFilename2 = filename.replace(".md", "")
+        elif ".txt" in filename:
+            newFilename = filename.replace(".txt", ".html")
+            newFilename2 = filename.replace(".txt", "")
+        page_list = page_list + '<li class="page-list-item"><a href="'+newFilename+'">'+newFilename2+'</a></li>\n'
     page_list = page_list + '</ul>'
 
     if home_page_list == "yes":
@@ -182,7 +188,15 @@ def build_files():
     for filename in os.listdir(os.path.join(cwd, "content")):
         header_file = open(header_file_dir, "r")
         footer_file = open(footer_file_dir, "r")
-        newFilename = filename.replace("."+source_type, ".html")
+        if ".md" in filename:
+            newFilename = filename.replace(".md", ".html")
+        elif ".html" in filename:
+            newFilename = filename
+        elif ".txt" in filename:
+            newFilename = filename.replace(".txt", ".html")
+        else:
+            print(filename+" is not a valid file type!")
+        
         currents_working_file = open(os.path.join(cwd, "build", newFilename), "w")
 
         # Write the header
@@ -190,12 +204,14 @@ def build_files():
 
         # Get the actual stuff we want to put on the page
         text_content = open(os.path.join(cwd, "content", filename), "r")
-        if source_type == "html":
-            text_cont1 = text_content.read()
-        elif source_type == "md":
+        if ".md" in filename:
             text_cont1 = "\n"+markdown.markdown(text_content.read())+"\n"
+        elif ".html" in filename:
+            text_cont1 = text_content.read()
+        elif ".txt" in filename:
+            text_cont1 = text_content.read()
         else:
-            print(source_type+" is not a valid source_type!")
+            print(filename+" is not a valid file type!")
 
         # Write the text content into the content template and onto the build file
         content_templ_dir = os.path.join(cwd, "templates", "content_page.html")
@@ -208,7 +224,7 @@ def build_files():
             currents_working_file.write(text_cont1)
 
         # Write the footer to the build file
-        currents_working_file.write(footer_file.read())
+        currents_working_file.write("\n"+footer_file.read())
 
         # Close the build file
         currents_working_file.close()
