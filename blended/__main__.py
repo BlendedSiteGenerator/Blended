@@ -22,15 +22,18 @@ except:
     app_version = "NOTSET"
     print("WARNING: app_version not set.\n")
 
+
 @click.group()
 def cli():
     """Blended: Static Website Generator"""
+
 
 @cli.command('version', short_help='Show which version of Blended you are running.')
 def version():
     """Prints Blended's current version"""
 
     print("You are running Blended v"+app_version)
+
 
 @cli.command('init', short_help='Initiate a new website')
 def init():
@@ -77,6 +80,7 @@ def init():
 
     print("\nThe required files for your website have been generated.")
 
+
 @cli.command('clean', short_help='Remove the build folder')
 def clean():
     """Removes all built files"""
@@ -86,6 +90,7 @@ def clean():
     build_dir = os.path.join(cwd, "build")
     if os.path.exists(build_dir):
         shutil.rmtree(build_dir)
+
 
 @cli.command('purge', short_help='Purge all the files created by Blended')
 def purge():
@@ -117,6 +122,7 @@ def purge():
     if os.path.exists(config2_file_dir):
         os.remove(config2_file_dir)
 
+
 def build_files():
     # Make sure there is actually a configuration file
     config_file_dir = os.path.join(cwd, "config.py")
@@ -125,7 +131,7 @@ def build_files():
     else:
         sys.path.insert(0, cwd)
         from config import website_name, website_description, website_license, author_name, website_language, home_page_list, source_type
-    
+
     # Create the build folder
     build_dir = os.path.join(cwd, "build")
     if os.path.exists(build_dir):
@@ -206,7 +212,7 @@ def build_files():
 
         # Close the build file
         currents_working_file.close()
-    
+
     nav1_dir = os.path.join(cwd, "templates", "nav1.html")
     if os.path.exists(nav1_dir):
         nav1_file = open(nav1_dir, "r")
@@ -241,7 +247,7 @@ def build_files():
         nav5_cont = nav5_file.read()
     else:
         nav5_cont = ""
-    
+
     nav6_dir = os.path.join(cwd, "templates", "nav6.html")
     if os.path.exists(nav6_dir):
         nav6_file = open(nav6_dir, "r")
@@ -263,7 +269,7 @@ def build_files():
             line = line.replace("{website_license}", website_license)
             line = line.replace("{website_language}", website_language)
             line = line.replace("{author_name}", author_name)
-            line = line.replace("{random_number}", str(randint(0,100000000)))
+            line = line.replace("{random_number}", str(randint(0, 100000000)))
             line = line.replace("{build_date}", str(datetime.datetime.now().date()))
             line = line.replace("{build_time}", str(datetime.datetime.now().time()))
             line = line.replace("{build_datetime}", str(datetime.datetime.now()))
@@ -275,6 +281,7 @@ def build_files():
     if os.path.exists(os.path.join(cwd, "templates", "assets")):
         shutil.copytree(os.path.join(cwd, "templates", "assets"), os.path.join(cwd, "build", "assets"))
 
+
 @cli.command('build', short_help='Build the Blended files into a website')
 def build():
     """Blends the generated files and outputs a html website"""
@@ -284,6 +291,7 @@ def build():
     build_files()
 
     print("The files are built! You can find them in the build/ directory. Run the view command to see what you have created in a web browser.")
+
 
 class Watcher:
     DIRECTORY_TO_WATCH = os.path.join(cwd, "content")
@@ -300,7 +308,7 @@ class Watcher:
             targetPath = str(i)
             self.observer.schedule(event_handler, targetPath, recursive=True)
             threads.append(self.observer)
-        
+
         self.observer.start()
 
         try:
@@ -311,6 +319,7 @@ class Watcher:
             print("\nObserver stopped.")
 
         self.observer.join()
+
 
 class Handler(FileSystemEventHandler):
 
@@ -334,6 +343,7 @@ class Handler(FileSystemEventHandler):
             build_files()
             print("%s deleted" % event.src_path)
 
+
 @cli.command('interactive', short_help='Build the Blended files into a website on each file change')
 def interactive():
     """Blends the generated files and outputs a html website on file change"""
@@ -346,6 +356,7 @@ def interactive():
 
     w = Watcher()
     w.run()
+
 
 @cli.command('view', short_help='View the finished Blended website')
 def view():
