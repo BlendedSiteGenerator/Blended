@@ -13,6 +13,7 @@ setup(name='blended',
           'colorama',
           'watchdog',
           'markdown',
+          'textile',
       ],
       entry_points={
           'console_scripts': [

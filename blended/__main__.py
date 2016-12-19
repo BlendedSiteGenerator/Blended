@@ -10,6 +10,7 @@ from random import randint
 import pkg_resources
 import time
 import markdown
+import textile
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
@@ -160,6 +161,9 @@ def build_files():
         elif ".md" in filename:
             newFilename = filename.replace(".md", ".html")
             newFilename2 = filename.replace(".md", "")
+        elif ".tile" in filename:
+            newFilename = filename.replace(".tile", ".html")
+            newFilename2 = filename.replace(".tile", "")
         elif ".txt" in filename:
             newFilename = filename.replace(".txt", ".html")
             newFilename2 = filename.replace(".txt", "")
@@ -190,6 +194,8 @@ def build_files():
         footer_file = open(footer_file_dir, "r")
         if ".md" in filename:
             newFilename = filename.replace(".md", ".html")
+        if ".tile" in filename:
+            newFilename = filename.replace(".tile", ".html")
         elif ".html" in filename:
             newFilename = filename
         elif ".txt" in filename:
@@ -206,6 +212,8 @@ def build_files():
         text_content = open(os.path.join(cwd, "content", filename), "r")
         if ".md" in filename:
             text_cont1 = "\n"+markdown.markdown(text_content.read())+"\n"
+        elif ".tile" in filename:
+            text_cont1 = "\n"+textile.textile(text_content.read())+"\n"
         elif ".html" in filename:
             text_cont1 = text_content.read()
         elif ".txt" in filename:
