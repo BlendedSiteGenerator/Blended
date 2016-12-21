@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='blended',
-      version='2.8',
+      version='2.9',
       description='Static Site Generation Using Python',
       url='https://github.com/johnroper100/Blended',
       author='John Roper',
