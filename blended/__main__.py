@@ -376,7 +376,7 @@ def build_files():
         newFilename = newFilename.replace("index", "home")
         newFilename = newFilename.replace("-", " ")
         newFilename = newFilename.title()
-        blended_version_message = "Built with Blended v"+blended_version
+        blended_version_message = "Built with Blended v"+str(blended_version)
         for line in fileinput.input(os.path.join(cwd, "build", filename), inplace=1):
             line = line.replace("{nav1}", nav1_cont)
             line = line.replace("{nav2}", nav2_cont)
