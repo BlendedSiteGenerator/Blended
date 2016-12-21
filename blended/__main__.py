@@ -376,7 +376,7 @@ def build_files():
         newFilename = newFilename.replace("index", "home")
         newFilename = newFilename.replace("-", " ")
         newFilename = newFilename.title()
-        blended_version_message = "Built with Blended v"+str(blended_version)
+        blended_version_message = "Built with Blended v"+str(app_version)
         for line in fileinput.input(os.path.join(cwd, "build", filename), inplace=1):
             line = line.replace("{nav1}", nav1_cont)
             line = line.replace("{nav2}", nav2_cont)
@@ -395,7 +395,7 @@ def build_files():
             line = line.replace("{build_datetime}", str(datetime.datetime.now()))
             line = line.replace("{page_list}", page_list)
             line = line.replace("{page_name}", newFilename)
-            line = line.replace("{blended_version}", str(blended_version))
+            line = line.replace("{blended_version}", str(app_version))
             line = line.replace("{blended_version_message}", blended_version_message)
             print(line.rstrip('\n'))
         fileinput.close()
