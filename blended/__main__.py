@@ -82,7 +82,7 @@ def init():
     config_file.write('ftp_server = "localhost"\n')
     config_file.write('ftp_username = "user"\n')
     config_file.write('ftp_password = "pass"\n')
-    config_file.write('ftp_port = "21"\n')
+    config_file.write('ftp_port = 21\n')
     config_file.write('ftp_upload_path = "public_html/myWebsite"\n')
     config_file.close()
 
@@ -350,6 +350,13 @@ def build_files():
 
     # Replace global variables such as site name and language
     for filename in os.listdir(os.path.join(cwd, "build")):
+        newFilename = filename.replace(".html", "")
+        newFilename = newFilename.replace(".md", "")
+        newFilename = newFilename.replace(".txt", "")
+        newFilename = newFilename.replace(".tile", "")
+        newFilename = newFilename.replace("index", "home")
+        newFilename = newFilename.replace("-", " ")
+        newFilename = newFilename.title()
         for line in fileinput.input(os.path.join(cwd, "build", filename), inplace=1):
             line = line.replace("{nav1}", nav1_cont)
             line = line.replace("{nav2}", nav2_cont)
@@ -367,6 +374,7 @@ def build_files():
             line = line.replace("{build_time}", str(datetime.datetime.now().time()))
             line = line.replace("{build_datetime}", str(datetime.datetime.now()))
             line = line.replace("{page_list}", page_list)
+            line = line.replace("{page_name}", newFilename)
             print(line.rstrip('\n'))
         fileinput.close()
 
