@@ -9,10 +9,10 @@ setup(name='blended',
       license='GPL3.0',
       packages=['blended'],
       install_requires=[
-          'Click',
+          'click',
           'colorama',
           'watchdog',
-          'markdown',
+          'Markdown',
           'textile',
       ],
       entry_points={
