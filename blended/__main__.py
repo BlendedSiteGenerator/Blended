@@ -395,7 +395,7 @@ def build_files():
             line = line.replace("{build_datetime}", str(datetime.datetime.now()))
             line = line.replace("{page_list}", page_list)
             line = line.replace("{page_name}", newFilename)
-            line = line.replace("{blended_version}", blended_version)
+            line = line.replace("{blended_version}", str(blended_version))
             line = line.replace("{blended_version_message}", blended_version_message)
             print(line.rstrip('\n'))
         fileinput.close()
