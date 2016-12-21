@@ -52,6 +52,8 @@ You have some variables that you can use in your templates to pull in values whi
 * `{build_time}`
 * `{build_datetime}`
 * `{nav(1-6)}` (Use to place navbars. You can have up to 6 different templates. For example, `{nav2}`)
+* `{page_list}` (Lists all the pages in `<ul><li><a href="page-name.html">page-name</a></li></ul>` format)
+* `{page_name}` (Gives the name of the current page. Makes the page name look more pretty. For example, `getting-started.html` is converted to `Getting Started`)
 
 Wherever you put these variables in the templates, they will be replaced by the values in your config.py file. The variables must stay within the curley brackets.
 
