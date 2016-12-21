@@ -2,6 +2,7 @@ import os
 import os.path
 import sys
 import shutil
+from shutil import copyfile
 import fileinput
 import webbrowser
 import fileinput
@@ -41,7 +42,15 @@ def version():
 @cli.command('init', short_help='Initiate a new website')
 def init():
     """Initiates a new website"""
+
     print("Blended: Static Website Generator -\n")
+
+    config_file_dir1 = os.path.join(cwd, "config.py")
+    if os.path.exists(config_file_dir1):
+        print("Making a backup of your config file!")
+        config_file_dir2 = os.path.join(cwd, "config.py.oldbak")
+        copyfile(config_file_dir1, config_file_dir2)
+
     if (sys.version_info > (3, 0)):
         wname = input("Website Name: ")
         wdesc = input("Website Description: ")
@@ -193,6 +202,11 @@ def purge():
     config2_file_dir = os.path.join(cwd, "config.pyc")
     if os.path.exists(config2_file_dir):
         os.remove(config2_file_dir)
+        
+    # Remove config.py
+    config3_file_dir = os.path.join(cwd, "config.py.oldbak")
+    if os.path.exists(config3_file_dir):
+        os.remove(config3_file_dir)
 
 
 def build_files():
