@@ -282,7 +282,7 @@ def build_files():
         footer_file = open(footer_file_dir, "r")
         if ".md" in filename:
             newFilename = filename.replace(".md", ".html")
-        if ".tile" in filename:
+        elif ".tile" in filename:
             newFilename = filename.replace(".tile", ".html")
         elif ".html" in filename:
             newFilename = filename
