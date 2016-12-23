@@ -67,7 +67,7 @@ Wherever you put these variables in the templates, they will be replaced by the 
 
 There is a simple starter template for Blended called blended-simple. You can download it to use and take a look at from it's own [GitHub page](https://github.com/johnroper100/blended-simple).
 
-There is also a simple blog template for Blended called blended-simple. You can download it from [GitHub page](https://github.com/johnroper100/blended-simple).
+There is also a simple blog template for Blended called blended-blog. You can download it from it's [GitHub page](https://github.com/johnroper100/blended-blog).
 
 ## Projects That Use Blended
 
