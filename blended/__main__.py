@@ -83,6 +83,7 @@ def init():
     config_file.write('\n')
     config_file.write('website_name = "'+wname+'"\n')
     config_file.write('website_description = "'+wdesc+'"\n')
+    config_file.write('website_description_long = "" # Use for things like author bio on a blog\n')
     config_file.write('website_license = "'+wlic+'"\n')
     config_file.write('author_name = "'+aname+'"\n')
     config_file.write('website_language = "'+wlan+'"\n')
@@ -216,7 +217,10 @@ def build_files():
         sys.exit("There dosen't seem to be a configuration file. Have you run the init command?")
     else:
         sys.path.insert(0, cwd)
-        from config import website_name, website_description, website_license, author_name, website_language, home_page_list, blended_version
+        try:
+            from config import website_name, website_description, website_description_long, website_license, author_name, website_language, home_page_list, blended_version
+        except:
+            sys.exit("Some of the configuration values could not be found! Maybe your config.py is too old. Run 'blended init' to fix.")
 
     # Create the build folder
     build_dir = os.path.join(cwd, "build")
@@ -243,6 +247,7 @@ def build_files():
     # Create the html page listing
     page_list = '<ul class="page-list">\n'
     for filename in os.listdir(os.path.join(cwd, "content")):
+        file_modified = str(time.ctime(os.path.getmtime(os.path.join(cwd, "content", filename))))
         if ".html" in filename:
             newFilename = filename
         elif ".md" in filename:
@@ -259,7 +264,7 @@ def build_files():
         newFilename2 = newFilename2.replace("-", " ")
         newFilename2 = newFilename2.replace("_", " ")
         newFilename2 = newFilename2.title()
-        page_list = page_list + '<li class="page-list-item"><a href="'+newFilename+'">'+newFilename2+'</a></li>\n'
+        page_list = page_list + '<li class="page-list-item"><a href="'+newFilename+'">'+newFilename2+'</a><span class="page-list-item-time"> - '+file_modified+'</span></li>\n'
     page_list = page_list + '</ul>'
 
     if home_page_list == "yes":
@@ -392,6 +397,7 @@ def build_files():
             line = line.replace("{nav6}", nav6_cont)
             line = line.replace("{website_name}", website_name)
             line = line.replace("{website_description}", website_description)
+            line = line.replace("{website_description_long}", website_description_long)
             line = line.replace("{website_license}", website_license)
             line = line.replace("{website_language}", website_language)
             line = line.replace("{author_name}", author_name)
