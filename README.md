@@ -45,6 +45,7 @@ You have some variables that you can use in your templates to pull in values whi
 
 * `{website_name}`
 * `{website_description}`
+* `{website_description_long}` (Use for long descriptions like an author bio)
 * `{author_name}`
 * `{website_language}`
 * `{website_license}`
@@ -60,8 +61,16 @@ You have some variables that you can use in your templates to pull in values whi
 * `{blended_version}` (Gives Blended's current version)
 * `{blended_version_message}` (Gives Blended's current version with a nice message: `Built with Blended v2.8`)
 
-Wherever you put these variables in the templates, they will be replaced by the values in your config.py file. The variables must stay within the curley brackets.
+Wherever you put these variables in the templates, they will be replaced by the values in your config.py file. The variables must stay within the curley brackets. You can even put variables inside the content of other variables!
+
+## Pre-Made Templates
 
 There is a simple starter template for Blended called blended-simple. You can download it to use and take a look at from it's own [GitHub page](https://github.com/johnroper100/blended-simple).
 
-There is also a full render managment dashboard built with Blended. You can download it from [GitHub](https://github.com/johnroper100/RenderManagementDashboard).
+There is also a simple blog template for Blended called blended-simple. You can download it from [GitHub page](https://github.com/johnroper100/blended-simple).
+
+## Projects That Use Blended
+
+The [Blended website](http://jmroper.com/blended) was made with Blended.
+
+A full render managment dashboard was built with Blended. You can see it on it's [GitHub page](https://github.com/johnroper100/RenderManagementDashboard).
