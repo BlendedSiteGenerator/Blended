@@ -203,7 +203,7 @@ def purge():
     config2_file_dir = os.path.join(cwd, "config.pyc")
     if os.path.exists(config2_file_dir):
         os.remove(config2_file_dir)
-        
+
     # Remove config.py
     config3_file_dir = os.path.join(cwd, "config.py.oldbak")
     if os.path.exists(config3_file_dir):
