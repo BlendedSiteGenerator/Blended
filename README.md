@@ -57,6 +57,8 @@ You have some variables that you can use in your templates to pull in values whi
 * `{build_datetime}`
 * `{nav(1-6)}` (Use to place navbars. You can have up to 6 different templates. For example, `{nav2}`)
 * `{page_list}` (Lists all the pages in `<ul><li><a href="page-name.html">page-name</a></li></ul>` format)
+* `{page_file}` (The full filename of the page. ex. `getting-started.html`)
+* `{page_filename}` (the filename of the page without the .html extension. ex. `getting-started`)
 * `{page_name}` (Gives the name of the current page. Makes the page name look more pretty. For example, `getting-started.html` is converted to `Getting Started`)
 * `{blended_version}` (Gives Blended's current version)
 * `{blended_version_message}` (Gives Blended's current version with a nice message: `Built with Blended v2.8`)

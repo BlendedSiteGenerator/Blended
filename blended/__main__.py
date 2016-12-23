@@ -379,13 +379,11 @@ def build_files():
     # Replace global variables such as site name and language
     for filename in os.listdir(os.path.join(cwd, "build")):
         newFilename = filename.replace(".html", "")
-        newFilename = newFilename.replace(".md", "")
-        newFilename = newFilename.replace(".txt", "")
-        newFilename = newFilename.replace(".tile", "")
         newFilename = newFilename.replace("index", "home")
         newFilename = newFilename.replace("-", " ")
         newFilename = newFilename.replace("_", " ")
         newFilename = newFilename.title()
+        page_file = filename.replace(".html", "")
         file_modified = str(time.ctime(os.path.getmtime(os.path.join(cwd, "build", filename))))
         blended_version_message = "Built with Blended v"+str(app_version)
         for line in fileinput.input(os.path.join(cwd, "build", filename), inplace=1):
@@ -407,6 +405,8 @@ def build_files():
             line = line.replace("{build_datetime}", str(datetime.datetime.now()))
             line = line.replace("{page_list}", page_list)
             line = line.replace("{page_name}", newFilename)
+            line = line.replace("{page_filename}", page_file)
+            line = line.replace("{page_file}", filename)
             line = line.replace("{page_time}", file_modified)
             line = line.replace("{blended_version}", str(app_version))
             line = line.replace("{blended_version_message}", blended_version_message)
