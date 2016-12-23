@@ -245,16 +245,20 @@ def build_files():
     for filename in os.listdir(os.path.join(cwd, "content")):
         if ".html" in filename:
             newFilename = filename
-            newFilename2 = filename.replace(".html", "")
         elif ".md" in filename:
             newFilename = filename.replace(".md", ".html")
-            newFilename2 = filename.replace(".md", "")
         elif ".tile" in filename:
             newFilename = filename.replace(".tile", ".html")
-            newFilename2 = filename.replace(".tile", "")
         elif ".txt" in filename:
             newFilename = filename.replace(".txt", ".html")
-            newFilename2 = filename.replace(".txt", "")
+        newFilename2 = filename.replace(".html", "")
+        newFilename2 = newFilename2.replace(".md", "")
+        newFilename2 = newFilename2.replace(".txt", "")
+        newFilename2 = newFilename2.replace(".tile", "")
+        newFilename2 = newFilename2.replace("index", "home")
+        newFilename2 = newFilename2.replace("-", " ")
+        newFilename2 = newFilename2.replace("_", " ")
+        newFilename2 = newFilename2.title()
         page_list = page_list + '<li class="page-list-item"><a href="'+newFilename+'">'+newFilename2+'</a></li>\n'
     page_list = page_list + '</ul>'
 
@@ -375,7 +379,9 @@ def build_files():
         newFilename = newFilename.replace(".tile", "")
         newFilename = newFilename.replace("index", "home")
         newFilename = newFilename.replace("-", " ")
+        newFilename = newFilename.replace("_", " ")
         newFilename = newFilename.title()
+        file_modified = str(time.ctime(os.path.getmtime(os.path.join(cwd, "build", filename))))
         blended_version_message = "Built with Blended v"+str(app_version)
         for line in fileinput.input(os.path.join(cwd, "build", filename), inplace=1):
             line = line.replace("{nav1}", nav1_cont)
@@ -395,6 +401,7 @@ def build_files():
             line = line.replace("{build_datetime}", str(datetime.datetime.now()))
             line = line.replace("{page_list}", page_list)
             line = line.replace("{page_name}", newFilename)
+            line = line.replace("{page_time}", file_modified)
             line = line.replace("{blended_version}", str(app_version))
             line = line.replace("{blended_version_message}", blended_version_message)
             print(line.rstrip('\n'))
