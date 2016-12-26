@@ -375,6 +375,8 @@ def build_files():
         nav6_cont = nav6_file.read()
     else:
         nav6_cont = ""
+    
+    comment_box = '<!-- begin wwww.htmlcommentbox.com -->\n<div id="HCB_comment_box"><a href="http://www.htmlcommentbox.com">HTML Comment Box</a> is loading comments...</div>\n<link rel="stylesheet" type="text/css" href="//www.htmlcommentbox.com/static/skins/bootstrap/twitter-bootstrap.css?v=0" />\n<script type="text/javascript" id="hcb"> /*<!--*/ if(!window.hcb_user){hcb_user={};} (function(){var s=document.createElement("script"), l=hcb_user.PAGE || (""+window.location).replace(/\'/g,"%27"), h="//www.htmlcommentbox.com";s.setAttribute("type","text/javascript");s.setAttribute("src", h+"/jread?page="+encodeURIComponent(l).replace("+","%2B")+"&opts=16862&num=10&ts=1482730585989");if (typeof s!="undefined") document.getElementsByTagName("head")[0].appendChild(s);})(); /*-->*/ </script>\n<!-- end www.htmlcommentbox.com -->'
 
     # Replace global variables such as site name and language
     for filename in os.listdir(os.path.join(cwd, "build")):
@@ -410,6 +412,7 @@ def build_files():
             line = line.replace("{page_time}", file_modified)
             line = line.replace("{blended_version}", str(app_version))
             line = line.replace("{blended_version_message}", blended_version_message)
+            line = line.replace("{comment_box}", comment_box)
             print(line.rstrip('\n'))
         fileinput.close()
 
