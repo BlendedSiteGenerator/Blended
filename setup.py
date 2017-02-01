@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='blended',
-      version='3.4',
+      version='3.5',
       description='Static HTML Site Generation Using Python',
       url='http://jmroper.com/blended/',
       author='John Roper',
@@ -14,6 +14,8 @@ setup(name='blended',
           'watchdog',
           'Markdown',
           'textile',
+          'docutils',
+          'mammoth',
       ],
       entry_points={
           'console_scripts': [

@@ -14,10 +14,12 @@ import time
 from ftplib import FTP, error_perm
 import markdown
 import textile
+from docutils.core import publish_parts
+import mammoth
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
-# Very important, get the directory that the user wants run commands in
+# Very important, get the directory that the user wants to run commands in
 cwd = os.getcwd()
 
 try:
@@ -209,7 +211,6 @@ def purge():
     if os.path.exists(config3_file_dir):
         os.remove(config3_file_dir)
 
-
 def build_files():
     # Make sure there is actually a configuration file
     config_file_dir = os.path.join(cwd, "config.py")
@@ -256,10 +257,16 @@ def build_files():
             newFilename = filename.replace(".tile", ".html")
         elif ".txt" in filename:
             newFilename = filename.replace(".txt", ".html")
+        elif ".rst" in filename:
+            newFilename = filename.replace(".rst", ".html")
+        elif ".docx" in filename:
+            newFilename = filename.replace(".docx", ".html")
         newFilename2 = filename.replace(".html", "")
         newFilename2 = newFilename2.replace(".md", "")
         newFilename2 = newFilename2.replace(".txt", "")
         newFilename2 = newFilename2.replace(".tile", "")
+        newFilename2 = newFilename2.replace(".rst", "")
+        newFilename2 = newFilename2.replace(".docx", "")
         newFilename2 = newFilename2.replace("index", "home")
         newFilename2 = newFilename2.replace("-", " ")
         newFilename2 = newFilename2.replace("_", " ")
@@ -293,6 +300,10 @@ def build_files():
             newFilename = filename.replace(".md", ".html")
         elif ".tile" in filename:
             newFilename = filename.replace(".tile", ".html")
+        elif ".rst" in filename:
+            newFilename = filename.replace(".rst", ".html")
+        elif ".docx" in filename:
+            newFilename = filename.replace(".docx", ".html")
         elif ".html" in filename:
             newFilename = filename
         elif ".txt" in filename:
@@ -309,8 +320,15 @@ def build_files():
         text_content = open(os.path.join(cwd, "content", filename), "r")
         if ".md" in filename:
             text_cont1 = "\n"+markdown.markdown(text_content.read())+"\n"
+        elif ".docx" in filename:
+            with open(os.path.join(cwd, "content", filename), "rb") as docx_file:
+                result = mammoth.convert_to_html(docx_file)
+                final_docx_html = result.value # The generated HTML
+            text_cont1 = "\n"+final_docx_html+"\n"
         elif ".tile" in filename:
             text_cont1 = "\n"+textile.textile(text_content.read())+"\n"
+        elif ".rst" in filename:
+            text_cont1 = "\n"+publish_parts(text_content.read(), writer_name='html')['html_body']+"\n"
         elif ".html" in filename:
             text_cont1 = text_content.read()
         elif ".txt" in filename:
