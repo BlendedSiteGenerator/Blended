@@ -19,6 +19,7 @@ setup(name='blended',
           'importlib',
           'libsass',
           'pyjade',
+          'lesscpy',
       ],
       entry_points={
           'console_scripts': [

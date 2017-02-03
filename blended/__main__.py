@@ -21,6 +21,8 @@ from watchdog.events import FileSystemEventHandler
 import importlib
 import sass
 import pyjade
+import lesscpy
+from six import StringIO
 
 # Very important, get the directory that the user wants to run commands in
 cwd = os.getcwd()
@@ -460,6 +462,11 @@ def build_files():
                 sass_text = open(os.path.join(root, file)).read()
                 text_file = open(os.path.join(root, file[:5]+"css"), "w")
                 text_file.write(sass.compile(string=sass_text))
+                text_file.close()
+            if file.endswith(".less"):
+                less_text = open(os.path.join(root, file)).read()
+                text_file = open(os.path.join(root, file[:5]+"css"), "w")
+                text_file.write(lesscpy.compile(StringIO(less_text)))
                 text_file.close()
 
 
