@@ -19,6 +19,8 @@ import mammoth
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 import importlib
+import sass
+import pyjade
 
 # Very important, get the directory that the user wants to run commands in
 cwd = os.getcwd()
@@ -258,6 +260,8 @@ def build_files():
             newFilename = filename.replace(".md", ".html")
         elif ".tile" in filename:
             newFilename = filename.replace(".tile", ".html")
+        elif ".jade" in filename:
+            newFilename = filename.replace(".jade", ".html")
         elif ".txt" in filename:
             newFilename = filename.replace(".txt", ".html")
         elif ".rst" in filename:
@@ -268,6 +272,7 @@ def build_files():
         newFilename2 = newFilename2.replace(".md", "")
         newFilename2 = newFilename2.replace(".txt", "")
         newFilename2 = newFilename2.replace(".tile", "")
+        newFilename2 = newFilename2.replace(".jade", "")
         newFilename2 = newFilename2.replace(".rst", "")
         newFilename2 = newFilename2.replace(".docx", "")
         newFilename2 = newFilename2.replace("index", "home")
@@ -303,6 +308,8 @@ def build_files():
             newFilename = filename.replace(".md", ".html")
         elif ".tile" in filename:
             newFilename = filename.replace(".tile", ".html")
+        elif ".jade" in filename:
+            newFilename = filename.replace(".jade", ".html")
         elif ".rst" in filename:
             newFilename = filename.replace(".rst", ".html")
         elif ".docx" in filename:
@@ -330,6 +337,8 @@ def build_files():
             text_cont1 = "\n"+final_docx_html+"\n"
         elif ".tile" in filename:
             text_cont1 = "\n"+textile.textile(text_content.read())+"\n"
+        elif ".jade" in filename:
+            text_cont1 = "\n"+pyjade.simple_convert(text_content.read())+"\n"
         elif ".rst" in filename:
             text_cont1 = "\n"+publish_parts(text_content.read(), writer_name='html')['html_body']+"\n"
         elif ".html" in filename:
@@ -444,6 +453,14 @@ def build_files():
     # Copy the asset folder to the build folder
     if os.path.exists(os.path.join(cwd, "templates", "assets")):
         shutil.copytree(os.path.join(cwd, "templates", "assets"), os.path.join(cwd, "build", "assets"))
+    
+    for root, dirs, files in os.walk(os.path.join(cwd, "build", "assets")):
+        for file in files:
+            if file.endswith(".sass"):
+                sass_text = open(os.path.join(root, file)).read()
+                text_file = open(os.path.join(root, file[:5]+"css"), "w")
+                text_file.write(sass.compile(string=sass_text))
+                text_file.close()
 
 
 @cli.command('build', short_help='Build the Blended files into a website')

@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(name='blended',
       version='3.6',
-      description='The Most Versitile Static HTML Site Generator',
+      description='The Most Versatile Static HTML Site Generator',
       url='http://jmroper.com/blended/',
       author='John Roper',
       author_email='johnroper100@gmail.com',
@@ -17,6 +17,8 @@ setup(name='blended',
           'docutils',
           'mammoth',
           'importlib',
+          'libsass',
+          'pyjade',
       ],
       entry_points={
           'console_scripts': [
