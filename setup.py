@@ -20,6 +20,8 @@ setup(name='blended',
           'libsass',
           'pyjade',
           'lesscpy',
+          'stylus',
+          'coffeescript',
       ],
       entry_points={
           'console_scripts': [

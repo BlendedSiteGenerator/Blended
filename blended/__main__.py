@@ -22,7 +22,10 @@ import importlib
 import sass
 import pyjade
 import lesscpy
+import subprocess
 from six import StringIO
+from stylus import Stylus
+import coffeescript
 
 # Very important, get the directory that the user wants to run commands in
 cwd = os.getcwd()
@@ -460,15 +463,31 @@ def build_files():
         for file in files:
             if file.endswith(".sass"):
                 sass_text = open(os.path.join(root, file)).read()
-                text_file = open(os.path.join(root, file[:5]+"css"), "w")
+                text_file = open(os.path.join(root, file[:-4]+"css"), "w")
                 text_file.write(sass.compile(string=sass_text))
                 text_file.close()
             if file.endswith(".less"):
                 less_text = open(os.path.join(root, file)).read()
-                text_file = open(os.path.join(root, file[:5]+"css"), "w")
+                text_file = open(os.path.join(root, file[:-4]+"css"), "w")
                 text_file.write(lesscpy.compile(StringIO(less_text)))
                 text_file.close()
-
+            if file.endswith(".styl"):
+                try:
+                    styl_text = open(os.path.join(root, file)).read()
+                    text_file = open(os.path.join(root, file[:-4]+"css"), "w")
+                    text_file.write(Stylus().compile(styl_text))
+                    text_file.close()
+                except:
+                    print("Not able to build with Stylus! Is it installed?")
+                    try:
+                        subprocess.call["npm", "install", "-g", "stylus"]
+                    except:
+                        print("NPM (NodeJS) not working. Is it installed?")
+            if file.endswith(".coffee"):
+                coffee_text = open(os.path.join(root, file)).read()
+                text_file = open(os.path.join(root, file[:-6]+"js"), "w")
+                text_file.write(coffeescript.compile(coffee_text))
+                text_file.close()
 
 @cli.command('build', short_help='Build the Blended files into a website')
 def build():
