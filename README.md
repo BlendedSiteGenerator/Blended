@@ -68,12 +68,24 @@ Wherever you put these variables in the templates, they will be replaced by the 
 
 ## Pre-Made Templates
 
-There is a simple starter template for Blended called blended-simple. You can download it to use and take a look at from it's own [GitHub page](https://github.com/johnroper100/blended-simple).
+* Simple starter template for Blended called blended-simple ([GitHub page](https://github.com/johnroper100/blended-simple))
 
-There is also a simple blog template for Blended called blended-blog. You can download it from it's [GitHub page](https://github.com/johnroper100/blended-blog).
+* Blog template called blended-blog ([GitHub page](https://github.com/johnroper100/blended-blog))
+
+* Software showcase ([Github page](https://github.com/johnroper100/blended-software))
+
+## Plugins
+
+* Google Analytics ([GitHub page](https://github.com/johnroper100/blended_google_analytics))
 
 ## Projects That Use Blended
 
-The [Blended website](http://jmroper.com/blended) was made with Blended.
+* The [Blended website](http://jmroper.com/blended)
 
-A full render managment dashboard was built with Blended. You can see it on it's [GitHub page](https://github.com/johnroper100/RenderManagementDashboard).
+* A full render managment dashboard ([GitHub page](https://github.com/johnroper100/RenderManagementDashboard))
+
+* DVDStyler website redesign ([Github page](https://github.com/johnroper100/dvdstyler-web))
+
+* MakeHuman website redesign ([Github page](https://github.com/johnroper100/makehuman-web))
+
+* LilyPond website redesign ([Github page](https://github.com/johnroper100/LilyPond-Web-Redesign))
