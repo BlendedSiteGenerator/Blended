@@ -18,6 +18,7 @@ from docutils.core import publish_parts
 import mammoth
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
+import importlib
 
 # Very important, get the directory that the user wants to run commands in
 cwd = os.getcwd()
@@ -90,6 +91,8 @@ def init():
     config_file.write('author_name = "'+aname+'"\n')
     config_file.write('website_language = "'+wlan+'"\n')
     config_file.write('home_page_list = "no"\n')
+    config_file.write('\n')
+    config_file.write('plugins = [] # Place all needed plugins in here\n')
     config_file.write('\n')
     config_file.write('# The following values are used for FTP uploads')
     config_file.write('\n')
@@ -219,7 +222,7 @@ def build_files():
     else:
         sys.path.insert(0, cwd)
         try:
-            from config import website_name, website_description, website_description_long, website_license, author_name, website_language, home_page_list, blended_version
+            from config import website_name, website_description, website_description_long, website_license, author_name, website_language, home_page_list, blended_version, plugins
         except:
             sys.exit("Some of the configuration values could not be found! Maybe your config.py is too old. Run 'blended init' to fix.")
 
@@ -431,6 +434,10 @@ def build_files():
             line = line.replace("{blended_version}", str(app_version))
             line = line.replace("{blended_version_message}", blended_version_message)
             line = line.replace("{comment_box}", comment_box)
+            for plugin in plugins:
+                main = __import__(plugin)
+                content = main.main()
+                line = line.replace("{"+plugin+"}", content)
             print(line.rstrip('\n'))
         fileinput.close()
 

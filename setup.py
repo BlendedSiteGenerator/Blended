@@ -16,6 +16,7 @@ setup(name='blended',
           'textile',
           'docutils',
           'mammoth',
+          'importlib',
       ],
       entry_points={
           'console_scripts': [
