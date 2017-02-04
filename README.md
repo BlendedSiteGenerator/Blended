@@ -1,7 +1,7 @@
 # Blended
 Blended is a static website generator written in Python and licensed under the GPL 3.0 open-source license. It supports a HTML-based templating system, content written in HTML, Markdown, Textile, reStructuredText, Jade, Docx, and Plain Text. It also supports the compiliation of Sass, Less, Stylus, and CoffeeScript. Blended makes it easy to deply your websites by incuding a built-in FTP uploader. In addition, Blended is powerfully upgradeable because it has support for a Python plugin system.
 
-There is a full step-by-step *Getting Started* tutorial on [the website](http://jmroper.com/blended/getting-started).
+There is a full step-by-step *Getting Started* tutorial on [the website](http://jmroper.com/blended/getting-started.html).
 
 ## Installing
 
