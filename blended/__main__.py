@@ -281,35 +281,36 @@ def build_files():
 
     # Create the html page listing
     page_list = '<ul class="page-list">\n'
-    for filename in os.listdir(os.path.join(cwd, "content")):
-        file_modified = str(time.ctime(os.path.getmtime(os.path.join(cwd, "content", filename))))
-        if ".html" in filename:
-            newFilename = filename
-        elif ".md" in filename:
-            newFilename = filename.replace(".md", ".html")
-        elif ".tile" in filename:
-            newFilename = filename.replace(".tile", ".html")
-        elif ".jade" in filename:
-            newFilename = filename.replace(".jade", ".html")
-        elif ".txt" in filename:
-            newFilename = filename.replace(".txt", ".html")
-        elif ".rst" in filename:
-            newFilename = filename.replace(".rst", ".html")
-        elif ".docx" in filename:
-            newFilename = filename.replace(".docx", ".html")
-        newFilename2 = filename.replace(".html", "")
-        newFilename2 = newFilename2.replace(".md", "")
-        newFilename2 = newFilename2.replace(".txt", "")
-        newFilename2 = newFilename2.replace(".tile", "")
-        newFilename2 = newFilename2.replace(".jade", "")
-        newFilename2 = newFilename2.replace(".rst", "")
-        newFilename2 = newFilename2.replace(".docx", "")
-        newFilename2 = newFilename2.replace("index", "home")
-        newFilename2 = newFilename2.replace("-", " ")
-        newFilename2 = newFilename2.replace("_", " ")
-        newFilename2 = newFilename2.title()
-        page_list = page_list + '<li class="page-list-item"><a href="'+newFilename+'">'+newFilename2+'</a><span class="page-list-item-time"> - '+file_modified+'</span></li>\n'
-    page_list = page_list + '</ul>'
+    for root, dirs, files in os.walk(os.path.join(cwd, "content")):
+        for filename in files:
+            file_modified = str(time.ctime(os.path.getmtime(os.path.join(root, filename))))
+            if ".html" in filename:
+                newFilename = filename
+            elif ".md" in filename:
+                newFilename = filename.replace(".md", ".html")
+            elif ".tile" in filename:
+                newFilename = filename.replace(".tile", ".html")
+            elif ".jade" in filename:
+                newFilename = filename.replace(".jade", ".html")
+            elif ".txt" in filename:
+                newFilename = filename.replace(".txt", ".html")
+            elif ".rst" in filename:
+                newFilename = filename.replace(".rst", ".html")
+            elif ".docx" in filename:
+                newFilename = filename.replace(".docx", ".html")
+            newFilename2 = filename.replace(".html", "")
+            newFilename2 = newFilename2.replace(".md", "")
+            newFilename2 = newFilename2.replace(".txt", "")
+            newFilename2 = newFilename2.replace(".tile", "")
+            newFilename2 = newFilename2.replace(".jade", "")
+            newFilename2 = newFilename2.replace(".rst", "")
+            newFilename2 = newFilename2.replace(".docx", "")
+            newFilename2 = newFilename2.replace("index", "home")
+            newFilename2 = newFilename2.replace("-", " ")
+            newFilename2 = newFilename2.replace("_", " ")
+            newFilename2 = newFilename2.title()
+            page_list = page_list + '<li class="page-list-item"><a href="'+newFilename+'">'+newFilename2+'</a><span class="page-list-item-time"> - '+file_modified+'</span></li>\n'
+        page_list = page_list + '</ul>'
 
     if home_page_list == "yes":
         # Open the home page file (index.html) for writing
@@ -330,68 +331,69 @@ def build_files():
 
         home_working_file.close()
 
-    for filename in os.listdir(os.path.join(cwd, "content")):
-        header_file = open(header_file_dir, "r")
-        footer_file = open(footer_file_dir, "r")
-        if ".md" in filename:
-            newFilename = filename.replace(".md", ".html")
-        elif ".tile" in filename:
-            newFilename = filename.replace(".tile", ".html")
-        elif ".jade" in filename:
-            newFilename = filename.replace(".jade", ".html")
-        elif ".rst" in filename:
-            newFilename = filename.replace(".rst", ".html")
-        elif ".docx" in filename:
-            newFilename = filename.replace(".docx", ".html")
-        elif ".html" in filename:
-            newFilename = filename
-        elif ".txt" in filename:
-            newFilename = filename.replace(".txt", ".html")
-        else:
-            print(filename+" is not a valid file type!")
+    for root, dirs, files in os.walk(os.path.join(cwd, "content")):
+        for filename in files:
+            header_file = open(header_file_dir, "r")
+            footer_file = open(footer_file_dir, "r")
+            if ".md" in filename:
+                newFilename = filename.replace(".md", ".html")
+            elif ".tile" in filename:
+                newFilename = filename.replace(".tile", ".html")
+            elif ".jade" in filename:
+                newFilename = filename.replace(".jade", ".html")
+            elif ".rst" in filename:
+                newFilename = filename.replace(".rst", ".html")
+            elif ".docx" in filename:
+                newFilename = filename.replace(".docx", ".html")
+            elif ".html" in filename:
+                newFilename = filename
+            elif ".txt" in filename:
+                newFilename = filename.replace(".txt", ".html")
+            else:
+                print(filename+" is not a valid file type!")
 
-        currents_working_file = open(os.path.join(cwd, "build", newFilename), "w")
+            currents_working_file = open(os.path.join(cwd, "build", newFilename), "w")
 
-        # Write the header
-        currents_working_file.write(header_file.read())
+            # Write the header
+            currents_working_file.write(header_file.read())
 
-        # Get the actual stuff we want to put on the page
-        text_content = open(os.path.join(cwd, "content", filename), "r")
-        if ".md" in filename:
-            text_cont1 = "\n"+markdown.markdown(text_content.read())+"\n"
-        elif ".docx" in filename:
-            with open(os.path.join(cwd, "content", filename), "rb") as docx_file:
-                result = mammoth.convert_to_html(docx_file)
-                final_docx_html = result.value # The generated HTML
-            text_cont1 = "\n"+final_docx_html+"\n"
-        elif ".tile" in filename:
-            text_cont1 = "\n"+textile.textile(text_content.read())+"\n"
-        elif ".jade" in filename:
-            text_cont1 = "\n"+pyjade.simple_convert(text_content.read())+"\n"
-        elif ".rst" in filename:
-            text_cont1 = "\n"+publish_parts(text_content.read(), writer_name='html')['html_body']+"\n"
-        elif ".html" in filename:
-            text_cont1 = text_content.read()
-        elif ".txt" in filename:
-            text_cont1 = text_content.read()
-        else:
-            print(filename+" is not a valid file type!")
+            # Get the actual stuff we want to put on the page
+            text_content = open(os.path.join(root, filename), "r")
+            if ".md" in filename:
+                text_cont1 = "\n"+markdown.markdown(text_content.read())+"\n"
+            elif ".docx" in filename:
+                with open(os.path.join(cwd, "content", filename), "rb") as docx_file:
+                    result = mammoth.convert_to_html(docx_file)
+                    final_docx_html = result.value # The generated HTML
+                text_cont1 = "\n"+final_docx_html+"\n"
+            elif ".tile" in filename:
+                text_cont1 = "\n"+textile.textile(text_content.read())+"\n"
+            elif ".jade" in filename:
+                text_cont1 = "\n"+pyjade.simple_convert(text_content.read())+"\n"
+            elif ".rst" in filename:
+                text_cont1 = "\n"+publish_parts(text_content.read(), writer_name='html')['html_body']+"\n"
+            elif ".html" in filename:
+                text_cont1 = text_content.read()
+            elif ".txt" in filename:
+                text_cont1 = text_content.read()
+            else:
+                print(filename+" is not a valid file type!")
 
-        # Write the text content into the content template and onto the build file
-        content_templ_dir = os.path.join(cwd, "templates", "content_page.html")
-        if os.path.exists(content_templ_dir):
-            content_templ_file = open(content_templ_dir, "r")
-            content_templ_file1 = content_templ_file.read()
-            content_templ_file2 = content_templ_file1.replace("{page_content}", text_cont1)
-            currents_working_file.write(content_templ_file2)
-        else:
-            currents_working_file.write(text_cont1)
+            # Write the text content into the content template and onto the build file
+            content_templ_dir = os.path.join(cwd, "templates", "content_page.html")
+            if os.path.exists(content_templ_dir):
+                content_templ_file = open(content_templ_dir, "r")
+                content_templ_file1 = content_templ_file.read()
+                content_templ_file2 = content_templ_file1.replace("{page_content}", text_cont1)
+                currents_working_file.write(content_templ_file2)
+            else:
+                currents_working_file.write(text_cont1)
 
-        # Write the footer to the build file
-        currents_working_file.write("\n"+footer_file.read())
+            # Write the footer to the build file
+            currents_working_file.write("\n"+footer_file.read())
 
-        # Close the build file
-        currents_working_file.close()
+            # Close the build file
+            currents_working_file.close()
 
     nav1_dir = os.path.join(cwd, "templates", "nav1.html")
     if os.path.exists(nav1_dir):
