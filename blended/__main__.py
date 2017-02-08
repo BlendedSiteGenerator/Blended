@@ -324,7 +324,7 @@ def build_files():
             home_templ_file = open(home_templ_dir, "r")
             home_working_file.write(home_templ_file.read())
         else:
-            print("No home page template file found. Writing page list to index.html")
+            print("\nNo home page template file found. Writing page list to index.html")
             home_working_file.write(page_list)
 
         home_working_file.write(footer_file.read())
