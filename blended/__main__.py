@@ -245,6 +245,31 @@ def purge():
     if os.path.exists(config3_file_dir):
         os.remove(config3_file_dir)
 
+def convert_text(filename):
+    text_content = open(filename, "r")
+    if ".md" in filename:
+        text_cont1 = "\n"+markdown.markdown(text_content.read())+"\n"
+    elif ".docx" in filename:
+        with open(os.path.join(cwd, "content", filename), "rb") as docx_file:
+            result = mammoth.convert_to_html(docx_file)
+            final_docx_html = result.value # The generated HTML
+        text_cont1 = "\n"+final_docx_html+"\n"
+    elif ".tile" in filename:
+        text_cont1 = "\n"+textile.textile(text_content.read())+"\n"
+    elif ".jade" in filename:
+        text_cont1 = "\n"+pyjade.simple_convert(text_content.read())+"\n"
+    elif ".rst" in filename:
+        text_cont1 = "\n"+publish_parts(text_content.read(), writer_name='html')['html_body']+"\n"
+    elif ".html" in filename:
+        text_cont1 = text_content.read()
+    elif ".txt" in filename:
+        text_cont1 = text_content.read()
+    else:
+        print(filename+" is not a valid file type!")
+        text_cont1 = "NULL"
+    
+    return text_cont1
+
 def build_files():
     # Make sure there is actually a configuration file
     config_file_dir = os.path.join(cwd, "config.py")
@@ -356,28 +381,8 @@ def build_files():
 
             # Write the header
             currents_working_file.write(header_file.read())
-
-            # Get the actual stuff we want to put on the page
-            text_content = open(os.path.join(root, filename), "r")
-            if ".md" in filename:
-                text_cont1 = "\n"+markdown.markdown(text_content.read())+"\n"
-            elif ".docx" in filename:
-                with open(os.path.join(cwd, "content", filename), "rb") as docx_file:
-                    result = mammoth.convert_to_html(docx_file)
-                    final_docx_html = result.value # The generated HTML
-                text_cont1 = "\n"+final_docx_html+"\n"
-            elif ".tile" in filename:
-                text_cont1 = "\n"+textile.textile(text_content.read())+"\n"
-            elif ".jade" in filename:
-                text_cont1 = "\n"+pyjade.simple_convert(text_content.read())+"\n"
-            elif ".rst" in filename:
-                text_cont1 = "\n"+publish_parts(text_content.read(), writer_name='html')['html_body']+"\n"
-            elif ".html" in filename:
-                text_cont1 = text_content.read()
-            elif ".txt" in filename:
-                text_cont1 = text_content.read()
-            else:
-                print(filename+" is not a valid file type!")
+            
+            text_cont1 = convert_text(os.path.join(root, filename))
 
             # Write the text content into the content template and onto the build file
             content_templ_dir = os.path.join(cwd, "templates", "content_page.html")
@@ -474,6 +479,10 @@ def build_files():
             line = line.replace("{blended_version}", str(app_version))
             line = line.replace("{blended_version_message}", blended_version_message)
             line = line.replace("{comment_box}", comment_box)
+            for root, dirs, files in os.walk(os.path.join(cwd, "content")):
+                for filename in files:
+                    if filename.endswith(".html"):
+                        line = line.replace("{"+filename+"}", convert_text(os.path.join(root, filename)))
             for plugin in plugins:
                 main = __import__(plugin)
                 content = main.main()
