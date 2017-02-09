@@ -29,6 +29,16 @@ This will help you start up a new website. If you need help, run:
 
 and you will see all of the commands that are available.
 
+## Building Your Site
+
+To build the site you have created with Blended run
+
+`blended build`
+
+or
+
+`blended interactive` (for on file change building)
+
 ## Working with templates
 
 Each Blended website uses four template files:
