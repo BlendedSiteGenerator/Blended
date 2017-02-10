@@ -376,8 +376,16 @@ def build_files():
                 newFilename = filename.replace(".txt", ".html")
             else:
                 print(filename+" is not a valid file type!")
+            
+            subfolder = root.split(os.path.sep)[-1]
 
-            currents_working_file = open(os.path.join(cwd, "build", newFilename), "w")
+            if subfolder == "content":
+                currents_working_file = open(os.path.join(cwd, "build", newFilename), "w")
+            else:
+                subfolder_folder = os.path.join(cwd, "build", subfolder)
+                if not os.path.exists(subfolder_folder):
+                    os.makedirs(subfolder_folder)
+                currents_working_file = open(os.path.join(cwd, "build", subfolder, newFilename), "w")
 
             # Write the header
             currents_working_file.write(header_file.read())
@@ -445,50 +453,56 @@ def build_files():
     comment_box = '<!-- begin wwww.htmlcommentbox.com -->\n<div id="HCB_comment_box"><a href="http://www.htmlcommentbox.com">HTML Comment Box</a> is loading comments...</div>\n<link rel="stylesheet" type="text/css" href="//www.htmlcommentbox.com/static/skins/bootstrap/twitter-bootstrap.css?v=0" />\n<script type="text/javascript" id="hcb"> /*<!--*/ if(!window.hcb_user){hcb_user={};} (function(){var s=document.createElement("script"), l=hcb_user.PAGE || (""+window.location).replace(/\'/g,"%27"), h="//www.htmlcommentbox.com";s.setAttribute("type","text/javascript");s.setAttribute("src", h+"/jread?page="+encodeURIComponent(l).replace("+","%2B")+"&opts=16862&num=10&ts=1482730585989");if (typeof s!="undefined") document.getElementsByTagName("head")[0].appendChild(s);})(); /*-->*/ </script>\n<!-- end www.htmlcommentbox.com -->'
 
     # Replace global variables such as site name and language
-    for filename in os.listdir(os.path.join(cwd, "build")):
-        newFilename = filename.replace(".html", "")
-        newFilename = newFilename.replace("index", "home")
-        newFilename = newFilename.replace("-", " ")
-        newFilename = newFilename.replace("_", " ")
-        newFilename = newFilename.title()
-        page_file = filename.replace(".html", "")
-        file_modified = str(time.ctime(os.path.getmtime(os.path.join(cwd, "build", filename))))
-        blended_version_message = "Built with Blended v"+str(app_version)
-        for line in fileinput.input(os.path.join(cwd, "build", filename), inplace=1):
-            line = line.replace("{nav1}", nav1_cont)
-            line = line.replace("{nav2}", nav2_cont)
-            line = line.replace("{nav3}", nav3_cont)
-            line = line.replace("{nav4}", nav4_cont)
-            line = line.replace("{nav5}", nav5_cont)
-            line = line.replace("{nav6}", nav6_cont)
-            line = line.replace("{website_name}", website_name)
-            line = line.replace("{website_description}", website_description)
-            line = line.replace("{website_description_long}", website_description_long)
-            line = line.replace("{website_license}", website_license)
-            line = line.replace("{website_language}", website_language)
-            line = line.replace("{author_name}", author_name)
-            line = line.replace("{random_number}", str(randint(0, 100000000)))
-            line = line.replace("{build_date}", str(datetime.datetime.now().date()))
-            line = line.replace("{build_time}", str(datetime.datetime.now().time()))
-            line = line.replace("{build_datetime}", str(datetime.datetime.now()))
-            line = line.replace("{page_list}", page_list)
-            line = line.replace("{page_name}", newFilename)
-            line = line.replace("{page_filename}", page_file)
-            line = line.replace("{page_file}", filename)
-            line = line.replace("{page_time}", file_modified)
-            line = line.replace("{blended_version}", str(app_version))
-            line = line.replace("{blended_version_message}", blended_version_message)
-            line = line.replace("{comment_box}", comment_box)
-            for root, dirs, files in os.walk(os.path.join(cwd, "content")):
-                for filename in files:
-                    if filename.endswith(".html"):
-                        line = line.replace("{"+filename+"}", convert_text(os.path.join(root, filename)))
-            for plugin in plugins:
-                main = __import__(plugin)
-                content = main.main()
-                line = line.replace("{"+plugin+"}", content)
-            print(line.rstrip('\n'))
-        fileinput.close()
+    for root, dirs, files in os.walk(os.path.join(cwd, "build")):
+        for filename in files:
+            newFilename = filename.replace(".html", "")
+            newFilename = newFilename.replace("index", "home")
+            newFilename = newFilename.replace("-", " ")
+            newFilename = newFilename.replace("_", " ")
+            newFilename = newFilename.title()
+            page_file = filename.replace(".html", "")
+            subfolder = root.split(os.path.sep)[-1]
+            if subfolder == "build":
+                subfolder_folder = os.path.join(cwd, "build", filename)
+            else:
+                subfolder_folder = os.path.join(cwd, "build", subfolder, filename)
+            file_modified = str(time.ctime(os.path.getmtime(subfolder_folder)))
+            blended_version_message = "Built with Blended v"+str(app_version)
+            for line in fileinput.input(subfolder_folder, inplace=1):
+                line = line.replace("{nav1}", nav1_cont)
+                line = line.replace("{nav2}", nav2_cont)
+                line = line.replace("{nav3}", nav3_cont)
+                line = line.replace("{nav4}", nav4_cont)
+                line = line.replace("{nav5}", nav5_cont)
+                line = line.replace("{nav6}", nav6_cont)
+                line = line.replace("{website_name}", website_name)
+                line = line.replace("{website_description}", website_description)
+                line = line.replace("{website_description_long}", website_description_long)
+                line = line.replace("{website_license}", website_license)
+                line = line.replace("{website_language}", website_language)
+                line = line.replace("{author_name}", author_name)
+                line = line.replace("{random_number}", str(randint(0, 100000000)))
+                line = line.replace("{build_date}", str(datetime.datetime.now().date()))
+                line = line.replace("{build_time}", str(datetime.datetime.now().time()))
+                line = line.replace("{build_datetime}", str(datetime.datetime.now()))
+                line = line.replace("{page_list}", page_list)
+                line = line.replace("{page_name}", newFilename)
+                line = line.replace("{page_filename}", page_file)
+                line = line.replace("{page_file}", filename)
+                line = line.replace("{page_time}", file_modified)
+                line = line.replace("{blended_version}", str(app_version))
+                line = line.replace("{blended_version_message}", blended_version_message)
+                line = line.replace("{comment_box}", comment_box)
+                for root, dirs, files in os.walk(os.path.join(cwd, "content")):
+                    for filename in files:
+                        if filename.endswith(".html"):
+                            line = line.replace("{"+filename+"}", convert_text(os.path.join(root, filename)))
+                for plugin in plugins:
+                    main = __import__(plugin)
+                    content = main.main()
+                    line = line.replace("{"+plugin+"}", content)
+                print(line.rstrip('\n'))
+            fileinput.close()
 
     # Copy the asset folder to the build folder
     if os.path.exists(os.path.join(cwd, "templates", "assets")):
