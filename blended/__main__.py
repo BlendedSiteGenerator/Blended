@@ -493,10 +493,17 @@ def build_files():
                 line = line.replace("{blended_version}", str(app_version))
                 line = line.replace("{blended_version_message}", blended_version_message)
                 line = line.replace("{comment_box}", comment_box)
-                for root, dirs, files in os.walk(os.path.join(cwd, "content")):
-                    for filename in files:
-                        if filename.endswith(".html"):
-                            line = line.replace("{"+filename+"}", convert_text(os.path.join(root, filename)))
+                top = os.path.join(cwd, "build")
+                startinglevel = top.count(os.sep)
+                relative_path = ""
+                level = root.count(os.sep) - startinglevel
+                for i in range(level):
+                    relative_path = relative_path+"../"
+                line = line.replace("{relative_root}", relative_path)
+                for roots, dirss, filess in os.walk(os.path.join(cwd, "content")):
+                    for filenames in filess:
+                        if filenames.endswith(".html"):
+                            line = line.replace("{"+filenames+"}", convert_text(os.path.join(roots, filenames)))
                 for plugin in plugins:
                     main = __import__(plugin)
                     content = main.main()
