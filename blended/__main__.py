@@ -377,7 +377,12 @@ def build_files():
             else:
                 print(filename+" is not a valid file type!")
             
-            subfolder = root.split(os.path.sep)[-1]
+            
+            
+            top = os.path.join(cwd, "content")
+            startinglevel = top.count(os.sep)
+            level = root.count(os.sep) - startinglevel
+            subfolder = root.split(os.path.sep)[-level]
 
             if subfolder == "content":
                 currents_working_file = open(os.path.join(cwd, "build", newFilename), "w")
