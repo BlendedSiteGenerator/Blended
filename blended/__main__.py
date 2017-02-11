@@ -358,60 +358,59 @@ def build_files():
 
     for root, dirs, files in os.walk(os.path.join(cwd, "content")):
         for filename in files:
-            header_file = open(header_file_dir, "r")
-            footer_file = open(footer_file_dir, "r")
-            if ".md" in filename:
-                newFilename = filename.replace(".md", ".html")
-            elif ".tile" in filename:
-                newFilename = filename.replace(".tile", ".html")
-            elif ".jade" in filename:
-                newFilename = filename.replace(".jade", ".html")
-            elif ".rst" in filename:
-                newFilename = filename.replace(".rst", ".html")
-            elif ".docx" in filename:
-                newFilename = filename.replace(".docx", ".html")
-            elif ".html" in filename:
-                newFilename = filename
-            elif ".txt" in filename:
-                newFilename = filename.replace(".txt", ".html")
-            else:
-                print(filename+" is not a valid file type!")
-            
-            
-            
-            top = os.path.join(cwd, "content")
-            startinglevel = top.count(os.sep)
-            level = root.count(os.sep) - startinglevel
-            subfolder = root.split(os.path.sep)[-level]
+            if not filename.startswith("_"):
+                header_file = open(header_file_dir, "r")
+                footer_file = open(footer_file_dir, "r")
+                if ".md" in filename:
+                    newFilename = filename.replace(".md", ".html")
+                elif ".tile" in filename:
+                    newFilename = filename.replace(".tile", ".html")
+                elif ".jade" in filename:
+                    newFilename = filename.replace(".jade", ".html")
+                elif ".rst" in filename:
+                    newFilename = filename.replace(".rst", ".html")
+                elif ".docx" in filename:
+                    newFilename = filename.replace(".docx", ".html")
+                elif ".html" in filename:
+                    newFilename = filename
+                elif ".txt" in filename:
+                    newFilename = filename.replace(".txt", ".html")
+                else:
+                    print(filename+" is not a valid file type!")
 
-            if subfolder == "content":
-                currents_working_file = open(os.path.join(cwd, "build", newFilename), "w")
-            else:
-                subfolder_folder = os.path.join(cwd, "build", subfolder)
-                if not os.path.exists(subfolder_folder):
-                    os.makedirs(subfolder_folder)
-                currents_working_file = open(os.path.join(cwd, "build", subfolder, newFilename), "w")
+                top = os.path.join(cwd, "content")
+                startinglevel = top.count(os.sep)
+                level = root.count(os.sep) - startinglevel
+                subfolder = root.split(os.path.sep)[-level]
 
-            # Write the header
-            currents_working_file.write(header_file.read())
-            
-            text_cont1 = convert_text(os.path.join(root, filename))
+                if subfolder == "content":
+                    currents_working_file = open(os.path.join(cwd, "build", newFilename), "w")
+                else:
+                    subfolder_folder = os.path.join(cwd, "build", subfolder)
+                    if not os.path.exists(subfolder_folder):
+                        os.makedirs(subfolder_folder)
+                    currents_working_file = open(os.path.join(cwd, "build", subfolder, newFilename), "w")
 
-            # Write the text content into the content template and onto the build file
-            content_templ_dir = os.path.join(cwd, "templates", "content_page.html")
-            if os.path.exists(content_templ_dir):
-                content_templ_file = open(content_templ_dir, "r")
-                content_templ_file1 = content_templ_file.read()
-                content_templ_file2 = content_templ_file1.replace("{page_content}", text_cont1)
-                currents_working_file.write(content_templ_file2)
-            else:
-                currents_working_file.write(text_cont1)
+                # Write the header
+                currents_working_file.write(header_file.read())
 
-            # Write the footer to the build file
-            currents_working_file.write("\n"+footer_file.read())
+                text_cont1 = convert_text(os.path.join(root, filename))
 
-            # Close the build file
-            currents_working_file.close()
+                # Write the text content into the content template and onto the build file
+                content_templ_dir = os.path.join(cwd, "templates", "content_page.html")
+                if os.path.exists(content_templ_dir):
+                    content_templ_file = open(content_templ_dir, "r")
+                    content_templ_file1 = content_templ_file.read()
+                    content_templ_file2 = content_templ_file1.replace("{page_content}", text_cont1)
+                    currents_working_file.write(content_templ_file2)
+                else:
+                    currents_working_file.write(text_cont1)
+
+                # Write the footer to the build file
+                currents_working_file.write("\n"+footer_file.read())
+
+                # Close the build file
+                currents_working_file.close()
 
     nav1_dir = os.path.join(cwd, "templates", "nav1.html")
     if os.path.exists(nav1_dir):
@@ -522,33 +521,34 @@ def build_files():
     
     for root, dirs, files in os.walk(os.path.join(cwd, "build", "assets")):
         for file in files:
-            if file.endswith(".sass"):
-                sass_text = open(os.path.join(root, file)).read()
-                text_file = open(os.path.join(root, file[:-4]+"css"), "w")
-                text_file.write(sass.compile(string=sass_text))
-                text_file.close()
-            if file.endswith(".less"):
-                less_text = open(os.path.join(root, file)).read()
-                text_file = open(os.path.join(root, file[:-4]+"css"), "w")
-                text_file.write(lesscpy.compile(StringIO(less_text)))
-                text_file.close()
-            if file.endswith(".styl"):
-                try:
-                    styl_text = open(os.path.join(root, file)).read()
+            if not file.startswith("_"):
+                if (file.endswith(".sass")) or (file.endswith(".scss")):
+                    sass_text = open(os.path.join(root, file)).read()
                     text_file = open(os.path.join(root, file[:-4]+"css"), "w")
-                    text_file.write(Stylus().compile(styl_text))
+                    text_file.write(sass.compile(string=sass_text))
                     text_file.close()
-                except:
-                    print("Not able to build with Stylus! Is it installed?")
+                if file.endswith(".less"):
+                    less_text = open(os.path.join(root, file)).read()
+                    text_file = open(os.path.join(root, file[:-4]+"css"), "w")
+                    text_file.write(lesscpy.compile(StringIO(less_text)))
+                    text_file.close()
+                if file.endswith(".styl"):
                     try:
-                        subprocess.call["npm", "install", "-g", "stylus"]
+                        styl_text = open(os.path.join(root, file)).read()
+                        text_file = open(os.path.join(root, file[:-4]+"css"), "w")
+                        text_file.write(Stylus().compile(styl_text))
+                        text_file.close()
                     except:
-                        print("NPM (NodeJS) not working. Is it installed?")
-            if file.endswith(".coffee"):
-                coffee_text = open(os.path.join(root, file)).read()
-                text_file = open(os.path.join(root, file[:-6]+"js"), "w")
-                text_file.write(coffeescript.compile(coffee_text))
-                text_file.close()
+                        print("Not able to build with Stylus! Is it installed?")
+                        try:
+                            subprocess.call["npm", "install", "-g", "stylus"]
+                        except:
+                            print("NPM (NodeJS) not working. Is it installed?")
+                if file.endswith(".coffee"):
+                    coffee_text = open(os.path.join(root, file)).read()
+                    text_file = open(os.path.join(root, file[:-6]+"js"), "w")
+                    text_file.write(coffeescript.compile(coffee_text))
+                    text_file.close()
 
 @cli.command('build', short_help='Build the Blended files into a website')
 def build():
