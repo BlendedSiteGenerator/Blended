@@ -1,6 +1,7 @@
 import os
 import os.path
 import sys
+from sys import platform
 import shutil
 from shutil import copyfile
 import fileinput
@@ -377,13 +378,15 @@ def build_files():
                     newFilename = filename.replace(".txt", ".html")
                 else:
                     print(filename+" is not a valid file type!")
+                
+                top = os.path.dirname(os.path.join(root, filename))
+                top2 = top.replace(os.path.join(cwd, "content"), "", 1)
+                if platform != "win32":
+                    subfolder = top2.replace("/", "", 1)
+                else:
+                    subfolder = top2.replace("\\", "", 1)
 
-                top = os.path.join(cwd, "content")
-                startinglevel = top.count(os.sep)
-                level = root.count(os.sep) - startinglevel
-                subfolder = root.split(os.path.sep)[-level]
-
-                if subfolder == "content":
+                if subfolder == "":
                     currents_working_file = open(os.path.join(cwd, "build", newFilename), "w")
                 else:
                     subfolder_folder = os.path.join(cwd, "build", subfolder)
@@ -465,8 +468,13 @@ def build_files():
             newFilename = newFilename.replace("_", " ")
             newFilename = newFilename.title()
             page_file = filename.replace(".html", "")
-            subfolder = root.split(os.path.sep)[-1]
-            if subfolder == "build":
+            top = os.path.dirname(os.path.join(root, filename))
+            top2 = top.replace(os.path.join(cwd, "build"), "", 1)
+            if platform != "win32":
+                subfolder = top2.replace("/", "", 1)
+            else:
+                subfolder = top2.replace("\\", "", 1)
+            if subfolder == "":
                 subfolder_folder = os.path.join(cwd, "build", filename)
             else:
                 subfolder_folder = os.path.join(cwd, "build", subfolder, filename)
