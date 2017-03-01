@@ -79,22 +79,22 @@ def init():
     templ_dir = os.path.join(cwd, "templates")
     if not os.path.exists(templ_dir):
         os.makedirs(templ_dir)
-    
+
     # Create the templates/assets folder
     assets_dir = os.path.join(cwd, "templates", "assets")
     if not os.path.exists(assets_dir):
         os.makedirs(assets_dir)
-    
+
     # Create the templates/assets/css folder
     css_dir = os.path.join(cwd, "templates", "assets", "css")
     if not os.path.exists(css_dir):
         os.makedirs(css_dir)
-    
+
     # Create the templates/assets/js folder
     js_dir = os.path.join(cwd, "templates", "assets", "js")
     if not os.path.exists(js_dir):
         os.makedirs(js_dir)
-    
+
     # Create the templates/assets/img folder
     img_dir = os.path.join(cwd, "templates", "assets", "img")
     if not os.path.exists(img_dir):
@@ -211,7 +211,7 @@ def clean():
 def zip():
     """Packages the build folder into a zip"""
     print("Zipping the built files!")
-    
+
     config_file_dir = os.path.join(cwd, "config.py")
     if not os.path.exists(config_file_dir):
         sys.exit("There dosen't seem to be a configuration file. Have you run the init command?")
@@ -266,6 +266,7 @@ def purge():
     if os.path.exists(config3_file_dir):
         os.remove(config3_file_dir)
 
+
 def convert_text(filename):
     text_content = open(filename, "r")
     if ".md" in filename:
@@ -273,7 +274,7 @@ def convert_text(filename):
     elif ".docx" in filename:
         with open(os.path.join(cwd, "content", filename), "rb") as docx_file:
             result = mammoth.convert_to_html(docx_file)
-            final_docx_html = result.value # The generated HTML
+            final_docx_html = result.value
         text_cont1 = "\n"+final_docx_html+"\n"
     elif ".tile" in filename:
         text_cont1 = "\n"+textile.textile(text_content.read())+"\n"
@@ -288,8 +289,9 @@ def convert_text(filename):
     else:
         print(filename+" is not a valid file type!")
         text_cont1 = "NULL"
-    
+
     return text_cont1
+
 
 def build_files():
     # Make sure there is actually a configuration file
@@ -398,7 +400,7 @@ def build_files():
                     newFilename = filename.replace(".txt", ".html")
                 else:
                     print(filename+" is not a valid file type!")
-                
+
                 top = os.path.dirname(os.path.join(root, filename))
                 top2 = top.replace(os.path.join(cwd, "content"), "", 1)
                 if platform != "win32":
@@ -476,7 +478,7 @@ def build_files():
         nav6_cont = nav6_file.read()
     else:
         nav6_cont = ""
-    
+
     comment_box = '<!-- begin wwww.htmlcommentbox.com -->\n<div id="HCB_comment_box"><a href="http://www.htmlcommentbox.com">HTML Comment Box</a> is loading comments...</div>\n<link rel="stylesheet" type="text/css" href="//www.htmlcommentbox.com/static/skins/bootstrap/twitter-bootstrap.css?v=0" />\n<script type="text/javascript" id="hcb"> /*<!--*/ if(!window.hcb_user){hcb_user={};} (function(){var s=document.createElement("script"), l=hcb_user.PAGE || (""+window.location).replace(/\'/g,"%27"), h="//www.htmlcommentbox.com";s.setAttribute("type","text/javascript");s.setAttribute("src", h+"/jread?page="+encodeURIComponent(l).replace("+","%2B")+"&opts=16862&num=10&ts=1482730585989");if (typeof s!="undefined") document.getElementsByTagName("head")[0].appendChild(s);})(); /*-->*/ </script>\n<!-- end www.htmlcommentbox.com -->'
 
     # Replace global variables such as site name and language
@@ -546,7 +548,7 @@ def build_files():
     # Copy the asset folder to the build folder
     if os.path.exists(os.path.join(cwd, "templates", "assets")):
         shutil.copytree(os.path.join(cwd, "templates", "assets"), os.path.join(cwd, "build", "assets"))
-    
+
     for root, dirs, files in os.walk(os.path.join(cwd, "build", "assets")):
         for file in files:
             if not file.startswith("_"):
@@ -577,6 +579,7 @@ def build_files():
                     text_file = open(os.path.join(root, file[:-6]+"js"), "w")
                     text_file.write(coffeescript.compile(coffee_text))
                     text_file.close()
+
 
 @cli.command('build', short_help='Build the Blended files into a website')
 def build():
