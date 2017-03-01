@@ -79,6 +79,26 @@ def init():
     templ_dir = os.path.join(cwd, "templates")
     if not os.path.exists(templ_dir):
         os.makedirs(templ_dir)
+    
+    # Create the templates/assets folder
+    assets_dir = os.path.join(cwd, "templates", "assets")
+    if not os.path.exists(assets_dir):
+        os.makedirs(assets_dir)
+    
+    # Create the templates/assets/css folder
+    css_dir = os.path.join(cwd, "templates", "assets", "css")
+    if not os.path.exists(css_dir):
+        os.makedirs(css_dir)
+    
+    # Create the templates/assets/js folder
+    js_dir = os.path.join(cwd, "templates", "assets", "js")
+    if not os.path.exists(js_dir):
+        os.makedirs(js_dir)
+    
+    # Create the templates/assets/img folder
+    img_dir = os.path.join(cwd, "templates", "assets", "img")
+    if not os.path.exists(img_dir):
+        os.makedirs(img_dir)
 
     # Create the content folder
     cont_dir = os.path.join(cwd, "content")
