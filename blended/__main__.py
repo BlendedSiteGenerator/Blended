@@ -27,6 +27,8 @@ import subprocess
 from six import StringIO
 from stylus import Stylus
 import coffeescript
+from jsmin import jsmin
+from cssmin import cssmin
 from .functions import *
 
 # Very important, get the directory that the user wants to run commands in
@@ -44,11 +46,12 @@ def cli():
     """Blended: Static Website Generator"""
 
 
-@cli.command('version', short_help='Show which version of Blended you are running.')
+@cli.command('info', short_help='Show info about Blended and the current project.')
 def version():
-    """Prints Blended's current version"""
+    """Prints info about Blended"""
 
     print("You are running Blended v"+app_version)
+    print("The current working directory is "+cwd)
 
 
 @cli.command('init', short_help='Initiate a new website')
@@ -110,6 +113,8 @@ def init():
     config_file.write('home_page_list = "no"\n')
     config_file.write('\n')
     config_file.write('plugins = [] # Place all needed plugins in here\n')
+    config_file.write('minify_css = False\n')
+    config_file.write('minify_js = False\n')
     config_file.write('\n')
     config_file.write('# The following values are used for FTP uploads')
     config_file.write('\n')
@@ -290,7 +295,7 @@ def build_files():
     else:
         sys.path.insert(0, cwd)
         try:
-            from config import website_name, website_description, website_description_long, website_license, author_name, website_language, home_page_list, blended_version, plugins
+            from config import website_name, website_description, website_description_long, website_license, author_name, website_language, home_page_list, blended_version, plugins, minify_css, minify_js
         except:
             sys.exit("Some of the configuration values could not be found! Maybe your config.py is too old. Run 'blended init' to fix.")
 
@@ -542,18 +547,27 @@ def build_files():
                 if (file.endswith(".sass")) or (file.endswith(".scss")):
                     sass_text = open(os.path.join(root, file)).read()
                     text_file = open(os.path.join(root, file[:-4]+"css"), "w")
-                    text_file.write(sass.compile(string=sass_text))
+                    if sass_text != "":
+                        text_file.write(sass.compile(string=sass_text))
+                    else:
+                        print(file+" is empty! Not compiling Sass.")
                     text_file.close()
                 if file.endswith(".less"):
                     less_text = open(os.path.join(root, file)).read()
                     text_file = open(os.path.join(root, file[:-4]+"css"), "w")
-                    text_file.write(lesscpy.compile(StringIO(less_text)))
+                    if less_text != "":
+                        text_file.write(lesscpy.compile(StringIO(less_text)))
+                    else:
+                        print(file+" is empty! Not compiling Less.")
                     text_file.close()
                 if file.endswith(".styl"):
                     try:
                         styl_text = open(os.path.join(root, file)).read()
                         text_file = open(os.path.join(root, file[:-4]+"css"), "w")
-                        text_file.write(Stylus().compile(styl_text))
+                        if styl_text != "":
+                            text_file.write(Stylus().compile(styl_text))
+                        else:
+                            print(file+" is empty! Not compiling Styl.")
                         text_file.close()
                     except:
                         print("Not able to build with Stylus! Is it installed?")
@@ -564,8 +578,26 @@ def build_files():
                 if file.endswith(".coffee"):
                     coffee_text = open(os.path.join(root, file)).read()
                     text_file = open(os.path.join(root, file[:-6]+"js"), "w")
-                    text_file.write(coffeescript.compile(coffee_text))
+                    if coffee_text != "":
+                         text_file.write(coffeescript.compile(coffee_text))
+                    else:
+                        print(file+" is empty! Not compiling CoffeeScript.")
                     text_file.close()
+                if minify_css == True:
+                    if file.endswith(".css"):
+                        css_text = open(os.path.join(root, file)).read()
+                        text_file = open(os.path.join(root, file), "w")
+                        if css_text != "":
+                             text_file.write(cssmin(css_text))
+                        text_file.close()
+                if minify_js == True:
+                    if file.endswith(".js"):
+                        js_text = open(os.path.join(root, file)).read()
+                        text_file = open(os.path.join(root, file), "w")
+                        if js_text != "":
+                             text_file.write(jsmin(js_text))
+                        text_file.close()
+                    
 
 
 @cli.command('build', short_help='Build the Blended files into a website')
