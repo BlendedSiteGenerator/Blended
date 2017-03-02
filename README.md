@@ -89,6 +89,8 @@ Wherever you put these variables in the templates, they will be replaced by the 
 
 * Google Analytics ([GitHub page](https://github.com/johnroper100/blended_google_analytics))
 
+* HTML Comment Box ([GitHub page](https://github.com/johnroper100/blended_html_comment_box))
+
 ## Projects That Use Blended
 
 * The [Blended website](http://jmroper.com/blended)

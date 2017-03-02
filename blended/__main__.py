@@ -481,7 +481,7 @@ def build_files():
     else:
         nav6_cont = ""
 
-    comment_box = '<!-- begin wwww.htmlcommentbox.com -->\n<div id="HCB_comment_box"><a href="http://www.htmlcommentbox.com">HTML Comment Box</a> is loading comments...</div>\n<link rel="stylesheet" type="text/css" href="//www.htmlcommentbox.com/static/skins/bootstrap/twitter-bootstrap.css?v=0" />\n<script type="text/javascript" id="hcb"> /*<!--*/ if(!window.hcb_user){hcb_user={};} (function(){var s=document.createElement("script"), l=hcb_user.PAGE || (""+window.location).replace(/\'/g,"%27"), h="//www.htmlcommentbox.com";s.setAttribute("type","text/javascript");s.setAttribute("src", h+"/jread?page="+encodeURIComponent(l).replace("+","%2B")+"&opts=16862&num=10&ts=1482730585989");if (typeof s!="undefined") document.getElementsByTagName("head")[0].appendChild(s);})(); /*-->*/ </script>\n<!-- end www.htmlcommentbox.com -->'
+    comment_box = "The comment box has moved to the HTML Comment Box plugin. Find it on <a href=\"https://github.com/johnroper100/blended_html_comment_box\">its GitHub page</a>."
 
     # Replace global variables such as site name and language
     for root, dirs, files in os.walk(os.path.join(cwd, "build")):
