@@ -27,6 +27,7 @@ import subprocess
 from six import StringIO
 from stylus import Stylus
 import coffeescript
+from .functions import *
 
 # Very important, get the directory that the user wants to run commands in
 cwd = os.getcwd()
@@ -76,34 +77,22 @@ def init():
         aname = raw_input("Author(s) Name(s): ")
 
     # Create the templates folder
-    templ_dir = os.path.join(cwd, "templates")
-    if not os.path.exists(templ_dir):
-        os.makedirs(templ_dir)
+    create_folder(os.path.join(cwd, "templates"))
 
     # Create the templates/assets folder
-    assets_dir = os.path.join(cwd, "templates", "assets")
-    if not os.path.exists(assets_dir):
-        os.makedirs(assets_dir)
+    create_folder(os.path.join(cwd, "templates", "assets"))
 
     # Create the templates/assets/css folder
-    css_dir = os.path.join(cwd, "templates", "assets", "css")
-    if not os.path.exists(css_dir):
-        os.makedirs(css_dir)
+    create_folder(os.path.join(cwd, "templates", "assets", "css"))
 
     # Create the templates/assets/js folder
-    js_dir = os.path.join(cwd, "templates", "assets", "js")
-    if not os.path.exists(js_dir):
-        os.makedirs(js_dir)
+    create_folder(os.path.join(cwd, "templates", "assets", "js"))
 
     # Create the templates/assets/img folder
-    img_dir = os.path.join(cwd, "templates", "assets", "img")
-    if not os.path.exists(img_dir):
-        os.makedirs(img_dir)
+    create_folder(os.path.join(cwd, "templates", "assets", "img"))
 
     # Create the content folder
-    cont_dir = os.path.join(cwd, "content")
-    if not os.path.exists(cont_dir):
-        os.makedirs(cont_dir)
+    create_folder(os.path.join(cwd, "content"))
 
     # Populate the configuration file
     config_file_dir = os.path.join(cwd, "config.py")
@@ -411,9 +400,7 @@ def build_files():
                 if subfolder == "":
                     currents_working_file = open(os.path.join(cwd, "build", newFilename), "w")
                 else:
-                    subfolder_folder = os.path.join(cwd, "build", subfolder)
-                    if not os.path.exists(subfolder_folder):
-                        os.makedirs(subfolder_folder)
+                    create_folder(os.path.join(cwd, "build", subfolder))
                     currents_working_file = open(os.path.join(cwd, "build", subfolder, newFilename), "w")
 
                 # Write the header
