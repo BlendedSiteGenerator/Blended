@@ -73,9 +73,18 @@ You have some variables that you can use in your templates to pull in values whi
 * `{page_name}` (Gives the name of the current page. Makes the page name look more pretty. For example, `getting-started.html` is converted to `Getting Started`)
 * `{blended_version}` (Gives Blended's current version)
 * `{blended_version_message}` (Gives Blended's current version with a nice message: `Built with Blended v2.8`)
-* `{comment_box}` (A fully-working comment box powered by HTMLCommentBox.com)
 
 Wherever you put these variables in the templates, they will be replaced by the values in your config.py file. The variables must stay within the curley brackets. You can even put variables inside the content of other variables!
+
+## Working with Plugins
+
+To use plugins, include them in the `plugins` list in `config.py`.
+
+If the plugin is meant to be called in your templates, ex. `{html_comment_box}` then insert it into the plugins list like `plugins = [["html_comment_box"]]`.
+
+If the plugin is meant to be run on build, ex. `{minify_images}` then insert it into the plugins list like `plugins = [["RUN", "minify_images"]]`.
+
+You can use multiple plugins at once, ex. `plugins = [["html_comment_box"], ["RUN", "minify_images"]]`
 
 ## Pre-Made Templates
 

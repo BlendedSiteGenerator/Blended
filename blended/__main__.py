@@ -540,10 +540,14 @@ def build_files():
                     for filenames in filess:
                         if filenames.endswith(".html"):
                             line = line.replace("{"+filenames+"}", convert_text(os.path.join(roots, filenames)))
-                for plugin in plugins:
-                    main = __import__(plugin)
-                    content = main.main()
-                    line = line.replace("{"+plugin+"}", content)
+                for i in range(len(plugins)):
+                    if plugins[i][0] != "RUN":
+                        main = __import__(plugins[i][0])
+                        content = main.main()
+                        line = line.replace("{"+plugins[i][0]+"}", content)
+                    else:
+                        main = __import__(plugins[i][1])
+                        main.main()
                 print(line.rstrip('\n'))
             fileinput.close()
 
