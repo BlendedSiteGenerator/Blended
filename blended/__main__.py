@@ -593,25 +593,24 @@ def build_files():
                     coffee_text = open(os.path.join(root, file)).read()
                     text_file = open(os.path.join(root, file[:-6]+"js"), "w")
                     if coffee_text != "":
-                         text_file.write(coffeescript.compile(coffee_text))
+                        text_file.write(coffeescript.compile(coffee_text))
                     else:
                         print(file+" is empty! Not compiling CoffeeScript.")
                     text_file.close()
-                if minify_css == True:
+                if minify_css:
                     if file.endswith(".css"):
                         css_text = open(os.path.join(root, file)).read()
                         text_file = open(os.path.join(root, file), "w")
                         if css_text != "":
-                             text_file.write(cssmin(css_text))
+                            text_file.write(cssmin(css_text))
                         text_file.close()
-                if minify_js == True:
+                if minify_js:
                     if file.endswith(".js"):
                         js_text = open(os.path.join(root, file)).read()
                         text_file = open(os.path.join(root, file), "w")
                         if js_text != "":
-                             text_file.write(jsmin(js_text))
+                            text_file.write(jsmin(js_text))
                         text_file.close()
-                    
 
 
 @cli.command('build', short_help='Build the Blended files into a website')
