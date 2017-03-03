@@ -115,6 +115,7 @@ def init():
     config_file.write('plugins = [] # Place all needed plugins in here\n')
     config_file.write('minify_css = False\n')
     config_file.write('minify_js = False\n')
+    config_file.write('include_parent_in_title = True\n')
     config_file.write('\n')
     config_file.write('# The following values are used for FTP uploads')
     config_file.write('\n')
@@ -299,7 +300,7 @@ def build_files():
         except:
             sys.exit("Some of the crucial configuration values could not be found! Maybe your config.py is too old. Run 'blended init' to fix.")
         try:
-            from config import website_description_long, website_license, author_name, plugins, minify_css, minify_js
+            from config import website_description_long, website_license, author_name, plugins, minify_css, minify_js, include_parent_in_title
         except:
             website_description_long = ""
             website_license = ""
@@ -307,6 +308,7 @@ def build_files():
             plugins = []
             minify_css = False
             minify_js = False
+            include_parent_in_title = True
             print("WARNING: Some of the optional configuration values could not be found! Maybe your config.py is too old. Run 'blended init' to fix.\n")
 
     # Create the build folder
@@ -490,6 +492,10 @@ def build_files():
             newFilename = newFilename.replace("index", "home")
             newFilename = newFilename.replace("-", " ")
             newFilename = newFilename.replace("_", " ")
+            if include_parent_in_title:
+                file_folder = os.path.basename(os.path.dirname(os.path.join(root, filename))).replace("-", " ").replace("_", " ")
+                if file_folder != "build":
+                    newFilename = file_folder + " " + newFilename
             newFilename = newFilename.title()
             page_file = filename.replace(".html", "")
             top = os.path.dirname(os.path.join(root, filename))
