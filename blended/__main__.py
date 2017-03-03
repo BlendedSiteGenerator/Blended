@@ -115,7 +115,6 @@ def init():
     config_file.write('plugins = [] # Place all needed plugins in here\n')
     config_file.write('minify_css = False\n')
     config_file.write('minify_js = False\n')
-    config_file.write('include_parent_in_title = True\n')
     config_file.write('\n')
     config_file.write('# The following values are used for FTP uploads')
     config_file.write('\n')
@@ -492,12 +491,10 @@ def build_files():
             newFilename = newFilename.replace("index", "home")
             newFilename = newFilename.replace("-", " ")
             newFilename = newFilename.replace("_", " ")
-            if include_parent_in_title:
-                file_folder = os.path.basename(os.path.dirname(os.path.join(root, filename))).replace("-", " ").replace("_", " ")
-                if file_folder != "build":
-                    newFilename = file_folder + " " + newFilename
             newFilename = newFilename.title()
             page_file = filename.replace(".html", "")
+            page_folder = os.path.basename(os.path.dirname(os.path.join(root, filename))).replace("-", " ").replace("_", " ").title()
+            page_folder_orig = os.path.basename(os.path.dirname(os.path.join(root, filename)))
             top = os.path.dirname(os.path.join(root, filename))
             top2 = top.replace(os.path.join(cwd, "build"), "", 1)
             if platform != "win32":
@@ -531,6 +528,14 @@ def build_files():
                 line = line.replace("{page_name}", newFilename)
                 line = line.replace("{page_filename}", page_file)
                 line = line.replace("{page_file}", filename)
+                if page_folder != "Build":
+                    line = line.replace("{page_folder}", page_folder)
+                else:
+                    line = line.replace("{page_folder}", "")
+                if page_folder_orig != "build":
+                    line = line.replace("{page_folder_orig}", page_folder_orig)
+                else:
+                    line = line.replace("{page_folder_orig}", "")
                 line = line.replace("{page_time}", file_modified)
                 line = line.replace("{blended_version}", str(app_version))
                 line = line.replace("{blended_version_message}", blended_version_message)

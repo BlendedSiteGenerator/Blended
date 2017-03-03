@@ -70,7 +70,9 @@ You have some variables that you can use in your templates to pull in values whi
 * `{page_list}` (Lists all the pages in `<ul><li><a href="page-name.html">page-name</a></li></ul>` format)
 * `{page_file}` (The full filename of the page. ex. `getting-started.html`)
 * `{page_filename}` (the filename of the page without the .html extension. ex. `getting-started`)
-* `{page_name}` (Gives the name of the current page. Makes the page name look more pretty. For example, `getting-started.html` is converted to `Getting Started`. Also, if `include_parent_in_title` is set to `True` in `config.py`, the file's parent folder will be included)
+* `{page_name}` (Gives the name of the current page. Makes the page name look more pretty. For example, `getting-started.html` is converted to `Getting Started`)
+* `{page_folder}` (Gives the name of the current page's folder. Makes the folder name look more pretty. For example, `getting-started` is converted to `Getting Started`)
+* `{page_folder_orig}` (Gives the name of the current page's folder)
 * `{blended_version}` (Gives Blended's current version)
 * `{blended_version_message}` (Gives Blended's current version with a nice message: `Built with Blended v4.4`)
 
