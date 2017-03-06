@@ -1,3 +1,4 @@
+# encoding=utf8 
 import os
 import os.path
 import sys
@@ -629,6 +630,9 @@ def build():
     """Blends the generated files and outputs a html website"""
 
     print("Building your Blended files into a website!")
+    
+    reload(sys)  
+    sys.setdefaultencoding('utf8')
 
     build_files()
 
@@ -691,6 +695,9 @@ def interactive():
     """Blends the generated files and outputs a html website on file change"""
 
     print("Building your Blended files into a website!")
+    
+    reload(sys)  
+    sys.setdefaultencoding('utf8')
 
     build_files()
 
