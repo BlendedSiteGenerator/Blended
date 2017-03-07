@@ -300,7 +300,7 @@ def build_files():
         except:
             sys.exit("Some of the crucial configuration values could not be found! Maybe your config.py is too old. Run 'blended init' to fix.")
         try:
-            from config import website_description_long, website_license, author_name, plugins, minify_css, minify_js, include_parent_in_title
+            from config import website_description_long, website_license, author_name, plugins, minify_css, minify_js
         except:
             website_description_long = ""
             website_license = ""
@@ -308,7 +308,6 @@ def build_files():
             plugins = []
             minify_css = False
             minify_js = False
-            include_parent_in_title = True
             print("WARNING: Some of the optional configuration values could not be found! Maybe your config.py is too old. Run 'blended init' to fix.\n")
 
     # Create the build folder
@@ -337,6 +336,17 @@ def build_files():
     page_list = '<ul class="page-list">\n'
     for root, dirs, files in os.walk(os.path.join(cwd, "content")):
         for filename in files:
+            top = os.path.dirname(os.path.join(root, filename))
+            top2 = top.replace(os.path.join(cwd, "content"), "", 1)
+            if platform != "win32":
+                subfolder = top2.replace("/", "", 1)
+            else:
+                subfolder = top2.replace("\\", "", 1)
+
+            if subfolder == "":
+                subfolder_link = ""
+            else:
+                subfolder_link = subfolder + "/"
             file_modified = str(time.ctime(os.path.getmtime(os.path.join(root, filename))))
             if ".html" in filename:
                 newFilename = filename
@@ -363,8 +373,8 @@ def build_files():
             newFilename2 = newFilename2.replace("-", " ")
             newFilename2 = newFilename2.replace("_", " ")
             newFilename2 = newFilename2.title()
-            page_list = page_list + '<li class="page-list-item"><a href="'+newFilename+'">'+newFilename2+'</a><span class="page-list-item-time"> - '+file_modified+'</span></li>\n'
-        page_list = page_list + '</ul>'
+            page_list =  page_list +'<li class="page-list-item"><a href="'+subfolder_link+newFilename+'">'+newFilename2+'</a><span class="page-list-item-time"> - '+file_modified+'</span></li>\n'
+    page_list = page_list + '</ul>'
 
     if home_page_list == "yes":
         # Open the home page file (index.html) for writing
