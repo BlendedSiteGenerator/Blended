@@ -539,6 +539,7 @@ def build_files():
                 line = line.replace("{page_name}", newFilename)
                 line = line.replace("{page_filename}", page_file)
                 line = line.replace("{page_file}", filename)
+                line = line.replace("{"+filename+"_active}", "active")
                 if page_folder != "Build":
                     line = line.replace("{page_folder}", page_folder)
                 else:
