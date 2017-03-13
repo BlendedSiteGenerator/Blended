@@ -66,6 +66,7 @@ You have some variables that you can use in your templates to pull in values whi
 * `{build_date}`
 * `{build_time}`
 * `{build_datetime}`
+* `{`(page_filename)`_active}` (When building, if the active page equals the filename in the tag, the tag is replaced by `active` ex. `{getting-started.html_active}`)
 * `{nav(1-6)}` (Use to place navbars. You can have up to 6 different templates. For example, `{nav2}`)
 * `{page_list}` (Lists all the pages in `<ul><li><a href="page-name.html">page-name</a></li></ul>` format)
 * `{page_file}` (The full filename of the page. ex. `getting-started.html`)
