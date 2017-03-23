@@ -315,7 +315,7 @@ def build_files(outdir):
 
     # Create the build folder
     build_dir = os.path.join(cwd, outdir)
-    if outdir != ".":
+    if outdir != "." and outdir != ".." and outdir != "..." or outdir != "....":
         if os.path.exists(build_dir):
             shutil.rmtree(build_dir)
             os.makedirs(build_dir)
