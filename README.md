@@ -39,6 +39,8 @@ or
 
 `blended interactive` (for on file change building)
 
+For any command that you run, you can specify an alternative `--outdir` to build or view from. For example, to build to the `soutput` folder, run `blended build --outdir soutput`.
+
 ## Working with templates
 
 Each Blended website uses four template files:
