@@ -154,7 +154,8 @@ def placeFiles(ftp, path):
 
 
 @cli.command('ftp', short_help='Upload the files via ftp')
-def ftp():
+@click.option('--outdir', default="build", help='Choose which folder the built files are in. Default is `build`.')
+def ftp(outdir):
     """Upload the built website to FTP"""
     print("Uploading the files in the 'build' directory!\n")
 
@@ -177,7 +178,7 @@ def ftp():
     ftp = FTP()
     ftp.connect(server, port)
     ftp.login(username, password)
-    filenameCV = os.path.join(cwd, "build")
+    filenameCV = os.path.join(cwd, outdir)
 
     try:
         ftp.cwd(ftp_upload_path)
@@ -192,18 +193,20 @@ def ftp():
 
 
 @cli.command('clean', short_help='Remove the build folder')
-def clean():
+@click.option('--outdir', default="build", help='Choose which folder the built files are in. Default is `build`.')
+def clean(outdir):
     """Removes all built files"""
     print("Removing the built files!")
 
     # Remove the  build folder
-    build_dir = os.path.join(cwd, "build")
+    build_dir = os.path.join(cwd, outdir)
     if os.path.exists(build_dir):
         shutil.rmtree(build_dir)
 
 
 @cli.command('zip', short_help='Package the build folder into a zip file')
-def zip():
+@click.option('--outdir', default="build", help='Choose which folder the built files are in. Default is `build`.')
+def zip(outdir):
     """Packages the build folder into a zip"""
     print("Zipping the built files!")
 
@@ -218,7 +221,7 @@ def zip():
             sys.exit("Some of the configuration values could not be found! Maybe your config.py is too old. Run 'blended init' to fix.")
 
     # Remove the  build folder
-    build_dir = os.path.join(cwd, "build")
+    build_dir = os.path.join(cwd, outdir)
     zip_dir = os.path.join(cwd, website_name+"-build-"+str(datetime.datetime.now().date()))
     if os.path.exists(build_dir):
         shutil.make_archive(zip_dir, 'zip', build_dir)
@@ -288,7 +291,7 @@ def convert_text(filename):
     return text_cont1
 
 
-def build_files():
+def build_files(outdir):
     # Make sure there is actually a configuration file
     config_file_dir = os.path.join(cwd, "config.py")
     if not os.path.exists(config_file_dir):
@@ -311,7 +314,7 @@ def build_files():
             print("WARNING: Some of the optional configuration values could not be found! Maybe your config.py is too old. Run 'blended init' to fix.\n")
 
     # Create the build folder
-    build_dir = os.path.join(cwd, "build")
+    build_dir = os.path.join(cwd, outdir)
     if os.path.exists(build_dir):
         shutil.rmtree(build_dir)
         os.makedirs(build_dir)
@@ -378,7 +381,7 @@ def build_files():
 
     if home_page_list == "yes":
         # Open the home page file (index.html) for writing
-        home_working_file = open(os.path.join(cwd, "build", "index.html"), "w")
+        home_working_file = open(os.path.join(cwd, outdir, "index.html"), "w")
 
         home_working_file.write(header_file.read())
 
@@ -425,10 +428,10 @@ def build_files():
                     subfolder = top2.replace("\\", "", 1)
 
                 if subfolder == "":
-                    currents_working_file = open(os.path.join(cwd, "build", newFilename), "w")
+                    currents_working_file = open(os.path.join(cwd, outdir, newFilename), "w")
                 else:
-                    create_folder(os.path.join(cwd, "build", subfolder))
-                    currents_working_file = open(os.path.join(cwd, "build", subfolder, newFilename), "w")
+                    create_folder(os.path.join(cwd, outdir, subfolder))
+                    currents_working_file = open(os.path.join(cwd, outdir, subfolder, newFilename), "w")
 
                 # Write the header
                 currents_working_file.write(header_file.read())
@@ -496,7 +499,7 @@ def build_files():
     comment_box = "The comment box has moved to the HTML Comment Box plugin. Find it on <a href=\"https://github.com/johnroper100/blended_html_comment_box\">its GitHub page</a>."
 
     # Replace global variables such as site name and language
-    for root, dirs, files in os.walk(os.path.join(cwd, "build")):
+    for root, dirs, files in os.walk(os.path.join(cwd, outdir)):
         for filename in files:
             newFilename = filename.replace(".html", "")
             newFilename = newFilename.replace("index", "home")
@@ -507,15 +510,15 @@ def build_files():
             page_folder = os.path.basename(os.path.dirname(os.path.join(root, filename))).replace("-", " ").replace("_", " ").title()
             page_folder_orig = os.path.basename(os.path.dirname(os.path.join(root, filename)))
             top = os.path.dirname(os.path.join(root, filename))
-            top2 = top.replace(os.path.join(cwd, "build"), "", 1)
+            top2 = top.replace(os.path.join(cwd, outdir), "", 1)
             if platform != "win32":
                 subfolder = top2.replace("/", "", 1)
             else:
                 subfolder = top2.replace("\\", "", 1)
             if subfolder == "":
-                subfolder_folder = os.path.join(cwd, "build", filename)
+                subfolder_folder = os.path.join(cwd, outdir, filename)
             else:
-                subfolder_folder = os.path.join(cwd, "build", subfolder, filename)
+                subfolder_folder = os.path.join(cwd, outdir, subfolder, filename)
             file_modified = str(time.ctime(os.path.getmtime(subfolder_folder)))
             blended_version_message = "Built with Blended v"+str(app_version)
             for line in fileinput.input(subfolder_folder, inplace=1):
@@ -544,7 +547,7 @@ def build_files():
                     line = line.replace("{page_folder}", page_folder)
                 else:
                     line = line.replace("{page_folder}", "")
-                if page_folder_orig != "build":
+                if page_folder_orig != outdir:
                     line = line.replace("{page_folder_orig}", page_folder_orig)
                 else:
                     line = line.replace("{page_folder_orig}", "")
@@ -552,17 +555,13 @@ def build_files():
                 line = line.replace("{blended_version}", str(app_version))
                 line = line.replace("{blended_version_message}", blended_version_message)
                 line = line.replace("{comment_box}", comment_box)
-                top = os.path.join(cwd, "build")
+                top = os.path.join(cwd, outdir)
                 startinglevel = top.count(os.sep)
                 relative_path = ""
                 level = root.count(os.sep) - startinglevel
                 for i in range(level):
                     relative_path = relative_path+"../"
                 line = line.replace("{relative_root}", relative_path)
-                for roots, dirss, filess in os.walk(os.path.join(cwd, "content")):
-                    for filenames in filess:
-                        if filenames.endswith(".html"):
-                            line = line.replace("{"+filenames+"}", convert_text(os.path.join(roots, filenames)))
                 for i in range(len(plugins)):
                     if plugins[i][0] != "RUN":
                         main = __import__(plugins[i][0])
@@ -576,9 +575,9 @@ def build_files():
 
     # Copy the asset folder to the build folder
     if os.path.exists(os.path.join(cwd, "templates", "assets")):
-        shutil.copytree(os.path.join(cwd, "templates", "assets"), os.path.join(cwd, "build", "assets"))
+        shutil.copytree(os.path.join(cwd, "templates", "assets"), os.path.join(cwd, outdir, "assets"))
 
-    for root, dirs, files in os.walk(os.path.join(cwd, "build", "assets")):
+    for root, dirs, files in os.walk(os.path.join(cwd, outdir, "assets")):
         for file in files:
             if not file.startswith("_"):
                 if (file.endswith(".sass")) or (file.endswith(".scss")):
@@ -637,7 +636,8 @@ def build_files():
 
 
 @cli.command('build', short_help='Build the Blended files into a website')
-def build():
+@click.option('--outdir', default="build", help='Choose which folder to build to. Default is `build`.')
+def build(outdir):
     """Blends the generated files and outputs a html website"""
 
     print("Building your Blended files into a website!")
@@ -645,7 +645,7 @@ def build():
     reload(sys)  
     sys.setdefaultencoding('utf8')
 
-    build_files()
+    build_files(outdir)
 
     print("The files are built! You can find them in the build/ directory. Run the view command to see what you have created in a web browser.")
 
@@ -702,7 +702,8 @@ class Handler(FileSystemEventHandler):
 
 
 @cli.command('interactive', short_help='Build the Blended files into a website on each file change')
-def interactive():
+@click.option('--outdir', default="build", help='Choose which folder to build to. Default is `build`.')
+def interactive(outdir):
     """Blends the generated files and outputs a html website on file change"""
 
     print("Building your Blended files into a website!")
@@ -710,7 +711,7 @@ def interactive():
     reload(sys)  
     sys.setdefaultencoding('utf8')
 
-    build_files()
+    build_files(outdir)
 
     print("Watching the content and templates directories for changes, press CTRL+C to stop...\n")
 
@@ -719,10 +720,11 @@ def interactive():
 
 
 @cli.command('view', short_help='View the finished Blended website')
-def view():
+@click.option('--outdir', default="build", help='Choose which folder the built files are in. Default is `build`.')
+def view(outdir):
     """Opens the built index.html file in a web browser"""
 
-    index_path = os.path.realpath(os.path.join(cwd, "build", "index.html"))
+    index_path = os.path.realpath(os.path.join(cwd, outdir, "index.html"))
     if os.path.exists(index_path):
         webbrowser.open('file://' + index_path)
     else:
