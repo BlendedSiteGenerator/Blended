@@ -315,11 +315,12 @@ def build_files(outdir):
 
     # Create the build folder
     build_dir = os.path.join(cwd, outdir)
-    if os.path.exists(build_dir):
-        shutil.rmtree(build_dir)
-        os.makedirs(build_dir)
-    else:
-        os.makedirs(build_dir)
+    if outdir != ".":
+        if os.path.exists(build_dir):
+            shutil.rmtree(build_dir)
+            os.makedirs(build_dir)
+        else:
+            os.makedirs(build_dir)
 
     # Make sure there is actually a header template file
     header_file_dir = os.path.join(cwd, "templates", "header.html")
