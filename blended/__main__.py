@@ -315,7 +315,7 @@ def build_files(outdir):
 
     # Create the build folder
     build_dir = os.path.join(cwd, outdir)
-    if outdir != "." and outdir != ".." and outdir != "..." and outdir != "....":
+    if outdir != "." and outdir != ".." and outdir != "..." and outdir != "...." and outdir != ".\\" and outdir != "..\\" and outdir != "...\\" and outdir != "....\\":
         replace_folder(build_dir)
 
     # Make sure there is actually a header template file
