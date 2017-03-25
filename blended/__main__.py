@@ -434,9 +434,16 @@ def build_files(outdir):
                 currents_working_file.write(header_file.read())
 
                 text_cont1 = convert_text(os.path.join(root, filename))
+                
+                if "-----" in text_cont1.splitlines()[1]:
+                    page_template_file = text_cont1.splitlines()[0]
+                    text_cont1 = text_cont1.replace(text_cont1.splitlines()[0], "")
+                    text_cont1 = text_cont1.replace(text_cont1.splitlines()[1], "")
+                else:
+                    page_template_file = "content_page"
 
                 # Write the text content into the content template and onto the build file
-                content_templ_dir = os.path.join(cwd, "templates", "content_page.html")
+                content_templ_dir = os.path.join(cwd, "templates", page_template_file+".html")
                 if os.path.exists(content_templ_dir):
                     content_templ_file = open(content_templ_dir, "r")
                     content_templ_file1 = content_templ_file.read()
