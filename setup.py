@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='blended',
-      version='4.7',
+      version='4.8',
       description='The Most Versatile Static HTML Site Generator',
       url='http://jmroper.com/blended/',
       author='John Roper',
@@ -16,7 +16,6 @@ setup(name='blended',
           'textile',
           'docutils',
           'mammoth',
-          'importlib',
           'libsass',
           'pyjade',
           'lesscpy',
