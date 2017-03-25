@@ -568,7 +568,10 @@ def build_files(outdir):
                 line = line.replace("{relative_root}", relative_path)
                 for i in range(len(plugins)):
                     if plugins[i][0] != "RUN":
-                        main = __import__(plugins[i][0])
+                        if sys.version_info[0] < 2:
+                            main = importlib.import_module(plugins[i][0])
+                        elif sys.version_info[0] < 3:
+                            main = __import__(plugins[i][0])
                         content = main.main()
                         line = line.replace("{"+plugins[i][0]+"}", content)
                     else:
