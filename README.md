@@ -39,7 +39,17 @@ or
 
 `blended interactive` (for on file change building)
 
-For any command that you run, you can specify an alternative `--outdir` to build or view from. For example, to build to the `soutput` folder, run `blended build --outdir soutput`.
+For any command that you run, you can specify an alternative `--outdir` to build or view from. For example, to build to the `source_output` folder, run `blended build --outdir source_output`.
+
+Inside the `config.py` file, you can set
+
+`minify_css`
+
+and 
+
+`minify_js`
+
+to true to optimze your css and js files after building.
 
 ## Working with templates
 
