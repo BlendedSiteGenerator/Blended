@@ -51,6 +51,8 @@ Each Blended website uses four template files:
 * content_page.html (Not required but the site looks better)
 * nav(1-6).html (You can have up to 6 different nav templates. For example, `nav2.html`)
 
+In these files you place the markup for each section to be generated.
+
 When working with pages, you can optionally specifiy which template you want (other than `content_page.html`) by adding the name of the template file without the extension to the first line of the page, and then at least five `-`s to the second line. For example, if I wanted to use a template called `blog_page.html` for a certain page, I would put
 
 ```
@@ -58,9 +60,7 @@ blog_page
 -----
 ```
 
-at the **top** of the page.
-
-In these files you place the markup for each section to be generated.
+at the **top** of the page. Make sure you put it at the top or else it will not work!
 
 You have some variables that you can use in your templates to pull in values while building:
 
