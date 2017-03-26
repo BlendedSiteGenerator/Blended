@@ -435,7 +435,7 @@ def build_files(outdir):
 
                 text_cont1 = convert_text(os.path.join(root, filename))
                 
-                if "-----" in text_cont1.splitlines()[1]:
+                if "+++++" in text_cont1.splitlines()[1]:
                     page_template_file = text_cont1.splitlines()[0]
                     text_cont1 = text_cont1.replace(text_cont1.splitlines()[0], "")
                     text_cont1 = text_cont1.replace(text_cont1.splitlines()[1], "")
