@@ -348,20 +348,7 @@ def build_files(outdir):
             else:
                 subfolder_link = subfolder + "/"
             file_modified = str(time.ctime(os.path.getmtime(os.path.join(root, filename))))
-            if ".html" in filename:
-                newFilename = filename
-            elif ".md" in filename:
-                newFilename = filename.replace(".md", ".html")
-            elif ".tile" in filename:
-                newFilename = filename.replace(".tile", ".html")
-            elif ".jade" in filename:
-                newFilename = filename.replace(".jade", ".html")
-            elif ".txt" in filename:
-                newFilename = filename.replace(".txt", ".html")
-            elif ".rst" in filename:
-                newFilename = filename.replace(".rst", ".html")
-            elif ".docx" in filename:
-                newFilename = filename.replace(".docx", ".html")
+            newFilename = get_html_filename(filename)
             newFilename2 = filename.replace(".html", "")
             newFilename2 = newFilename2.replace(".md", "")
             newFilename2 = newFilename2.replace(".txt", "")
@@ -400,22 +387,7 @@ def build_files(outdir):
             if not filename.startswith("_"):
                 header_file = open(header_file_dir, "r")
                 footer_file = open(footer_file_dir, "r")
-                if ".md" in filename:
-                    newFilename = filename.replace(".md", ".html")
-                elif ".tile" in filename:
-                    newFilename = filename.replace(".tile", ".html")
-                elif ".jade" in filename:
-                    newFilename = filename.replace(".jade", ".html")
-                elif ".rst" in filename:
-                    newFilename = filename.replace(".rst", ".html")
-                elif ".docx" in filename:
-                    newFilename = filename.replace(".docx", ".html")
-                elif ".html" in filename:
-                    newFilename = filename
-                elif ".txt" in filename:
-                    newFilename = filename.replace(".txt", ".html")
-                else:
-                    print(filename+" is not a valid file type!")
+                newFilename = get_html_filename(filename)
 
                 top = os.path.dirname(os.path.join(root, filename))
                 top2 = top.replace(os.path.join(cwd, "content"), "", 1)
