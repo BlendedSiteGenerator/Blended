@@ -524,17 +524,18 @@ def build_files(outdir):
                 for i in range(level):
                     relative_path = relative_path+"../"
                 line = line.replace("{relative_root}", relative_path)
-                for i in range(len(plugins)):
-                    if plugins[i][0] != "RUN":
-                        if sys.version_info[0] < 2:
-                            main = importlib.import_module(plugins[i][0])
-                        elif sys.version_info[0] < 3:
-                            main = __import__(plugins[i][0])
-                        content = main.main()
-                        line = line.replace("{"+plugins[i][0]+"}", content)
-                    else:
-                        main = __import__(plugins[i][1])
-                        main.main()
+                if len(plugins) != 0:
+                    for i in range(len(plugins)):
+                        if plugins[i][0] != "RUN":
+                            if sys.version_info[0] < 2:
+                                main = importlib.import_module(plugins[i][0])
+                            elif sys.version_info[0] < 3:
+                                main = __import__(plugins[i][0])
+                            content = main.main()
+                            line = line.replace("{"+plugins[i][0]+"}", content)
+                        else:
+                            main = __import__(plugins[i][1])
+                            main.main()
                 print(line.rstrip('\n'))
             fileinput.close()
 
