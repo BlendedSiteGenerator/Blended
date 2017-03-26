@@ -157,7 +157,7 @@ def placeFiles(ftp, path):
 @click.option('--outdir', default="build", help='Choose which folder the built files are in. Default is `build`.')
 def ftp(outdir):
     """Upload the built website to FTP"""
-    print("Uploading the files in the 'build' directory!\n")
+    print("Uploading the files in the "+outdir+"/ directory!\n")
 
     # Make sure there is actually a configuration file
     config_file_dir = os.path.join(cwd, "config.py")
@@ -226,7 +226,7 @@ def zip(outdir):
     if os.path.exists(build_dir):
         shutil.make_archive(zip_dir, 'zip', build_dir)
     else:
-        print("The build folder could not be found! Have you run 'blended build' yet?")
+        print("The "+outdir+"/ folder could not be found! Have you run 'blended build' yet?")
 
 
 @cli.command('purge', short_help='Purge all the files created by Blended')
@@ -613,7 +613,7 @@ def build(outdir):
 
     build_files(outdir)
 
-    print("The files are built! You can find them in the build/ directory. Run the view command to see what you have created in a web browser.")
+    print("The files are built! You can find them in the "+outdir+"/ directory. Run the view command to see what you have created in a web browser.")
 
 
 class Watcher:
@@ -694,7 +694,7 @@ def view(outdir):
     if os.path.exists(index_path):
         webbrowser.open('file://' + index_path)
     else:
-        print("The index.html file could not be found! Have you deleted it or have you built with home_page_list set to 'no' in config.py?")
+        print("The index.html file could not be found in the "+outdir+"/ folder! Have you deleted it or have you built with home_page_list set to 'no' in config.py?")
 
 if __name__ == '__main__':
     cli()
