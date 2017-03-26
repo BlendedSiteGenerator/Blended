@@ -1,9 +1,11 @@
 import os
 import shutil
 
+
 def create_folder(path):
     if not os.path.exists(path):
         os.makedirs(path)
+
 
 def replace_folder(path):
     if os.path.exists(path):
@@ -11,6 +13,7 @@ def replace_folder(path):
         os.makedirs(path)
     else:
         os.makedirs(path)
+
 
 def get_html_filename(filename):
     if ".html" in filename:
@@ -29,8 +32,9 @@ def get_html_filename(filename):
         newFilename = filename.replace(".docx", ".html")
     else:
         print(filename+" is not a valid file type!")
-    
+
     return newFilename
+
 
 def get_html_clear_filename(filename):
     newFilename = filename.replace(".html", "")
@@ -44,5 +48,5 @@ def get_html_clear_filename(filename):
     newFilename = newFilename.replace("-", " ")
     newFilename = newFilename.replace("_", " ")
     newFilename = newFilename.title()
-    
+
     return newFilename

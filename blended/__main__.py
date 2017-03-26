@@ -1,4 +1,4 @@
-# encoding=utf8 
+# encoding=utf8
 import os
 import os.path
 import sys
@@ -350,7 +350,7 @@ def build_files(outdir):
             file_modified = str(time.ctime(os.path.getmtime(os.path.join(root, filename))))
             newFilename = get_html_filename(filename)
             newFilename2 = get_html_clear_filename(filename)
-            page_list =  page_list +'<li class="page-list-item"><a href="'+subfolder_link+newFilename+'">'+newFilename2+'</a><span class="page-list-item-time"> - '+file_modified+'</span></li>\n'
+            page_list = page_list + '<li class="page-list-item"><a href="'+subfolder_link+newFilename+'">'+newFilename2+'</a><span class="page-list-item-time"> - '+file_modified+'</span></li>\n'
     page_list = page_list + '</ul>'
 
     if home_page_list == "yes":
@@ -396,7 +396,7 @@ def build_files(outdir):
                 currents_working_file.write(header_file.read())
 
                 text_cont1 = convert_text(os.path.join(root, filename))
-                
+
                 if "+++++" in text_cont1.splitlines()[1]:
                     page_template_file = text_cont1.splitlines()[0]
                     text_cont1 = text_cont1.replace(text_cont1.splitlines()[0], "")
@@ -606,8 +606,8 @@ def build(outdir):
     """Blends the generated files and outputs a html website"""
 
     print("Building your Blended files into a website!")
-    
-    reload(sys)  
+
+    reload(sys)
     sys.setdefaultencoding('utf8')
 
     build_files(outdir)
@@ -672,8 +672,8 @@ def interactive(outdir):
     """Blends the generated files and outputs a html website on file change"""
 
     print("Building your Blended files into a website!")
-    
-    reload(sys)  
+
+    reload(sys)
     sys.setdefaultencoding('utf8')
 
     build_files(outdir)
