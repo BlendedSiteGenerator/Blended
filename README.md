@@ -116,6 +116,8 @@ You can use multiple plugins at once, ex. `plugins = [["html_comment_box"], ["RU
 
 * HTML Comment Box ([GitHub page](https://github.com/johnroper100/blended_html_comment_box))
 
+* Twitter Cards ([GitHub page](https://github.com/johnroper100/blended_twitter_cards))
+
 ## Projects That Use Blended
 
 * The [Blended website](http://jmroper.com/blended)
