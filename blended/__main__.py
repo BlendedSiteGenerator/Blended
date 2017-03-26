@@ -349,17 +349,7 @@ def build_files(outdir):
                 subfolder_link = subfolder + "/"
             file_modified = str(time.ctime(os.path.getmtime(os.path.join(root, filename))))
             newFilename = get_html_filename(filename)
-            newFilename2 = filename.replace(".html", "")
-            newFilename2 = newFilename2.replace(".md", "")
-            newFilename2 = newFilename2.replace(".txt", "")
-            newFilename2 = newFilename2.replace(".tile", "")
-            newFilename2 = newFilename2.replace(".jade", "")
-            newFilename2 = newFilename2.replace(".rst", "")
-            newFilename2 = newFilename2.replace(".docx", "")
-            newFilename2 = newFilename2.replace("index", "home")
-            newFilename2 = newFilename2.replace("-", " ")
-            newFilename2 = newFilename2.replace("_", " ")
-            newFilename2 = newFilename2.title()
+            newFilename2 = get_html_clear_filename(filename)
             page_list =  page_list +'<li class="page-list-item"><a href="'+subfolder_link+newFilename+'">'+newFilename2+'</a><span class="page-list-item-time"> - '+file_modified+'</span></li>\n'
     page_list = page_list + '</ul>'
 
@@ -477,11 +467,7 @@ def build_files(outdir):
     # Replace global variables such as site name and language
     for root, dirs, files in os.walk(os.path.join(cwd, outdir)):
         for filename in files:
-            newFilename = filename.replace(".html", "")
-            newFilename = newFilename.replace("index", "home")
-            newFilename = newFilename.replace("-", " ")
-            newFilename = newFilename.replace("_", " ")
-            newFilename = newFilename.title()
+            newFilename = get_html_clear_filename(filename)
             page_file = filename.replace(".html", "")
             page_folder = os.path.basename(os.path.dirname(os.path.join(root, filename))).replace("-", " ").replace("_", " ").title()
             page_folder_orig = os.path.basename(os.path.dirname(os.path.join(root, filename)))
