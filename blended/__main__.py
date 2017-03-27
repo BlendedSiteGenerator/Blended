@@ -434,7 +434,7 @@ def build_files(outdir):
         for filename in files:
             newFilename = get_html_clear_filename(filename)
             page_file = filename.replace(".html", "")
-            page_folder = os.path.basename(os.path.dirname(os.path.join(root, filename))).replace("-", " ").replace("_", " ").title()
+            page_folder = os.path.basename(os.path.dirname(os.path.join(root, filename))).replace("-", "").replace("_", "").title()
             page_folder_orig = os.path.basename(os.path.dirname(os.path.join(root, filename)))
             top = os.path.dirname(os.path.join(root, filename))
             top2 = top.replace(os.path.join(cwd, outdir), "", 1)
