@@ -419,48 +419,14 @@ def build_files(outdir):
 
                 # Close the build file
                 currents_working_file.close()
-
-    nav1_dir = os.path.join(cwd, "templates", "nav1.html")
-    if os.path.exists(nav1_dir):
-        nav1_file = open(nav1_dir, "r")
-        nav1_cont = nav1_file.read()
-    else:
-        nav1_cont = ""
-
-    nav2_dir = os.path.join(cwd, "templates", "nav2.html")
-    if os.path.exists(nav2_dir):
-        nav2_file = open(nav2_dir, "r")
-        nav2_cont = nav2_file.read()
-    else:
-        nav2_cont = ""
-
-    nav3_dir = os.path.join(cwd, "templates", "nav3.html")
-    if os.path.exists(nav3_dir):
-        nav3_file = open(nav3_dir, "r")
-        nav3_cont = nav3_file.read()
-    else:
-        nav3_cont = ""
-
-    nav4_dir = os.path.join(cwd, "templates", "nav4.html")
-    if os.path.exists(nav4_dir):
-        nav4_file = open(nav4_dir, "r")
-        nav4_cont = nav4_file.read()
-    else:
-        nav4_cont = ""
-
-    nav5_dir = os.path.join(cwd, "templates", "nav5.html")
-    if os.path.exists(nav5_dir):
-        nav5_file = open(nav5_dir, "r")
-        nav5_cont = nav5_file.read()
-    else:
-        nav5_cont = ""
-
-    nav6_dir = os.path.join(cwd, "templates", "nav6.html")
-    if os.path.exists(nav6_dir):
-        nav6_file = open(nav6_dir, "r")
-        nav6_cont = nav6_file.read()
-    else:
-        nav6_cont = ""
+    
+    navs = {}
+    
+    for file in os.listdir(os.path.join(cwd, "templates")):
+        if "nav" in file:
+            nav_cont = open(os.path.join(cwd, "templates", file), "r")
+            navs[file.replace(".html", "")] = nav_cont.read()
+            nav_cont.close()
 
     # Replace global variables such as site name and language
     for root, dirs, files in os.walk(os.path.join(cwd, outdir)):
@@ -482,12 +448,9 @@ def build_files(outdir):
             file_modified = str(time.ctime(os.path.getmtime(subfolder_folder)))
             blended_version_message = "Built with Blended v"+str(app_version)
             for line in fileinput.input(subfolder_folder, inplace=1):
-                line = line.replace("{nav1}", nav1_cont)
-                line = line.replace("{nav2}", nav2_cont)
-                line = line.replace("{nav3}", nav3_cont)
-                line = line.replace("{nav4}", nav4_cont)
-                line = line.replace("{nav5}", nav5_cont)
-                line = line.replace("{nav6}", nav6_cont)
+                if "{nav" in line:
+                    navname = line.split("{")[1].split("}")[0]
+                    line = line.replace("{"+navname+"}", navs[(line.split("{"))[1].split("}")[0]])
                 line = line.replace("{website_name}", website_name)
                 line = line.replace("{website_description}", website_description)
                 line = line.replace("{website_description_long}", website_description_long)
