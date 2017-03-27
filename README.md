@@ -118,6 +118,8 @@ You can use multiple plugins at once, ex. `plugins = [["html_comment_box"], ["RU
 
 * Twitter Cards ([GitHub page](https://github.com/johnroper100/blended_twitter_cards))
 
+* Google Fonts ([GitHub page](https://github.com/johnroper100/blended_google_fonts))
+
 ## Projects That Use Blended
 
 * The [Blended website](http://jmroper.com/blended)
