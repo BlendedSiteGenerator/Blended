@@ -120,6 +120,8 @@ You can use multiple plugins at once, ex. `plugins = [["html_comment_box"], ["RU
 
 * Google Fonts ([GitHub page](https://github.com/johnroper100/blended_google_fonts))
 
+* Import Bootstrap ([GitHub page](https://github.com/johnroper100/blended_import_bootstrap))
+
 ## Projects That Use Blended
 
 * The [Blended website](http://jmroper.com/blended)
