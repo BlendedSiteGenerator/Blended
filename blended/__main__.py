@@ -576,6 +576,7 @@ def build(outdir):
 
     print("The files are built! You can find them in the "+outdir+"/ directory. Run the view command to see what you have created in a web browser.")
 
+outdir_type = "build"
 
 class Watcher:
     DIRECTORY_TO_WATCH = os.path.join(cwd, "content")
@@ -614,17 +615,17 @@ class Handler(FileSystemEventHandler):
 
         elif event.event_type == 'created':
             # Take any action here when a file is first created.
-            build_files()
+            build_files(outdir_type)
             print("%s created" % event.src_path)
 
         elif event.event_type == 'modified':
             # Taken any action here when a file is modified.
-            build_files()
+            build_files(outdir_type)
             print("%s modified" % event.src_path)
 
         elif event.event_type == 'deleted':
             # Taken any action here when a file is modified.
-            build_files()
+            build_files(outdir_type)
             print("%s deleted" % event.src_path)
 
 
@@ -634,6 +635,8 @@ def interactive(outdir):
     """Blends the generated files and outputs a html website on file change"""
 
     print("Building your Blended files into a website!")
+    
+    outdir_type = outdir
 
     reload(sys)
     sys.setdefaultencoding('utf8')
