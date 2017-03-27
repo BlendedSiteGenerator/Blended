@@ -419,9 +419,10 @@ def build_files(outdir):
 
                 # Close the build file
                 currents_working_file.close()
-    
+
+    # Find all the nav(something) templates in the `templates` folder and wread their content to the dict
     navs = {}
-    
+
     for file in os.listdir(os.path.join(cwd, "templates")):
         if "nav" in file:
             nav_cont = open(os.path.join(cwd, "templates", file), "r")
