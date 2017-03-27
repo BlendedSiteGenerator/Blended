@@ -462,8 +462,6 @@ def build_files(outdir):
     else:
         nav6_cont = ""
 
-    comment_box = "The comment box has moved to the HTML Comment Box plugin. Find it on <a href=\"https://github.com/johnroper100/blended_html_comment_box\">its GitHub page</a>."
-
     # Replace global variables such as site name and language
     for root, dirs, files in os.walk(os.path.join(cwd, outdir)):
         for filename in files:
@@ -516,7 +514,6 @@ def build_files(outdir):
                 line = line.replace("{page_time}", file_modified)
                 line = line.replace("{blended_version}", str(app_version))
                 line = line.replace("{blended_version_message}", blended_version_message)
-                line = line.replace("{comment_box}", comment_box)
                 top = os.path.join(cwd, outdir)
                 startinglevel = top.count(os.sep)
                 relative_path = ""

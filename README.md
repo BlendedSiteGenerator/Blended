@@ -104,11 +104,11 @@ You can use multiple plugins at once, ex. `plugins = [["html_comment_box"], ["RU
 
 ## Pre-Made Templates
 
-* Simple starter template for Blended called blended-simple ([GitHub page](https://github.com/johnroper100/blended-simple))
+* Simple ([GitHub page](https://github.com/johnroper100/blended-simple))
 
-* Blog template called blended-blog ([GitHub page](https://github.com/johnroper100/blended-blog))
+* Blog ([GitHub page](https://github.com/johnroper100/blended-blog))
 
-* Software showcase ([Github page](https://github.com/johnroper100/blended-software))
+* Software Showcase ([Github page](https://github.com/johnroper100/blended-software))
 
 ## Plugins
 
