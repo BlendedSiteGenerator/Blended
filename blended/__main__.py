@@ -37,6 +37,7 @@ cwd = os.getcwd()
 
 try:
     app_version = pkg_resources.require("blended")[0].version
+    app_version = app_version[0] + app_version[1] + app_version[2]
 except:
     app_version = "NOTSET"
     print("WARNING: app_version not set.\n")
@@ -635,7 +636,7 @@ def interactive(outdir):
     """Blends the generated files and outputs a html website on file change"""
 
     print("Building your Blended files into a website!")
-    
+
     outdir_type = outdir
 
     reload(sys)
