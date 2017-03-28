@@ -299,7 +299,7 @@ def build_files(outdir):
     else:
         sys.path.insert(0, cwd)
         try:
-            from config import website_name, website_description, website_language, home_page_list, blended_version
+            from config import website_name, website_description, website_language, home_page_list
         except:
             sys.exit("Some of the crucial configuration values could not be found! Maybe your config.py is too old. Run 'blended init' to fix.")
         try:
