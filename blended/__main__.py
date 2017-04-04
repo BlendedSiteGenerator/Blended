@@ -334,25 +334,52 @@ def build_files(outdir):
     footer_file = open(footer_file_dir, "r")
 
     # Create the html page listing
-    page_list = '<ul class="page-list">\n'
-    for root, dirs, files in os.walk(os.path.join(cwd, "content")):
-        for filename in files:
-            top = os.path.dirname(os.path.join(root, filename))
-            top2 = top.replace(os.path.join(cwd, "content"), "", 1)
-            if platform != "win32":
-                subfolder = top2.replace("/", "", 1)
-            else:
-                subfolder = top2.replace("\\", "", 1)
+    page_list_item_file = os.path.join(cwd, "templates", "page_list_item.html")
+    if not os.path.exists(page_list_item_file):
+        page_list = '<ul class="page-list">\n'
+        for root, dirs, files in os.walk(os.path.join(cwd, "content")):
+            for filename in files:
+                top = os.path.dirname(os.path.join(root, filename))
+                top2 = top.replace(os.path.join(cwd, "content"), "", 1)
+                if platform != "win32":
+                    subfolder = top2.replace("/", "", 1)
+                else:
+                    subfolder = top2.replace("\\", "", 1)
 
-            if subfolder == "":
-                subfolder_link = ""
-            else:
-                subfolder_link = subfolder + "/"
-            file_modified = str(time.ctime(os.path.getmtime(os.path.join(root, filename))))
-            newFilename = get_html_filename(filename)
-            newFilename2 = get_html_clear_filename(filename)
-            page_list = page_list + '<li class="page-list-item"><a href="'+subfolder_link+newFilename+'">'+newFilename2+'</a><span class="page-list-item-time"> - '+file_modified+'</span></li>\n'
-    page_list = page_list + '</ul>'
+                if subfolder == "":
+                    subfolder_link = ""
+                else:
+                    subfolder_link = subfolder + "/"
+                file_modified = str(time.ctime(os.path.getmtime(os.path.join(root, filename))))
+                newFilename = get_html_filename(filename)
+                newFilename2 = get_html_clear_filename(filename)
+                page_list = page_list + '<li class="page-list-item"><a href="'+subfolder_link+newFilename+'">'+newFilename2+'</a><span class="page-list-item-time"> - '+file_modified+'</span></li>\n'
+        page_list = page_list + '</ul>'
+    else:
+        with open(page_list_item_file, 'r') as f:
+            page_list_item = f.read()
+
+        page_list = ""
+        for root, dirs, files in os.walk(os.path.join(cwd, "content")):
+            for filename in files:
+                with open(os.path.join(root, filename), 'r') as f:
+                    p_content = f.read()
+                top = os.path.dirname(os.path.join(root, filename))
+                top2 = top.replace(os.path.join(cwd, "content"), "", 1)
+                if platform != "win32":
+                    subfolder = top2.replace("/", "", 1)
+                else:
+                    subfolder = top2.replace("\\", "", 1)
+
+                if subfolder == "":
+                    subfolder_link = ""
+                else:
+                    subfolder_link = subfolder + "/"
+                file_modified = str(time.ctime(os.path.getmtime(os.path.join(root, filename))))
+                newFilename = get_html_filename(filename)
+                newFilename2 = get_html_clear_filename(filename)
+
+                page_list = page_list + page_list_item.replace("{path}", subfolder_link+newFilename).replace("{name}", newFilename2).replace("{time}", file_modified).replace("{content}", p_content).replace("{content_short}", p_content[:250]+"...")
 
     if home_page_list == "yes":
         # Open the home page file (index.html) for writing
