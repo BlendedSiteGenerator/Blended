@@ -51,7 +51,8 @@ Each Blended website uses four template files:
 * footer.html (Required)
 * home_page.html (Not required but the site looks better)
 * content_page.html (Not required but the site looks better)
-* nav(1-6).html (You can have up to 6 different nav templates. For example, `nav2.html`)
+* nav(name).html (You can have up to 6 different nav templates. For example, `navTest.html` or `nav_test.html`)
+* page_list_item.html (Not required, if used, this will replace each page list item content. Can have the variables `{name}`, `{content}`, `{content_short}`, `{date}`, `{path}`)
 
 In these files you place the markup for each section to be generated.
 

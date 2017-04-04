@@ -379,7 +379,7 @@ def build_files(outdir):
                 newFilename = get_html_filename(filename)
                 newFilename2 = get_html_clear_filename(filename)
 
-                page_list = page_list + page_list_item.replace("{path}", subfolder_link+newFilename).replace("{name}", newFilename2).replace("{time}", file_modified).replace("{content}", p_content).replace("{content_short}", p_content[:250]+"...")
+                page_list = page_list + page_list_item.replace("{path}", subfolder_link+newFilename).replace("{name}", newFilename2).replace("{date}", file_modified).replace("{content}", p_content).replace("{content_short}", p_content[:250]+"...")
 
     if home_page_list == "yes":
         # Open the home page file (index.html) for writing
