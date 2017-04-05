@@ -31,7 +31,7 @@ def get_html_filename(filename):
     elif ".docx" in filename:
         newFilename = filename.replace(".docx", ".html")
     else:
-        print(filename+" is not a valid file type!")
+        print(filename + " is not a valid file type!")
 
     return newFilename
 
