@@ -509,10 +509,14 @@ def build_files(outdir):
             else:
                 subfolder_folder = os.path.join(
                     cwd, outdir, subfolder, filename)
-            file_modified = time.ctime(os.path.getmtime(os.path.join(root, filename)))
-            file_modified_day = str(datetime.strptime(file_modified, "%a %b %d %H:%M:%S %Y"))[5:7]
-            file_modified_year = str(datetime.strptime(file_modified, "%a %b %d %H:%M:%S %Y"))[:4]
-            file_modified_month = str(datetime.strptime(file_modified, "%a %b %d %H:%M:%S %Y"))[8:10]
+            file_modified = time.ctime(
+                os.path.getmtime(os.path.join(root, filename)))
+            file_modified_day = str(datetime.strptime(
+                file_modified, "%a %b %d %H:%M:%S %Y"))[5:7]
+            file_modified_year = str(datetime.strptime(
+                file_modified, "%a %b %d %H:%M:%S %Y"))[:4]
+            file_modified_month = str(datetime.strptime(
+                file_modified, "%a %b %d %H:%M:%S %Y"))[8:10]
 
             blended_version_message = "Built with Blended v" + str(app_version)
             for line in fileinput.input(subfolder_folder, inplace=1):
