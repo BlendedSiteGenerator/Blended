@@ -379,8 +379,7 @@ def build_files(outdir):
         page_list = ""
         for root, dirs, files in os.walk(os.path.join(cwd, "content")):
             for filename in files:
-                with open(os.path.join(root, filename), 'r') as f:
-                    p_content = f.read()
+                p_content = convert_text(os.path.join(root, filename))
                 top = os.path.dirname(os.path.join(root, filename))
                 top2 = top.replace(os.path.join(cwd, "content"), "", 1)
                 if platform != "win32":
@@ -481,7 +480,7 @@ def build_files(outdir):
                 currents_working_file.close()
 
     # Find all the nav(something) templates in the `templates` folder and
-    # wread their content to the dict
+    # Read their content to the dict
     navs = {}
 
     for file in os.listdir(os.path.join(cwd, "templates")):
