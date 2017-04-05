@@ -394,9 +394,12 @@ def build_files(outdir):
                     subfolder_link = subfolder + "/"
                 file_modified = time.ctime(
                     os.path.getmtime(os.path.join(root, filename)))
-                file_modified_day = str(datetime.strptime(file_modified, "%a %b %d %H:%M:%S %Y"))[5:7]
-                file_modified_year = str(datetime.strptime(file_modified, "%a %b %d %H:%M:%S %Y"))[:4]
-                file_modified_month = str(datetime.strptime(file_modified, "%a %b %d %H:%M:%S %Y"))[8:10]
+                file_modified_day = str(datetime.strptime(
+                    file_modified, "%a %b %d %H:%M:%S %Y"))[5:7]
+                file_modified_year = str(datetime.strptime(
+                    file_modified, "%a %b %d %H:%M:%S %Y"))[:4]
+                file_modified_month = str(datetime.strptime(
+                    file_modified, "%a %b %d %H:%M:%S %Y"))[8:10]
                 newFilename = get_html_filename(filename)
                 newFilename2 = get_html_clear_filename(filename)
 
