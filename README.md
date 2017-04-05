@@ -89,7 +89,7 @@ You have some variables that you can use in your templates to pull in values whi
 * `{page_folder}` (Gives the name of the current page's folder. Makes the folder name look more pretty. For example, `getting-started` is converted to `Getting Started`)
 * `{page_folder_orig}` (Gives the name of the current page's folder)
 * `{blended_version}` (Gives Blended's current version)
-* `{blended_version_message}` (Gives Blended's current version with a nice message: `Built with Blended v4.4`)
+* `{blended_version_message}` (Gives Blended's current version with a nice message: `Built with Blended v4.9`)
 
 Wherever you put these variables in the templates, they will be replaced by the values in your config.py file. The variables must stay within the curley brackets. You can even put variables inside the content of other variables!
 
