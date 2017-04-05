@@ -515,12 +515,12 @@ def build_files(outdir):
                 if len(plugins) != 0:
                     for i in range(len(plugins)):
                         if sys.version_info[0] < 2:
-                            main = importlib.import_module(plugins[i][0])
+                            main = importlib.import_module(plugins[i])
                         elif sys.version_info[0] < 3:
-                            main = __import__(plugins[i][0])
+                            main = __import__(plugins[i])
                         content = main.main()
                         line = line.replace(
-                            "{" + plugins[i][0] + "}", content)
+                            "{" + plugins[i] + "}", content)
                 if "{nav" in line:
                     navname = line.split("{")[1].split("}")[0]
                     line = line.replace(
