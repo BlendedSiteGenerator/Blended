@@ -74,7 +74,10 @@ You have some variables that you can use in your templates to pull in values whi
 * `{website_language}`
 * `{website_license}`
 * `{page_content}` (Can only be used in the content_page.html template file)
-* `{page_time}` (Time the page was modified)
+* `{page_date}` (Date/Time the page was written/modified)
+* `{page_day}` (Day the page was written/modified)
+* `{page_month}` (Month the page was written/modified)
+* `{page_year}` (Year the page was written/modified)
 * `{relative_root}` (Returns a relative path for the current file)
 * `{random_number}`
 * `{build_date}`
