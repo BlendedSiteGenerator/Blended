@@ -37,7 +37,7 @@ cwd = os.getcwd()
 
 try:
     app_version = pkg_resources.require("blended")[0].version
-    app_version = app_version[0] + app_version[1] + app_version[2]
+    app_version = app_version[:3]
 except:
     app_version = "NOTSET"
     print("WARNING: app_version not set.\n")
