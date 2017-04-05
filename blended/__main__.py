@@ -114,7 +114,7 @@ def init():
     config_file.write('website_license = "' + wlic + '"\n')
     config_file.write('author_name = "' + aname + '"\n')
     config_file.write('website_language = "' + wlan + '"\n')
-    config_file.write('home_page_list = "no"\n')
+    config_file.write('home_page_list = True\n')
     config_file.write('\n')
     config_file.write('plugins = [] # Place all needed plugins in here\n')
     config_file.write('minify_css = False\n')
@@ -405,7 +405,7 @@ def build_files(outdir):
                 page_list = page_list + page_list_item.replace("{path}", subfolder_link + newFilename).replace("{name}", newFilename2).replace(
                     "{date}", str(file_modified)).replace("{content}", p_content).replace("{content_short}", p_content[:250] + "...").replace("{day}", file_modified_day).replace("{month}", file_modified_month).replace("{year}", file_modified_year)
 
-    if home_page_list == "yes":
+    if home_page_list == "yes" or home_page_list == True:
         # Open the home page file (index.html) for writing
         home_working_file = open(os.path.join(cwd, outdir, "index.html"), "w")
 
