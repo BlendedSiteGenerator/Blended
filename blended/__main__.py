@@ -8,7 +8,7 @@ from shutil import copyfile
 import fileinput
 import webbrowser
 import fileinput
-import datetime
+from datetime import datetime
 import click
 from random import randint
 import pkg_resources
@@ -230,7 +230,7 @@ def zip(outdir):
     # Remove the  build folder
     build_dir = os.path.join(cwd, outdir)
     zip_dir = os.path.join(cwd, website_name + "-build-" +
-                           str(datetime.datetime.now().date()))
+                           str(datetime.now().date()))
     if os.path.exists(build_dir):
         shutil.make_archive(zip_dir, 'zip', build_dir)
     else:
@@ -394,9 +394,9 @@ def build_files(outdir):
                     subfolder_link = subfolder + "/"
                 file_modified = time.ctime(
                     os.path.getmtime(os.path.join(root, filename)))
-                file_modified_day = str(datetime.strptime(file_modified,'%d'))
-                file_modified_year = str(datetime.strptime(file_modified,'%Y'))
-                file_modified_month = str(datetime.strptime(file_modified,'%M'))
+                file_modified_day = str(datetime.strptime(file_modified, "%a %b %d %H:%M:%S %Y"))[5:7]
+                file_modified_year = str(datetime.strptime(file_modified, "%a %b %d %H:%M:%S %Y"))[:4]
+                file_modified_month = str(datetime.strptime(file_modified, "%a %b %d %H:%M:%S %Y"))[8:10]
                 newFilename = get_html_filename(filename)
                 newFilename2 = get_html_clear_filename(filename)
 
@@ -525,11 +525,11 @@ def build_files(outdir):
                 line = line.replace("{random_number}",
                                     str(randint(0, 100000000)))
                 line = line.replace("{build_date}", str(
-                    datetime.datetime.now().date()))
+                    datetime.now().date()))
                 line = line.replace("{build_time}", str(
-                    datetime.datetime.now().time()))
+                    datetime.now().time()))
                 line = line.replace("{build_datetime}",
-                                    str(datetime.datetime.now()))
+                                    str(datetime.now()))
                 line = line.replace("{page_list}", page_list)
                 line = line.replace("{page_name}", newFilename)
                 line = line.replace("{page_filename}", page_file)
