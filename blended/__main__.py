@@ -364,13 +364,13 @@ def build_files(outdir):
                     subfolder_link = ""
                 else:
                     subfolder_link = subfolder + "/"
-                file_modified = str(time.ctime(
+                file_modified = datetime.datetime(time.ctime(
                     os.path.getmtime(os.path.join(root, filename))))
                 newFilename = get_html_filename(filename)
                 newFilename2 = get_html_clear_filename(filename)
                 page_list = page_list + '<li class="page-list-item"><a href="' + subfolder_link + newFilename + \
                     '">' + newFilename2 + '</a><span class="page-list-item-time"> - ' + \
-                    file_modified + '</span></li>\n'
+                    str(file_modified) + '</span></li>\n'
         page_list = page_list + '</ul>'
     else:
         with open(page_list_item_file, 'r') as f:
@@ -392,13 +392,13 @@ def build_files(outdir):
                     subfolder_link = ""
                 else:
                     subfolder_link = subfolder + "/"
-                file_modified = str(time.ctime(
+                file_modified = datetime.datetime(time.ctime(
                     os.path.getmtime(os.path.join(root, filename))))
                 newFilename = get_html_filename(filename)
                 newFilename2 = get_html_clear_filename(filename)
 
                 page_list = page_list + page_list_item.replace("{path}", subfolder_link + newFilename).replace("{name}", newFilename2).replace(
-                    "{date}", file_modified).replace("{content}", p_content).replace("{content_short}", p_content[:250] + "...")
+                    "{date}", str(file_modified)).replace("{content}", p_content).replace("{content_short}", p_content[:250] + "...")
 
     if home_page_list == "yes":
         # Open the home page file (index.html) for writing
