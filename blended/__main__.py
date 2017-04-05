@@ -546,7 +546,7 @@ def build_files(outdir):
                 line = line.replace("{page_filename}", page_file)
                 line = line.replace("{page_file}", filename)
                 line = line.replace("{" + filename + "_active}", "active")
-                if page_folder != "Build":
+                if page_folder != outdir.title():
                     line = line.replace("{page_folder}", page_folder)
                 else:
                     line = line.replace("{page_folder}", "")
