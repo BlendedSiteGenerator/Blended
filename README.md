@@ -97,11 +97,9 @@ Wherever you put these variables in the templates, they will be replaced by the 
 
 To use plugins, include them in the `plugins` list in `config.py`.
 
-If the plugin is meant to be called in your templates, ex. `{html_comment_box}` then insert it into the plugins list like `plugins = [["html_comment_box"]]`.
+If the plugin is meant to be called in your templates, ex. `{html_comment_box}` then insert it into the plugins list like `plugins = ["html_comment_box"]`.
 
-If the plugin is meant to be run on build, ex. `{minify_images}` then insert it into the plugins list like `plugins = [["RUN", "minify_images"]]`.
-
-You can use multiple plugins at once, ex. `plugins = [["html_comment_box"], ["RUN", "minify_images"]]`
+You can use multiple plugins at once, ex. `plugins = ["html_comment_box", "minify_images"]`
 
 ## Pre-Made Templates
 

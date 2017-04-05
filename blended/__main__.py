@@ -512,6 +512,15 @@ def build_files(outdir):
             file_modified = str(time.ctime(os.path.getmtime(subfolder_folder)))
             blended_version_message = "Built with Blended v" + str(app_version)
             for line in fileinput.input(subfolder_folder, inplace=1):
+                if len(plugins) != 0:
+                    for i in range(len(plugins)):
+                        if sys.version_info[0] < 2:
+                            main = importlib.import_module(plugins[i][0])
+                        elif sys.version_info[0] < 3:
+                            main = __import__(plugins[i][0])
+                        content = main.main()
+                        line = line.replace(
+                            "{" + plugins[i][0] + "}", content)
                 if "{nav" in line:
                     navname = line.split("{")[1].split("}")[0]
                     line = line.replace(
@@ -556,19 +565,6 @@ def build_files(outdir):
                 for i in range(level):
                     relative_path = relative_path + "../"
                 line = line.replace("{relative_root}", relative_path)
-                if len(plugins) != 0:
-                    for i in range(len(plugins)):
-                        if plugins[i][0] != "RUN":
-                            if sys.version_info[0] < 2:
-                                main = importlib.import_module(plugins[i][0])
-                            elif sys.version_info[0] < 3:
-                                main = __import__(plugins[i][0])
-                            content = main.main()
-                            line = line.replace(
-                                "{" + plugins[i][0] + "}", content)
-                        else:
-                            main = __import__(plugins[i][1])
-                            main.main()
                 print(line.rstrip('\n'))
             fileinput.close()
 
