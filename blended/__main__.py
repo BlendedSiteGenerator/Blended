@@ -364,8 +364,8 @@ def build_files(outdir):
                     subfolder_link = ""
                 else:
                     subfolder_link = subfolder + "/"
-                file_modified = datetime.datetime(time.ctime(
-                    os.path.getmtime(os.path.join(root, filename))))
+                file_modified = time.ctime(
+                    os.path.getmtime(os.path.join(root, filename)))
                 newFilename = get_html_filename(filename)
                 newFilename2 = get_html_clear_filename(filename)
                 page_list = page_list + '<li class="page-list-item"><a href="' + subfolder_link + newFilename + \
@@ -392,13 +392,16 @@ def build_files(outdir):
                     subfolder_link = ""
                 else:
                     subfolder_link = subfolder + "/"
-                file_modified = datetime.datetime(time.ctime(
-                    os.path.getmtime(os.path.join(root, filename))))
+                file_modified = time.ctime(
+                    os.path.getmtime(os.path.join(root, filename)))
+                file_modified_day = str(datetime.strptime(file_modified,'%d'))
+                file_modified_year = str(datetime.strptime(file_modified,'%Y'))
+                file_modified_month = str(datetime.strptime(file_modified,'%M'))
                 newFilename = get_html_filename(filename)
                 newFilename2 = get_html_clear_filename(filename)
 
                 page_list = page_list + page_list_item.replace("{path}", subfolder_link + newFilename).replace("{name}", newFilename2).replace(
-                    "{date}", str(file_modified)).replace("{content}", p_content).replace("{content_short}", p_content[:250] + "...")
+                    "{date}", str(file_modified)).replace("{content}", p_content).replace("{content_short}", p_content[:250] + "...").replace("{day}", file_modified_day).replace("{month}", file_modified_month).replace("{year}", file_modified_year)
 
     if home_page_list == "yes":
         # Open the home page file (index.html) for writing
