@@ -549,6 +549,7 @@ def build_files(outdir):
                     line = line.replace("{website_license}", website_license)
                     line = line.replace("{website_language}", website_language)
                     line = line.replace("{author_name}", author_name)
+                    line = line.replace("{author_bio}", author_bio)
                     line = line.replace("{random_number}",
                                         str(randint(0, 100000000)))
                     line = line.replace("{build_date}", str(

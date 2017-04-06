@@ -71,6 +71,7 @@ You have some variables that you can use in your templates to pull in values whi
 * `{website_description}`
 * `{website_description_long}` (Use for long descriptions like an author bio)
 * `{author_name}`
+* `{author_bio}`
 * `{website_language}`
 * `{website_license}`
 * `{page_content}` (Can only be used in the content_page.html template file)
