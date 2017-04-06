@@ -134,26 +134,27 @@ def init():
 
 def placeFiles(ftp, path):
     for name in os.listdir(path):
-        localpath = os.path.join(path, name)
-        if os.path.isfile(localpath):
-            print("STOR", name, localpath)
-            ftp.storbinary('STOR ' + name, open(localpath, 'rb'))
-        elif os.path.isdir(localpath):
-            print("MKD", name)
+        if name != "config.py" and name != "config.pyc" and name != "templates" and name != "content":
+            localpath = os.path.join(path, name)
+            if os.path.isfile(localpath):
+                print("STOR", name, localpath)
+                ftp.storbinary('STOR ' + name, open(localpath, 'rb'))
+            elif os.path.isdir(localpath):
+                print("MKD", name)
 
-            try:
-                ftp.mkd(name)
+                try:
+                    ftp.mkd(name)
 
-            # ignore "directory already exists"
-            except error_perm as e:
-                if not e.args[0].startswith('550'):
-                    raise
+                # ignore "directory already exists"
+                except error_perm as e:
+                    if not e.args[0].startswith('550'):
+                        raise
 
-            print("CWD", name)
-            ftp.cwd(name)
-            placeFiles(ftp, localpath)
-            print("CWD", "..")
-            ftp.cwd("..")
+                print("CWD", name)
+                ftp.cwd(name)
+                placeFiles(ftp, localpath)
+                print("CWD", "..")
+                ftp.cwd("..")
 
 
 @cli.command('ftp', short_help='Upload the files via ftp')
@@ -328,7 +329,7 @@ def build_files(outdir):
 
     # Create the build folder
     build_dir = os.path.join(cwd, outdir)
-    if outdir != "." and outdir != ".." and outdir != "..." and outdir != "...." and outdir != ".\\" and outdir != "..\\" and outdir != "...\\" and outdir != "....\\":
+    if "." not in outdir and ".." not in outdir and "..." not in outdir and "...." not in outdir and "....." not in outdir:
         replace_folder(build_dir)
 
     # Make sure there is actually a header template file
@@ -489,98 +490,107 @@ def build_files(outdir):
             navs[file.replace(".html", "")] = nav_cont.read()
             nav_cont.close()
 
+    forbidden_dirs = set(["assets", "templates"])
+
     # Replace global variables such as site name and language
     for root, dirs, files in os.walk(os.path.join(cwd, outdir)):
+        dirs[:] = [d for d in dirs if d not in forbidden_dirs]
         for filename in files:
-            newFilename = get_html_clear_filename(filename)
-            page_file = filename.replace(".html", "")
-            page_folder = os.path.basename(os.path.dirname(os.path.join(
-                root, filename))).replace("-", "").replace("_", "").title()
-            page_folder_orig = os.path.basename(
-                os.path.dirname(os.path.join(root, filename)))
-            top = os.path.dirname(os.path.join(root, filename))
-            top2 = top.replace(os.path.join(cwd, outdir), "", 1)
-            if platform != "win32":
-                subfolder = top2.replace("/", "", 1)
-            else:
-                subfolder = top2.replace("\\", "", 1)
-            if subfolder == "":
-                subfolder_folder = os.path.join(cwd, outdir, filename)
-            else:
-                subfolder_folder = os.path.join(
-                    cwd, outdir, subfolder, filename)
-            file_modified = time.ctime(
-                os.path.getmtime(os.path.join(root, filename)))
-            file_modified_day = str(datetime.strptime(
-                file_modified, "%a %b %d %H:%M:%S %Y"))[5:7]
-            file_modified_year = str(datetime.strptime(
-                file_modified, "%a %b %d %H:%M:%S %Y"))[:4]
-            file_modified_month = str(datetime.strptime(
-                file_modified, "%a %b %d %H:%M:%S %Y"))[8:10]
+            if filename != "config.pyc" and filename != "config.py":
+                newFilename = get_html_clear_filename(filename)
+                page_file = filename.replace(".html", "")
+                page_folder = os.path.basename(os.path.dirname(os.path.join(
+                    root, filename))).replace("-", "").replace("_", "").title()
+                page_folder_orig = os.path.basename(
+                    os.path.dirname(os.path.join(root, filename)))
+                top = os.path.dirname(os.path.join(root, filename))
+                top2 = top.replace(os.path.join(cwd, outdir), "", 1)
+                if platform != "win32":
+                    subfolder = top2.replace("/", "", 1)
+                else:
+                    subfolder = top2.replace("\\", "", 1)
+                if subfolder == "":
+                    subfolder_folder = os.path.join(cwd, outdir, filename)
+                else:
+                    subfolder_folder = os.path.join(
+                        cwd, outdir, subfolder, filename)
+                file_modified = time.ctime(
+                    os.path.getmtime(os.path.join(root, filename)))
+                file_modified_day = str(datetime.strptime(
+                    file_modified, "%a %b %d %H:%M:%S %Y"))[5:7]
+                file_modified_year = str(datetime.strptime(
+                    file_modified, "%a %b %d %H:%M:%S %Y"))[:4]
+                file_modified_month = str(datetime.strptime(
+                    file_modified, "%a %b %d %H:%M:%S %Y"))[8:10]
 
-            blended_version_message = "Built with Blended v" + str(app_version)
-            for line in fileinput.input(subfolder_folder, inplace=1):
-                if len(plugins) != 0:
-                    for i in range(len(plugins)):
-                        if sys.version_info[0] < 2:
-                            main = importlib.import_module(plugins[i])
-                        elif sys.version_info[0] < 3:
-                            main = __import__(plugins[i])
-                        content = main.main()
+                blended_version_message = "Built with Blended v" + \
+                    str(app_version)
+                for line in fileinput.input(subfolder_folder, inplace=1):
+                    if len(plugins) != 0:
+                        for i in range(len(plugins)):
+                            if sys.version_info[0] < 2:
+                                main = importlib.import_module(plugins[i])
+                            elif sys.version_info[0] < 3:
+                                main = __import__(plugins[i])
+                            content = main.main()
+                            line = line.replace(
+                                "{" + plugins[i] + "}", content)
+                    if "{nav" in line:
+                        navname = line.split("{")[1].split("}")[0]
                         line = line.replace(
-                            "{" + plugins[i] + "}", content)
-                if "{nav" in line:
-                    navname = line.split("{")[1].split("}")[0]
+                            "{" + navname + "}", navs[(line.split("{"))[1].split("}")[0]])
+                    line = line.replace("{website_name}", website_name)
                     line = line.replace(
-                        "{" + navname + "}", navs[(line.split("{"))[1].split("}")[0]])
-                line = line.replace("{website_name}", website_name)
-                line = line.replace(
-                    "{website_description}", website_description)
-                line = line.replace(
-                    "{website_description_long}", website_description_long)
-                line = line.replace("{website_license}", website_license)
-                line = line.replace("{website_language}", website_language)
-                line = line.replace("{author_name}", author_name)
-                line = line.replace("{random_number}",
-                                    str(randint(0, 100000000)))
-                line = line.replace("{build_date}", str(
-                    datetime.now().date()))
-                line = line.replace("{build_time}", str(
-                    datetime.now().time()))
-                line = line.replace("{build_datetime}",
-                                    str(datetime.now()))
-                line = line.replace("{page_list}", page_list)
-                line = line.replace("{page_name}", newFilename)
-                line = line.replace("{page_filename}", page_file)
-                line = line.replace("{page_file}", filename)
-                line = line.replace("{" + filename + "_active}", "active")
-                if page_folder != outdir.title():
-                    line = line.replace("{page_folder}", page_folder)
-                else:
-                    line = line.replace("{page_folder}", "")
-                if page_folder_orig != outdir:
-                    line = line.replace("{page_folder_orig}", page_folder_orig)
-                else:
-                    line = line.replace("{page_folder_orig}", "")
-                line = line.replace("{page_date}", str(file_modified))
-                line = line.replace("{page_day}", str(file_modified_day))
-                line = line.replace("{page_year}", str(file_modified_year))
-                line = line.replace("{page_month}", str(file_modified_month))
-                line = line.replace("{blended_version}", str(app_version))
-                line = line.replace(
-                    "{blended_version_message}", blended_version_message)
-                top = os.path.join(cwd, outdir)
-                startinglevel = top.count(os.sep)
-                relative_path = ""
-                level = root.count(os.sep) - startinglevel
-                for i in range(level):
-                    relative_path = relative_path + "../"
-                line = line.replace("{relative_root}", relative_path)
-                print(line.rstrip('\n'))
-            fileinput.close()
+                        "{website_description}", website_description)
+                    line = line.replace(
+                        "{website_description_long}", website_description_long)
+                    line = line.replace("{website_license}", website_license)
+                    line = line.replace("{website_language}", website_language)
+                    line = line.replace("{author_name}", author_name)
+                    line = line.replace("{random_number}",
+                                        str(randint(0, 100000000)))
+                    line = line.replace("{build_date}", str(
+                        datetime.now().date()))
+                    line = line.replace("{build_time}", str(
+                        datetime.now().time()))
+                    line = line.replace("{build_datetime}",
+                                        str(datetime.now()))
+                    line = line.replace("{page_list}", page_list)
+                    line = line.replace("{page_name}", newFilename)
+                    line = line.replace("{page_filename}", page_file)
+                    line = line.replace("{page_file}", filename)
+                    line = line.replace("{" + filename + "_active}", "active")
+                    if page_folder != outdir.title():
+                        line = line.replace("{page_folder}", page_folder)
+                    else:
+                        line = line.replace("{page_folder}", "")
+                    if page_folder_orig != outdir:
+                        line = line.replace(
+                            "{page_folder_orig}", page_folder_orig)
+                    else:
+                        line = line.replace("{page_folder_orig}", "")
+                    line = line.replace("{page_date}", str(file_modified))
+                    line = line.replace("{page_day}", str(file_modified_day))
+                    line = line.replace("{page_year}", str(file_modified_year))
+                    line = line.replace(
+                        "{page_month}", str(file_modified_month))
+                    line = line.replace("{blended_version}", str(app_version))
+                    line = line.replace(
+                        "{blended_version_message}", blended_version_message)
+                    top = os.path.join(cwd, outdir)
+                    startinglevel = top.count(os.sep)
+                    relative_path = ""
+                    level = root.count(os.sep) - startinglevel
+                    for i in range(level):
+                        relative_path = relative_path + "../"
+                    line = line.replace("{relative_root}", relative_path)
+                    print(line.rstrip('\n'))
+                fileinput.close()
 
     # Copy the asset folder to the build folder
     if os.path.exists(os.path.join(cwd, "templates", "assets")):
+        if os.path.exists(os.path.join(cwd, outdir, "assets")):
+            shutil.rmtree(os.path.join(cwd, outdir, "assets"))
         shutil.copytree(os.path.join(cwd, "templates", "assets"),
                         os.path.join(cwd, outdir, "assets"))
 
