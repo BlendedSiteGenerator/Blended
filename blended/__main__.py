@@ -56,6 +56,19 @@ def version():
     print("The current working directory is " + cwd)
 
 
+@cli.command('install-theme', short_help='Install a Blended theme from GitHub')
+@click.option('--username', prompt='GitHub username/organization',
+              help='The GitHub username/organization.')
+@click.option('--repo', prompt='GitHub repository',
+              help='The GitHub repository name.')
+def install_theme(username, repo):
+    """Installs a Blended theme from GitHub"""
+    print("Installing " + username + "/" + repo)
+
+    durl = "https://github.com/"+username+"/"+repo+"/archive/master.zip"
+    dpath = os.path.join(cwd, "templates")
+    getunzipped(durl, dpath)
+
 @cli.command('init', short_help='Initiate a new website')
 def init():
     """Initiates a new website"""
@@ -318,7 +331,7 @@ def build_files(outdir):
             sys.exit(
                 "Some of the crucial configuration values could not be found! Maybe your config.py is too old. Run 'blended init' to fix.")
         try:
-            from config import website_description_long, website_license, author_name, author_bio plugins, minify_css, minify_js
+            from config import website_description_long, website_license, author_name, author_bio, plugins, minify_css, minify_js
         except:
             website_description_long = ""
             website_license = ""
