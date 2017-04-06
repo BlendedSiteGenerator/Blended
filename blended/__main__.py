@@ -696,6 +696,7 @@ class Handler(FileSystemEventHandler):
 
     @staticmethod
     def on_any_event(event):
+        global outdir_type
         if event.is_directory:
             return None
 
@@ -722,6 +723,7 @@ def interactive(outdir):
 
     print("Building your Blended files into a website!")
 
+    global outdir_type
     outdir_type = outdir
 
     reload(sys)
