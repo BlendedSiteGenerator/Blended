@@ -110,9 +110,10 @@ def init():
     config_file.write('website_name = "' + wname + '"\n')
     config_file.write('website_description = "' + wdesc + '"\n')
     config_file.write(
-        'website_description_long = "" # Use for things like author bio on a blog\n')
+        'website_description_long = ""\n')
     config_file.write('website_license = "' + wlic + '"\n')
     config_file.write('author_name = "' + aname + '"\n')
+    config_file.write('author_bio = ""\n')
     config_file.write('website_language = "' + wlan + '"\n')
     config_file.write('home_page_list = True\n')
     config_file.write('\n')
