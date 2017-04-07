@@ -414,6 +414,7 @@ def build_files(outdir):
 
         page_list = ""
         for root, dirs, files in os.walk(os.path.join(cwd, "content")):
+            dirs[:] = [d for d in dirs if "_" not in d]
             for filename in files:
                 p_content = convert_text(os.path.join(root, filename))
                 top = os.path.dirname(os.path.join(root, filename))
