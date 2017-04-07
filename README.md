@@ -124,27 +124,29 @@ Here are some examples:
 
 Remember that you can install templates from GitHub using `blended install-template`.
 
-* Simple ([GitHub page](https://github.com/johnroper100/blended-simple))
+* Simple ([GitHub page](https://github.com/BlendedSiteGenerator/blended-simple))
 
-* Blog ([GitHub page](https://github.com/johnroper100/blended-blog))
+* Blog ([GitHub page](https://github.com/BlendedSiteGenerator/blended-blog))
 
-* Software Showcase ([GitHub page](https://github.com/johnroper100/blended-software))
+* Software Showcase ([GitHub page](https://github.com/BlendedSiteGenerator/blended-software))
 
 ## Plugins
 
-* Google Analytics ([GitHub page](https://github.com/johnroper100/blended_google_analytics))
+* Google Analytics ([GitHub page](https://github.com/BlendedSiteGenerator/blended_google_analytics))
 
-* HTML Comment Box ([GitHub page](https://github.com/johnroper100/blended_html_comment_box))
+* HTML Comment Box ([GitHub page](https://github.com/BlendedSiteGenerator/blended_html_comment_box))
 
-* Twitter Cards ([GitHub page](https://github.com/johnroper100/blended_twitter_cards))
+* Twitter Cards ([GitHub page](https://github.com/BlendedSiteGenerator/blended_twitter_cards))
 
-* Google Fonts ([GitHub page](https://github.com/johnroper100/blended_google_fonts))
+* Google Fonts ([GitHub page](https://github.com/BlendedSiteGenerator/blended_google_fonts))
 
-* Import Bootstrap ([GitHub page](https://github.com/johnroper100/blended_import_bootstrap))
+* Import Bootstrap ([GitHub page](https://github.com/BlendedSiteGenerator/blended_import_bootstrap))
 
 ## Projects That Use Blended
 
 * The [Blended website](http://jmroper.com/blended)
+
+* The [Art Of Illusion website redesign](https://github.com/ArtOfIllusion/AOI-website)
 
 * A full render management dashboard ([GitHub page](https://github.com/johnroper100/RenderManagementDashboard))
 
