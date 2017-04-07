@@ -132,6 +132,8 @@ Remember that you can install templates from GitHub using `blended install-templ
 
 ## Plugins
 
+* Disqus ([GitHub page](https://github.com/BlendedSiteGenerator/blended_disqus))
+
 * Google Analytics ([GitHub page](https://github.com/BlendedSiteGenerator/blended_google_analytics))
 
 * HTML Comment Box ([GitHub page](https://github.com/BlendedSiteGenerator/blended_html_comment_box))
