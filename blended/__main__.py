@@ -30,7 +30,6 @@ from stylus import Stylus
 import coffeescript
 from jsmin import jsmin
 from cssmin import cssmin
-from six.moves import urllib
 import pip
 from .functions import *
 
