@@ -1,5 +1,5 @@
 # Blended
-Blended is a static website generator written in Python and licensed under the GPL 3.0 open-source license. It supports a HTML-based templating system, content written in HTML, Markdown, Textile, reStructuredText, Jade, Docx, and Plain Text. It also supports the compiliation of Sass, Less, Stylus, and CoffeeScript. Blended makes it easy to deply your websites by incuding a built-in FTP uploader. In addition, Blended is powerfully upgradeable because it has support for a Python plugin system.
+Blended is a static website generator written in Python and licensed under the GPL 3.0 open-source license. It supports a HTML-based templating system, content written in HTML, Markdown, Textile, reStructuredText, Jade, Docx, and Plain Text. It also supports the compilation of SASS, Less, Stylus, and CoffeeScript. Blended makes it easy to deploy your websites by including a built-in FTP uploader. In addition, Blended is powerfully upgradeable because it has support for a Python plugin system.
 
 There is a full step-by-step *Getting Started* tutorial on [the website](http://jmroper.com/blended/getting-started.html).
 
@@ -41,9 +41,11 @@ or
 
 For any command that you run, you can specify an alternative `--outdir` to build or view from. For example, to build to the `source_output` folder, run `blended build --outdir source_output`.
 
-Inside the `config.py` file, you can set `minify_css` and `minify_js` to true to optimze your css and js files after building.
+Inside the `config.py` file, you can set `minify_css` and `minify_js` to true to optimize your CSS and JS files after building.
 
 ## Working with templates
+
+You can install templates from GitHub using `blended install-template`.
 
 Each Blended website uses four template files:
 
@@ -56,7 +58,7 @@ Each Blended website uses four template files:
 
 In these files you place the markup for each section to be generated.
 
-When working with pages, you can optionally specifiy which template you want (other than `content_page.html`) by adding the name of the template file without the extension to the first line of the page, and then at least five `+`s to the second line. For example, if I wanted to use a template called `blog_page.html` for a certain page, I would put
+When working with pages, you can optionally specify which template you want (other than `content_page.html`) by adding the name of the template file without the extension to the first line of the page, and then at least five `+`s to the second line. For example, if I wanted to use a template called `blog_page.html` for a certain page, I would put
 
 ```
 blog_page
@@ -99,6 +101,9 @@ Wherever you put these variables in the templates, they will be replaced by the 
 
 ## Working with Plugins
 
+You can install plugins from PyPi, for example `pip install blended_google_analytics`.
+You can also install plugins from GitHub using `blended install-plugin`.
+
 To use plugins, include them in the `plugins` list in `config.py`.
 
 If the plugin is meant to be called in your templates, ex. `{html_comment_box}` then insert it into the plugins list like `plugins = ["html_comment_box"]`.
@@ -107,11 +112,13 @@ You can use multiple plugins at once, ex. `plugins = ["html_comment_box", "minif
 
 ## Pre-Made Templates
 
+Remember that you can install templates from GitHub using `blended install-template`.
+
 * Simple ([GitHub page](https://github.com/johnroper100/blended-simple))
 
 * Blog ([GitHub page](https://github.com/johnroper100/blended-blog))
 
-* Software Showcase ([Github page](https://github.com/johnroper100/blended-software))
+* Software Showcase ([GitHub page](https://github.com/johnroper100/blended-software))
 
 ## Plugins
 
@@ -129,10 +136,10 @@ You can use multiple plugins at once, ex. `plugins = ["html_comment_box", "minif
 
 * The [Blended website](http://jmroper.com/blended)
 
-* A full render managment dashboard ([GitHub page](https://github.com/johnroper100/RenderManagementDashboard))
+* A full render management dashboard ([GitHub page](https://github.com/johnroper100/RenderManagementDashboard))
 
-* DVDStyler website redesign ([Github page](https://github.com/johnroper100/dvdstyler-web))
+* DVDStyler website redesign ([GitHub page](https://github.com/johnroper100/dvdstyler-web))
 
-* MakeHuman website redesign ([Github page](https://github.com/johnroper100/makehuman-web))
+* MakeHuman website redesign ([GitHub page](https://github.com/johnroper100/makehuman-web))
 
-* LilyPond website redesign ([Github page](https://github.com/johnroper100/LilyPond-Web-Redesign))
+* LilyPond website redesign ([GitHub page](https://github.com/johnroper100/LilyPond-Web-Redesign))
