@@ -31,6 +31,7 @@ import coffeescript
 from jsmin import jsmin
 from cssmin import cssmin
 from six.moves import urllib
+import pip
 from .functions import *
 
 # Very important, get the directory that the user wants to run commands in
@@ -68,6 +69,17 @@ def install_template(username, repo):
 
     dpath = os.path.join(cwd, "templates")
     getunzipped(username, repo, dpath)
+
+@cli.command('install-plugin', short_help='Install a Blended plugin from GitHub')
+@click.option('--username', prompt='GitHub username/organization',
+              help='The GitHub username/organization.')
+@click.option('--repo', prompt='GitHub repository',
+              help='The GitHub repository name.')
+def install_plugin(username, repo):
+    """Installs a Blended plugin from GitHub"""
+    print("Installing plugin from " + username + "/" + repo)
+
+    pip.main(['install', "git+git://github.com/"+username+"/"+repo+".git"])
 
 @cli.command('init', short_help='Initiate a new website')
 def init():
