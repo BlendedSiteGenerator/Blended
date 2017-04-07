@@ -357,7 +357,7 @@ def build_files(outdir):
             author_name = ""
             author_bio = ""
             plugins = []
-            custom_variables
+            custom_variables = {}
             minify_css = False
             minify_js = False
             print("WARNING: Some of the optional configuration values could not be found! Maybe your config.py is too old. Run 'blended init' to fix.\n")
