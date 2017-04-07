@@ -56,7 +56,7 @@ def get_html_clear_filename(filename):
 
 
 def getunzipped(username, repo, thedir):
-    theurl = "https://github.com/"+username+"/"+repo+"/archive/master.zip"
+    theurl = "https://github.com/" + username + "/" + repo + "/archive/master.zip"
     name = os.path.join(thedir, 'temp.zip')
     try:
         name, hdrs = urllib.urlretrieve(theurl, name)
@@ -72,5 +72,5 @@ def getunzipped(username, repo, thedir):
     z.close()
     os.remove(name)
 
-    copy_tree(os.path.join(thedir, repo+"-master"), thedir)
-    shutil.rmtree(os.path.join(thedir, repo+"-master"))
+    copy_tree(os.path.join(thedir, repo + "-master"), thedir)
+    shutil.rmtree(os.path.join(thedir, repo + "-master"))
