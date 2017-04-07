@@ -461,6 +461,7 @@ def build_files(outdir):
         home_working_file.close()
 
     for root, dirs, files in os.walk(os.path.join(cwd, "content")):
+        dirs[:] = [d for d in dirs if "_" not in d]
         for filename in files:
             if not filename.startswith("_"):
                 header_file = open(header_file_dir, "r")
