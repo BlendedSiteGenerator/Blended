@@ -147,6 +147,8 @@ def init():
     config_file.write('home_page_list = True\n')
     config_file.write('\n')
     config_file.write('plugins = [] # Place all needed plugins in here\n')
+    config_file.write(
+        'custom_variables = {} # Place all custom variables in here\n')
     config_file.write('\n')
     config_file.write('minify_css = False\n')
     config_file.write('minify_js = False\n')
@@ -348,13 +350,14 @@ def build_files(outdir):
             sys.exit(
                 "Some of the crucial configuration values could not be found! Maybe your config.py is too old. Run 'blended init' to fix.")
         try:
-            from config import website_description_long, website_license, author_name, author_bio, plugins, minify_css, minify_js
+            from config import website_description_long, website_license, author_name, author_bio, plugins, minify_css, minify_js, custom_variables
         except:
             website_description_long = ""
             website_license = ""
             author_name = ""
             author_bio = ""
             plugins = []
+            custom_variables
             minify_css = False
             minify_js = False
             print("WARNING: Some of the optional configuration values could not be found! Maybe your config.py is too old. Run 'blended init' to fix.\n")
@@ -557,7 +560,12 @@ def build_files(outdir):
 
                 blended_version_message = "Built with Blended v" + \
                     str(app_version)
+
+                # The Loop!
                 for line in fileinput.input(subfolder_folder, inplace=1):
+                    for var in custom_variables:
+                        line = line.replace(
+                            "{" + var + "}", custom_variables[var])
                     if len(plugins) != 0:
                         for i in range(len(plugins)):
                             if sys.version_info[0] < 2:
