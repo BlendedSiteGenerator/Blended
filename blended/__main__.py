@@ -70,6 +70,7 @@ def install_template(username, repo):
     dpath = os.path.join(cwd, "templates")
     getunzipped(username, repo, dpath)
 
+
 @cli.command('install-plugin', short_help='Install a Blended plugin from GitHub')
 @click.option('--username', prompt='GitHub username/organization',
               help='The GitHub username/organization.')
@@ -79,7 +80,9 @@ def install_plugin(username, repo):
     """Installs a Blended plugin from GitHub"""
     print("Installing plugin from " + username + "/" + repo)
 
-    pip.main(['install', "git+git://github.com/"+username+"/"+repo+".git"])
+    pip.main(['install', "git+git://github.com/" +
+              username + "/" + repo + ".git"])
+
 
 @cli.command('init', short_help='Initiate a new website')
 def init():
