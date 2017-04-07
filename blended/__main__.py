@@ -333,7 +333,7 @@ def convert_text(filename):
         print(filename + " is not a valid file type!")
         text_cont1 = "NULL"
 
-    return text_cont1
+    return text_cont1 + "\n\n"
 
 
 def build_files(outdir):
