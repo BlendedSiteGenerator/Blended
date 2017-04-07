@@ -30,6 +30,7 @@ from stylus import Stylus
 import coffeescript
 from jsmin import jsmin
 from cssmin import cssmin
+from six.moves import urllib
 from .functions import *
 
 # Very important, get the directory that the user wants to run commands in
@@ -56,18 +57,17 @@ def version():
     print("The current working directory is " + cwd)
 
 
-@cli.command('install-theme', short_help='Install a Blended theme from GitHub')
+@cli.command('install-template', short_help='Install a Blended template from GitHub')
 @click.option('--username', prompt='GitHub username/organization',
               help='The GitHub username/organization.')
 @click.option('--repo', prompt='GitHub repository',
               help='The GitHub repository name.')
-def install_theme(username, repo):
-    """Installs a Blended theme from GitHub"""
-    print("Installing " + username + "/" + repo)
+def install_template(username, repo):
+    """Installs a Blended template from GitHub"""
+    print("Installing template from " + username + "/" + repo)
 
-    durl = "https://github.com/"+username+"/"+repo+"/archive/master.zip"
     dpath = os.path.join(cwd, "templates")
-    getunzipped(durl, dpath)
+    getunzipped(username, repo, dpath)
 
 @cli.command('init', short_help='Initiate a new website')
 def init():

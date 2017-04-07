@@ -2,6 +2,7 @@ import os
 import shutil
 import urllib
 import zipfile
+from distutils.dir_util import copy_tree
 
 
 def create_folder(path):
@@ -54,7 +55,8 @@ def get_html_clear_filename(filename):
     return newFilename
 
 
-def getunzipped(theurl, thedir):
+def getunzipped(username, repo, thedir):
+    theurl = "https://github.com/"+username+"/"+repo+"/archive/master.zip"
     name = os.path.join(thedir, 'temp.zip')
     try:
         name, hdrs = urllib.urlretrieve(theurl, name)
@@ -66,14 +68,9 @@ def getunzipped(theurl, thedir):
     except zipfile.error, e:
         print "Bad zipfile (from %r): %s" % (theurl, e)
         return
-    for n in z.namelist():
-        dest = os.path.join(thedir, n)
-        destdir = os.path.dirname(dest)
-        if not os.path.isdir(destdir):
-            os.makedirs(destdir)
-        data = z.read(n)
-        f = open(dest, 'w')
-        f.write(data)
-        f.close()
+    z.extractall(thedir)
     z.close()
-    os.unlink(name)
+    os.remove(name)
+
+    copy_tree(os.path.join(thedir, repo+"-master"), thedir)
+    shutil.rmtree(os.path.join(thedir, repo+"-master"))
