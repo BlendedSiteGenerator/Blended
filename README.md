@@ -43,7 +43,7 @@ For any command that you run, you can specify an alternative `--outdir` to build
 
 Inside the `config.py` file, you can set `minify_css` and `minify_js` to true to optimize your CSS and JS files after building.
 
-## Working with templates
+## Working With templates
 
 You can install templates from GitHub using `blended install-template`.
 
@@ -99,7 +99,7 @@ You have some variables that you can use in your templates to pull in values whi
 
 Wherever you put these variables in the templates, they will be replaced by the values in your config.py file. The variables must stay within the curley brackets. You can even put variables inside the content of other variables!
 
-## Working with Plugins
+## Working With Plugins
 
 You can install plugins from PyPi, for example `pip install blended_google_analytics`.
 You can also install plugins from GitHub using `blended install-plugin`.
@@ -109,6 +109,16 @@ To use plugins, include them in the `plugins` list in `config.py`.
 If the plugin is meant to be called in your templates, ex. `{html_comment_box}` then insert it into the plugins list like `plugins = ["html_comment_box"]`.
 
 You can use multiple plugins at once, ex. `plugins = ["html_comment_box", "minify_images"]`
+
+## Working With Custom Variables
+
+Inside of your `config.py` there is a variable `custom_variables = {}`. This is a dictionary of all of the custom variables you would like to use. To add a variable, add it as a dictionary item.
+
+Here are some examples:
+
+`custom_variables = {"software_name": "Blended"}`
+
+`custom_variables = {"software_name": "Blended", "software_version": "5.0"}`
 
 ## Pre-Made Templates
 
