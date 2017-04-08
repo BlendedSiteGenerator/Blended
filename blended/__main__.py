@@ -586,7 +586,6 @@ def build_files(outdir):
                     line = line.replace("{website_url}", website_url)
                     line = line.replace("{author_name}", author_name)
                     line = line.replace("{author_bio}", author_bio)
-                    line = line.replace("{website_name}", website_name)
                     line = line.replace("{random_number}",
                                         str(randint(0, 100000000)))
                     line = line.replace("{build_date}", str(
@@ -617,6 +616,7 @@ def build_files(outdir):
                     line = line.replace("{blended_version}", str(app_version))
                     line = line.replace(
                         "{blended_version_message}", blended_version_message)
+                    line = line.replace("{website_name}", website_name)
                     top = os.path.join(cwd, outdir)
                     startinglevel = top.count(os.sep)
                     relative_path = ""
