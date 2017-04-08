@@ -140,6 +140,7 @@ def init():
         'website_description_long = ""\n')
     config_file.write('website_license = "' + wlic + '"\n')
     config_file.write('website_language = "' + wlan + '"\n')
+    config_file.write('website_url = ""\n')
     config_file.write('\n')
     config_file.write('author_name = "' + aname + '"\n')
     config_file.write('author_bio = ""\n')
@@ -350,7 +351,7 @@ def build_files(outdir):
             sys.exit(
                 "ERROR: Some of the crucial configuration values could not be found! Maybe your config.py is too old. Run 'blended init' to fix.")
         try:
-            from config import website_description_long, website_license, author_name, author_bio, plugins, minify_css, minify_js, custom_variables
+            from config import website_description_long, website_license, website_url, author_name, author_bio, plugins, minify_css, minify_js, custom_variables
         except:
             website_description_long = ""
             website_license = ""
