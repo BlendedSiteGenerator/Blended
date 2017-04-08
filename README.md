@@ -121,6 +121,12 @@ Here are some examples:
 
 `custom_variables = {"software_name": "Blended", "software_version": "5.0"}`
 
+## Importing from WordPress
+
+You can import a website and posts from WordPress. To do so, export from WordPress using the `Posts` option and download the file to the directory where you want to generate your website.
+
+Run the command `blended import-wp` and it will prompt you for the name/file path of the file. Type in the filename and Blended will create a new website with the information
+
 ## Pre-Made Templates
 
 Remember that you can install templates from GitHub using `blended install-template`.
