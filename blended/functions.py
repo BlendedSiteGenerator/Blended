@@ -120,3 +120,22 @@ def createConfig(app_version=5.0, wname="", wdesc="", wdescl="", wlic="", wlan="
     config_file.write('ftp_port = 21\n')
     config_file.write('ftp_upload_path = "public_html/myWebsite"\n')
     config_file.close()
+
+def createBlendedFolders():
+    # Create the templates folder
+    create_folder(os.path.join(cwd, "templates"))
+
+    # Create the templates/assets folder
+    create_folder(os.path.join(cwd, "templates", "assets"))
+
+    # Create the templates/assets/css folder
+    create_folder(os.path.join(cwd, "templates", "assets", "css"))
+
+    # Create the templates/assets/js folder
+    create_folder(os.path.join(cwd, "templates", "assets", "js"))
+
+    # Create the templates/assets/img folder
+    create_folder(os.path.join(cwd, "templates", "assets", "img"))
+
+    # Create the content folder
+    create_folder(os.path.join(cwd, "content"))

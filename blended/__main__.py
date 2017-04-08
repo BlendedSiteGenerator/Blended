@@ -87,23 +87,7 @@ def install_template(filepath):
     wurl = wp.rss.channel.link.cdata
     aname = wp.rss.channel.wp_author.wp_author_display_name.cdata.strip()
 
-    # Create the templates folder
-    create_folder(os.path.join(cwd, "templates"))
-
-    # Create the templates/assets folder
-    create_folder(os.path.join(cwd, "templates", "assets"))
-
-    # Create the templates/assets/css folder
-    create_folder(os.path.join(cwd, "templates", "assets", "css"))
-
-    # Create the templates/assets/js folder
-    create_folder(os.path.join(cwd, "templates", "assets", "js"))
-
-    # Create the templates/assets/img folder
-    create_folder(os.path.join(cwd, "templates", "assets", "img"))
-
-    # Create the content folder
-    create_folder(os.path.join(cwd, "content"))
+    createBlendedFolders()
 
     # Populate the configuration file
     createConfig(app_version=app_version, wname=wname, wdesc=wdesc, wlan=wlan, wurl=wurl, aname=aname)
@@ -147,23 +131,7 @@ def init():
         wlic = raw_input("Website License: ")
         aname = raw_input("Author(s) Name(s): ")
 
-    # Create the templates folder
-    create_folder(os.path.join(cwd, "templates"))
-
-    # Create the templates/assets folder
-    create_folder(os.path.join(cwd, "templates", "assets"))
-
-    # Create the templates/assets/css folder
-    create_folder(os.path.join(cwd, "templates", "assets", "css"))
-
-    # Create the templates/assets/js folder
-    create_folder(os.path.join(cwd, "templates", "assets", "js"))
-
-    # Create the templates/assets/img folder
-    create_folder(os.path.join(cwd, "templates", "assets", "img"))
-
-    # Create the content folder
-    create_folder(os.path.join(cwd, "content"))
+    createBlendedFolders()
 
     # Populate the configuration file
     createConfig(app_version=app_version, wname=wname, wdesc=wdesc, wlic=wlic, wlan=wlan, aname=aname)
