@@ -86,7 +86,8 @@ def install_template(filepath):
     createBlendedFolders()
 
     # Populate the configuration file
-    createConfig(app_version=app_version, wname=wname, wdesc=wdesc, wlan=wlan, wurl=wurl, aname=aname)
+    createConfig(app_version=app_version, wname=wname,
+                 wdesc=wdesc, wlan=wlan, wurl=wurl, aname=aname)
 
     for item in wp.rss.channel.item:
         with open(os.path.join(cwd, "content", item.title.cdata.replace(" ", "_") + ".html"), 'w') as file:
@@ -130,7 +131,8 @@ def init():
     createBlendedFolders()
 
     # Populate the configuration file
-    createConfig(app_version=app_version, wname=wname, wdesc=wdesc, wlic=wlic, wlan=wlan, aname=aname)
+    createConfig(app_version=app_version, wname=wname,
+                 wdesc=wdesc, wlic=wlic, wlan=wlan, aname=aname)
 
     print("\nThe required files for your website have been generated.")
 

@@ -122,6 +122,7 @@ def createConfig(app_version=5.0, wname="", wdesc="", wdescl="", wlic="", wlan="
     config_file.write('ftp_upload_path = "public_html/myWebsite"\n')
     config_file.close()
 
+
 def createBlendedFolders():
     # Create the templates folder
     create_folder(os.path.join(cwd, "templates"))
@@ -140,6 +141,7 @@ def createBlendedFolders():
 
     # Create the content folder
     create_folder(os.path.join(cwd, "content"))
+
 
 def parseXML(filepath):
     try:
