@@ -76,6 +76,7 @@ You have some variables that you can use in your templates to pull in values whi
 * `{author_bio}`
 * `{website_language}`
 * `{website_license}`
+* `{website_url}`
 * `{page_content}` (Can only be used in the content_page.html template file)
 * `{page_date}` (Date/Time the page was written/modified)
 * `{page_day}` (Day the page was written/modified)

@@ -355,6 +355,7 @@ def build_files(outdir):
         except:
             website_description_long = ""
             website_license = ""
+            website_url = ""
             author_name = ""
             author_bio = ""
             plugins = []
@@ -589,6 +590,7 @@ def build_files(outdir):
                         "{website_description_long}", website_description_long)
                     line = line.replace("{website_license}", website_license)
                     line = line.replace("{website_language}", website_language)
+                    line = line.replace("{website_url}", website_url)
                     line = line.replace("{author_name}", author_name)
                     line = line.replace("{author_bio}", author_bio)
                     line = line.replace("{random_number}",
