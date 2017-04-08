@@ -140,6 +140,8 @@ Remember that you can install templates from GitHub using `blended install-templ
 
 * Twitter Cards ([GitHub page](https://github.com/BlendedSiteGenerator/blended_twitter_cards))
 
+* Facebook Cards ([GitHub page](https://github.com/BlendedSiteGenerator/blended_facebook_cards))
+
 * Google Fonts ([GitHub page](https://github.com/BlendedSiteGenerator/blended_google_fonts))
 
 * Import Bootstrap ([GitHub page](https://github.com/BlendedSiteGenerator/blended_import_bootstrap))
