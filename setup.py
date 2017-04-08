@@ -23,6 +23,7 @@ setup(name='blended',
           'coffeescript',
           'jsmin',
           'cssmin',
+          'untangle',
       ],
       entry_points={
           'console_scripts': [
