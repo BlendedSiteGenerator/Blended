@@ -125,7 +125,13 @@ Here are some examples:
 
 You can import a website and posts from WordPress. To do so, export from WordPress using the `Posts` option and download the file to the directory where you want to generate your website.
 
-Run the command `blended import-wp` and it will prompt you for the name/file path of the file. Type in the filename and Blended will create a new website with the information
+Run the command `blended import-wp` and it will prompt you for the name/file path of the file. Type in the filename and Blended will create a new website with the information.
+
+## Importing from Blogger
+
+You can import posts from Blogger. To do so, export from Blogger using the `Backup Site` option and download the file to the directory where you want to generate your website.
+
+Run the command `blended import-blogger` and it will prompt you for the name/file path of the file. Type in the filename and Blended will create a new website with the information.
 
 ## Pre-Made Templates
 
