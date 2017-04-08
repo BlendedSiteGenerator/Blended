@@ -383,7 +383,7 @@ def build_files(outdir):
     header_file = open(header_file_dir, "r")
     footer_file = open(footer_file_dir, "r")
 
-    # Create the html page listing
+    # Create the HTML page listing
     page_list_item_file = os.path.join(cwd, "templates", "page_list_item.html")
     if not os.path.exists(page_list_item_file):
         page_list = '<ul class="page-list">\n'
@@ -701,7 +701,7 @@ def build_files(outdir):
 @cli.command('build', short_help='Build the Blended files into a website')
 @click.option('--outdir', default="build", help='Choose which folder to build to. Default is `build`.')
 def build(outdir):
-    """Blends the generated files and outputs a html website"""
+    """Blends the generated files and outputs a HTML website"""
 
     print("Building your Blended files into a website!")
 
@@ -772,7 +772,7 @@ class Handler(FileSystemEventHandler):
 @cli.command('interactive', short_help='Build the Blended files into a website on each file change')
 @click.option('--outdir', default="build", help='Choose which folder to build to. Default is `build`.')
 def interactive(outdir):
-    """Blends the generated files and outputs a html website on file change"""
+    """Blends the generated files and outputs a HTML website on file change"""
 
     print("Building your Blended files into a website!")
 
