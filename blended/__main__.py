@@ -348,7 +348,7 @@ def build_files(outdir):
             from config import website_name, website_description, website_language, home_page_list
         except:
             sys.exit(
-                "Some of the crucial configuration values could not be found! Maybe your config.py is too old. Run 'blended init' to fix.")
+                "ERROR: Some of the crucial configuration values could not be found! Maybe your config.py is too old. Run 'blended init' to fix.")
         try:
             from config import website_description_long, website_license, author_name, author_bio, plugins, minify_css, minify_js, custom_variables
         except:
