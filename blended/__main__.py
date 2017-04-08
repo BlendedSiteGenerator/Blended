@@ -577,7 +577,6 @@ def build_files(outdir):
                         navname = line.split("{")[1].split("}")[0]
                         line = line.replace(
                             "{" + navname + "}", navs[(line.split("{"))[1].split("}")[0]])
-                    line = line.replace("{website_name}", website_name)
                     line = line.replace(
                         "{website_description}", website_description)
                     line = line.replace(
@@ -587,6 +586,7 @@ def build_files(outdir):
                     line = line.replace("{website_url}", website_url)
                     line = line.replace("{author_name}", author_name)
                     line = line.replace("{author_bio}", author_bio)
+                    line = line.replace("{website_name}", website_name)
                     line = line.replace("{random_number}",
                                         str(randint(0, 100000000)))
                     line = line.replace("{build_date}", str(

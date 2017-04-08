@@ -1,5 +1,6 @@
 import os
 import shutil
+from shutil import copyfile
 import urllib
 import zipfile
 from distutils.dir_util import copy_tree
