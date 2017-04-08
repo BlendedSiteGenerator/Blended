@@ -3,6 +3,7 @@ import shutil
 import urllib
 import zipfile
 from distutils.dir_util import copy_tree
+import untangle
 
 # Very important, get the directory that the user wants to run commands in
 cwd = os.getcwd()
@@ -139,3 +140,11 @@ def createBlendedFolders():
 
     # Create the content folder
     create_folder(os.path.join(cwd, "content"))
+
+def parseXML(filepath):
+    try:
+        output = untangle.parse(filepath)
+    except:
+        sys.exit("The export file could not be found or read!")
+
+    return output

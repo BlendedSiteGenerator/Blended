@@ -31,7 +31,6 @@ import coffeescript
 from jsmin import jsmin
 from cssmin import cssmin
 import pip
-import untangle
 from .functions import *
 
 # Very important, get the directory that the user wants to run commands in
@@ -76,10 +75,7 @@ def install_template(username, repo):
 def install_template(filepath):
     """Imports A WordPress export and converts it to a Blended site"""
 
-    try:
-        wp = untangle.parse(filepath)
-    except:
-        sys.exit("The WordPress file could not be found or read!")
+    wp = parseXML(filepath)
 
     wname = wp.rss.channel.title.cdata
     wdesc = wp.rss.channel.description.cdata
