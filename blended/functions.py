@@ -1,6 +1,8 @@
+"""This holds all of the functions"""
 import os
 import shutil
 from shutil import copyfile
+import sys
 import urllib
 import zipfile
 from distutils.dir_util import copy_tree
@@ -11,11 +13,13 @@ cwd = os.getcwd()
 
 
 def create_folder(path):
+    """Creates the specified folder if it dosen't already exist"""
     if not os.path.exists(path):
         os.makedirs(path)
 
 
 def replace_folder(path):
+    """If the specified folder exists, it is deleted and recreated"""
     if os.path.exists(path):
         shutil.rmtree(path)
         os.makedirs(path)
@@ -24,6 +28,7 @@ def replace_folder(path):
 
 
 def get_html_filename(filename):
+    """Converts the filename to a .html extension"""
     if ".html" in filename:
         newFilename = filename
     elif ".md" in filename:
@@ -45,6 +50,7 @@ def get_html_filename(filename):
 
 
 def get_html_clear_filename(filename):
+    """Clears the file extension from the filename and makes it nice looking"""
     newFilename = filename.replace(".html", "")
     newFilename = newFilename.replace(".md", "")
     newFilename = newFilename.replace(".txt", "")
@@ -61,10 +67,11 @@ def get_html_clear_filename(filename):
 
 
 def getunzipped(username, repo, thedir):
+    """Downloads and unzips a zip file"""
     theurl = "https://github.com/" + username + "/" + repo + "/archive/master.zip"
     name = os.path.join(thedir, 'temp.zip')
     try:
-        name, hdrs = urllib.urlretrieve(theurl, name)
+        name = urllib.urlretrieve(theurl, name)
     except IOError, e:
         print "Can't retrieve %r to %r: %s" % (theurl, thedir, e)
         return
@@ -80,14 +87,18 @@ def getunzipped(username, repo, thedir):
     copy_tree(os.path.join(thedir, repo + "-master"), thedir)
     shutil.rmtree(os.path.join(thedir, repo + "-master"))
 
+
 def checkConfig():
+    """If the config.py file exists, back it up"""
     config_file_dir = os.path.join(cwd, "config.py")
     if os.path.exists(config_file_dir):
         print("Making a backup of your config file!")
         config_file_dir2 = os.path.join(cwd, "config.py.oldbak")
         copyfile(config_file_dir, config_file_dir2)
 
+
 def createConfig(app_version=5.0, wname="", wdesc="", wdescl="", wlic="", wlan="", wurl="", aname="", abio=""):
+    """Generates a config file from the information"""
     config_file_dir = os.path.join(cwd, "config.py")
 
     config_file = open(config_file_dir, "w")
@@ -127,6 +138,7 @@ def createConfig(app_version=5.0, wname="", wdesc="", wdescl="", wlic="", wlan="
 
 
 def createBlendedFolders():
+    """Creates the standard folders for a Blended website"""
     # Create the templates folder
     create_folder(os.path.join(cwd, "templates"))
 
@@ -147,6 +159,7 @@ def createBlendedFolders():
 
 
 def parseXML(filepath):
+    """Parses an XML file using untangle"""
     try:
         output = untangle.parse(filepath)
     except:
