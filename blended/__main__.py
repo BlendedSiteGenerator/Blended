@@ -11,6 +11,7 @@ from datetime import datetime
 from random import randint
 from ftplib import FTP, error_perm
 import time
+import calendar
 import subprocess
 import importlib
 import click
@@ -441,16 +442,17 @@ def build_files(outdir):
                 file_modified = time.ctime(
                     os.path.getmtime(os.path.join(root, filename)))
                 file_modified_day = str(datetime.strptime(
-                    file_modified, "%a %b %d %H:%M:%S %Y"))[5:7]
+                file_modified, "%a %b %d %H:%M:%S %Y"))[8:10]
                 file_modified_year = str(datetime.strptime(
                     file_modified, "%a %b %d %H:%M:%S %Y"))[:4]
                 file_modified_month = str(datetime.strptime(
-                    file_modified, "%a %b %d %H:%M:%S %Y"))[8:10]
+                    file_modified, "%a %b %d %H:%M:%S %Y"))[5:7]
+                month_name = calendar.month_name[int(file_modified_month)]
                 newFilename = get_html_filename(filename)
                 newFilename2 = get_html_clear_filename(filename)
 
                 page_list = page_list + page_list_item.replace("{path}", subfolder_link + newFilename).replace("{name}", newFilename2).replace(
-                    "{date}", str(file_modified)).replace("{content}", p_content).replace("{content_short}", p_content[:250] + "...").replace("{day}", file_modified_day).replace("{month}", file_modified_month).replace("{year}", file_modified_year)
+                    "{date}", str(file_modified)).replace("{content}", p_content).replace("{content_short}", p_content[:250] + "...").replace("{day}", file_modified_day).replace("{month}", file_modified_month).replace("{month_name}", month_name).replace("{year}", file_modified_year)
 
     if home_page_list == "yes" or home_page_list:
         # Open the home page file (index.html) for writing
@@ -569,11 +571,12 @@ def build_files(outdir):
                 file_modified = time.ctime(
                     os.path.getmtime(os.path.join(root, filename)))
                 file_modified_day = str(datetime.strptime(
-                    file_modified, "%a %b %d %H:%M:%S %Y"))[5:7]
+                    file_modified, "%a %b %d %H:%M:%S %Y"))[8:10]
                 file_modified_year = str(datetime.strptime(
                     file_modified, "%a %b %d %H:%M:%S %Y"))[:4]
                 file_modified_month = str(datetime.strptime(
-                    file_modified, "%a %b %d %H:%M:%S %Y"))[8:10]
+                file_modified, "%a %b %d %H:%M:%S %Y"))[5:7]
+                month_name = calendar.month_name[int(file_modified_month)]
 
                 # The Loop!
                 for line in fileinput.input(subfolder_folder, inplace=1):
@@ -626,6 +629,8 @@ def build_files(outdir):
                     line = line.replace("{page_year}", str(file_modified_year))
                     line = line.replace(
                         "{page_month}", str(file_modified_month))
+                    line = line.replace(
+                        "{page_month_name}", str(month_name))
                     line = line.replace("{blended_version}", str(app_version))
                     line = line.replace(
                         "{blended_version_message}", blended_version_message)
