@@ -52,7 +52,7 @@ Each Blended website uses four template files:
 * home_page.html (Not required but the site looks better)
 * content_page.html (Not required but the site looks better)
 * nav(name).html (You can have up to 6 different nav templates. For example, `navTest.html` or `nav_test.html`)
-* page_list_item.html (Not required, if used, this will replace each page list item content. Can have the variables `{name}`, `{content}`, `{content_short}`, `{date}`, `{day}`, `{month}`, `{year}`, `{path}`)
+* page_list_item.html (Not required, if used, this will replace each page list item content. Can have the variables `{name}`, `{content}`, `{content_short}`, `{date}`, `{day}`, `{month}`, `{month_name}` `{year}`, `{path}`)
 
 In these files you place the markup for each section to be generated.
 
@@ -79,6 +79,7 @@ You have some variables that you can use in your templates to pull in values whi
 * `{page_date}` (Date/Time the page was written/modified)
 * `{page_day}` (Day the page was written/modified)
 * `{page_month}` (Month the page was written/modified)
+* `{page_month_name}` (Name of the month the page was written/modified)
 * `{page_year}` (Year the page was written/modified)
 * `{relative_root}` (Returns a relative path for the current file)
 * `{random_number}`
