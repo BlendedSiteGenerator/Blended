@@ -1,3 +1,4 @@
+"""This is the Blended Static Website Generator"""
 # encoding=utf8
 import os
 import os.path
@@ -6,31 +7,30 @@ from sys import platform
 import shutil
 import fileinput
 import webbrowser
-import fileinput
 from datetime import datetime
-import click
 from random import randint
-import pkg_resources
-import time
 from ftplib import FTP, error_perm
+import time
+import subprocess
+import importlib
+import click
+import pkg_resources
 import markdown
 import textile
 from docutils.core import publish_parts
 import mammoth
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
-import importlib
 import sass
 import pyjade
 import lesscpy
-import subprocess
 from six import StringIO
 from stylus import Stylus
 import coffeescript
 from jsmin import jsmin
 from cssmin import cssmin
 import pip
-from .functions import *
+from .functions import create_folder, replace_folder, get_html_filename, get_html_clear_filename, getunzipped, checkConfig, createConfig, createBlendedFolders, parseXML
 
 # Very important, get the directory that the user wants to run commands in
 cwd = os.getcwd()
@@ -71,7 +71,7 @@ def install_template(username, repo):
 
 @cli.command('import-wp', short_help='Import a site from WordPress')
 @click.option('--filepath', prompt='WordPress export file', help='Which file holds the exported data from WordPress')
-def install_template(filepath):
+def import_wp(filepath):
     """Imports A WordPress export and converts it to a Blended site"""
 
     print("\nBlended: Static Website Generator -\n")
@@ -94,15 +94,15 @@ def install_template(filepath):
                  wdesc=wdesc, wlan=wlan, wurl=wurl, aname=aname)
 
     for item in wp.rss.channel.item:
-        with open(os.path.join(cwd, "content", item.title.cdata.replace(" ", "_") + ".html"), 'w') as file:
-            file.write(item.content_encoded.cdata.strip())
+        with open(os.path.join(cwd, "content", item.title.cdata.replace(" ", "_") + ".html"), 'w') as wfile:
+            wfile.write(item.content_encoded.cdata.strip())
 
     print("\nYour website has been imported from WordPress.")
 
 
 @cli.command('import-blogger', short_help='Import a site from Blogger')
 @click.option('--filepath', prompt='Blogger export file', help='Which file holds the exported data from Blogger')
-def install_template(filepath):
+def import_blogger(filepath):
     """Imports A Blogger export and converts it to a Blended site"""
 
     print("\nBlended: Static Website Generator -\n")
@@ -122,8 +122,8 @@ def install_template(filepath):
 
     for entry in blogger.feed.entry:
         if "post" in entry.id.cdata:
-            with open(os.path.join(cwd, "content", entry.title.cdata.replace(" ", "_") + ".html"), 'w') as file:
-                file.write(entry.content.cdata.strip())
+            with open(os.path.join(cwd, "content", entry.title.cdata.replace(" ", "_") + ".html"), 'w') as wfile:
+                wfile.write(entry.content.cdata.strip())
 
     print("\nYour website has been imported from Blogger.")
 
@@ -172,6 +172,7 @@ def init():
 
 
 def placeFiles(ftp, path):
+    """Upload thebuilt files to FTP"""
     for name in os.listdir(path):
         if name != "config.py" and name != "config.pyc" and name != "templates" and name != "content":
             localpath = os.path.join(path, name)
@@ -198,7 +199,7 @@ def placeFiles(ftp, path):
 
 @cli.command('ftp', short_help='Upload the files via ftp')
 @click.option('--outdir', default="build", help='Choose which folder the built files are in. Default is `build`.')
-def ftp(outdir):
+def send_ftp(outdir):
     """Upload the built website to FTP"""
     print("Uploading the files in the " + outdir + "/ directory!\n")
 
@@ -239,7 +240,7 @@ def ftp(outdir):
 
 @cli.command('clean', short_help='Remove the build folder')
 @click.option('--outdir', default="build", help='Choose which folder the built files are in. Default is `build`.')
-def clean(outdir):
+def clean_built(outdir):
     """Removes all built files"""
     print("Removing the built files!")
 
@@ -251,7 +252,7 @@ def clean(outdir):
 
 @cli.command('zip', short_help='Package the build folder into a zip file')
 @click.option('--outdir', default="build", help='Choose which folder the built files are in. Default is `build`.')
-def zip(outdir):
+def zip_built(outdir):
     """Packages the build folder into a zip"""
     print("Zipping the built files!")
 
@@ -269,7 +270,7 @@ def zip(outdir):
 
     # Remove the  build folder
     build_dir = os.path.join(cwd, outdir)
-    zip_dir = os.path.join(cwd, website_name + "-build-" +
+    zip_dir = os.path.join(cwd, website_name.replace(" ", "_") + "-build-" +
                            str(datetime.now().date()))
     if os.path.exists(build_dir):
         shutil.make_archive(zip_dir, 'zip', build_dir)
@@ -315,6 +316,7 @@ def purge():
 
 
 def convert_text(filename):
+    """Convert the post/page content using the converters"""
     text_content = open(filename, "r")
     if ".md" in filename:
         text_cont1 = "\n" + markdown.markdown(text_content.read()) + "\n"
@@ -343,6 +345,7 @@ def convert_text(filename):
 
 
 def build_files(outdir):
+    """Bulid the files!"""
     # Make sure there is actually a configuration file
     config_file_dir = os.path.join(cwd, "config.py")
     if not os.path.exists(config_file_dir):
@@ -725,12 +728,14 @@ outdir_type = "build"
 
 
 class Watcher:
+    """Watch the specificed dirs for changes"""
     DIRECTORY_TO_WATCH = os.path.join(cwd, "content")
 
     def __init__(self):
         self.observer = Observer()
 
     def run(self):
+        """run the builder on changes"""
         event_handler = Handler()
         threads = []
         paths = [os.path.join(cwd, "content"), os.path.join(cwd, "templates")]
@@ -753,6 +758,7 @@ class Watcher:
 
 
 class Handler(FileSystemEventHandler):
+    """The handler for the file change watcher"""
 
     @staticmethod
     def on_any_event(event):

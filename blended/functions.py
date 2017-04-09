@@ -72,6 +72,7 @@ def getunzipped(username, repo, thedir):
     name = os.path.join(thedir, 'temp.zip')
     try:
         name = urllib.urlretrieve(theurl, name)
+        name = os.path.join(thedir, 'temp.zip')
     except IOError, e:
         print "Can't retrieve %r to %r: %s" % (theurl, thedir, e)
         return
