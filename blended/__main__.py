@@ -4,7 +4,6 @@ import os.path
 import sys
 from sys import platform
 import shutil
-from shutil import copyfile
 import fileinput
 import webbrowser
 import fileinput
@@ -75,6 +74,11 @@ def install_template(username, repo):
 def install_template(filepath):
     """Imports A WordPress export and converts it to a Blended site"""
 
+    print("\nBlended: Static Website Generator -\n")
+
+    checkConfig()
+    print("Importing from WordPress...")
+
     wp = parseXML(filepath)
 
     wname = wp.rss.channel.title.cdata
@@ -100,6 +104,11 @@ def install_template(filepath):
 @click.option('--filepath', prompt='Blogger export file', help='Which file holds the exported data from Blogger')
 def install_template(filepath):
     """Imports A Blogger export and converts it to a Blended site"""
+
+    print("\nBlended: Static Website Generator -\n")
+
+    checkConfig()
+    print("Importing from Blogger...")
 
     blogger = parseXML(filepath)
 
@@ -137,6 +146,8 @@ def init():
     """Initiates a new website"""
 
     print("Blended: Static Website Generator -\n")
+
+    checkConfig()
 
     if (sys.version_info > (3, 0)):
         wname = input("Website Name: ")
@@ -524,6 +535,11 @@ def build_files(outdir):
             nav_cont.close()
 
     forbidden_dirs = set(["assets", "templates"])
+    blended_version_message = "Built with Blended v" + \
+        str(app_version)
+    build_date = str(datetime.now().date())
+    build_time = str(datetime.now().time())
+    build_datetime = str(datetime.now())
 
     # Replace global variables such as site name and language
     for root, dirs, files in os.walk(os.path.join(cwd, outdir)):
@@ -556,9 +572,6 @@ def build_files(outdir):
                 file_modified_month = str(datetime.strptime(
                     file_modified, "%a %b %d %H:%M:%S %Y"))[8:10]
 
-                blended_version_message = "Built with Blended v" + \
-                    str(app_version)
-
                 # The Loop!
                 for line in fileinput.input(subfolder_folder, inplace=1):
                     for var in custom_variables:
@@ -588,12 +601,9 @@ def build_files(outdir):
                     line = line.replace("{author_bio}", author_bio)
                     line = line.replace("{random_number}",
                                         str(randint(0, 100000000)))
-                    line = line.replace("{build_date}", str(
-                        datetime.now().date()))
-                    line = line.replace("{build_time}", str(
-                        datetime.now().time()))
-                    line = line.replace("{build_datetime}",
-                                        str(datetime.now()))
+                    line = line.replace("{build_date}", build_date)
+                    line = line.replace("{build_time}", build_time)
+                    line = line.replace("{build_datetime}", build_datetime)
                     line = line.replace("{page_list}", page_list)
                     line = line.replace("{page_name}", newFilename)
                     line = line.replace("{page_filename}", page_file)

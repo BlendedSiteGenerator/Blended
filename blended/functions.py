@@ -80,13 +80,15 @@ def getunzipped(username, repo, thedir):
     copy_tree(os.path.join(thedir, repo + "-master"), thedir)
     shutil.rmtree(os.path.join(thedir, repo + "-master"))
 
-
-def createConfig(app_version=5.0, wname="", wdesc="", wdescl="", wlic="", wlan="", wurl="", aname="", abio=""):
+def checkConfig():
     config_file_dir = os.path.join(cwd, "config.py")
     if os.path.exists(config_file_dir):
         print("Making a backup of your config file!")
         config_file_dir2 = os.path.join(cwd, "config.py.oldbak")
         copyfile(config_file_dir, config_file_dir2)
+
+def createConfig(app_version=5.0, wname="", wdesc="", wdescl="", wlic="", wlan="", wurl="", aname="", abio=""):
+    config_file_dir = os.path.join(cwd, "config.py")
 
     config_file = open(config_file_dir, "w")
     config_file.write('blended_version = ' + app_version + '\n')
