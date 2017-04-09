@@ -172,7 +172,7 @@ def init():
 
 
 def placeFiles(ftp, path):
-    """Upload thebuilt files to FTP"""
+    """Upload the built files to FTP"""
     for name in os.listdir(path):
         if name != "config.py" and name != "config.pyc" and name != "templates" and name != "content":
             localpath = os.path.join(path, name)
