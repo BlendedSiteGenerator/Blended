@@ -345,7 +345,7 @@ def convert_text(filename):
 
 
 def build_files(outdir):
-    """Bulid the files!"""
+    """Build the files!"""
     # Make sure there is actually a configuration file
     config_file_dir = os.path.join(cwd, "config.py")
     if not os.path.exists(config_file_dir):
@@ -728,14 +728,14 @@ outdir_type = "build"
 
 
 class Watcher:
-    """Watch the specificed dirs for changes"""
+    """Watch the specified dirs for changes"""
     DIRECTORY_TO_WATCH = os.path.join(cwd, "content")
 
     def __init__(self):
         self.observer = Observer()
 
     def run(self):
-        """run the builder on changes"""
+        """Run the builder on changes"""
         event_handler = Handler()
         threads = []
         paths = [os.path.join(cwd, "content"), os.path.join(cwd, "templates")]
