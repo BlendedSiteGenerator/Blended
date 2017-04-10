@@ -56,7 +56,8 @@ def init():
 
 
 @cli.command('build', short_help='Build the website files')
-def build():
+@click.option('--outdir', default="build", help='Choose which folder the built files are in. Default is `build`.')
+def build(outdir):
     """Builds the website files"""
 
     print(term_colors.HEADER +
@@ -64,7 +65,7 @@ def build():
 
     print(term_colors.OKBLUE + "Building the files!" + term_colors.ENDC)
 
-    build_site()
+    build_site(outdir)
 
     print(term_colors.OKGREEN + "The files are built!" + term_colors.ENDC)
 

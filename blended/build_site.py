@@ -9,7 +9,32 @@ from term_colors import term_colors
 cwd = os.getcwd()
 
 
-def build_site():
+def get_content(filepath):
+    output = {}
+    options = frontmatter.load(filepath)
+
+    if filepath.endswith(".html"):
+        fformat = "html"
+    elif filepath.endswith(".md") or filepath.endswith(".markdown"):
+        fformat = "markdown"
+    else:
+        sys.exit(term_colors.FAIL + "The file format of " + filepath +
+                 " is not recognized! It must be HTML (.html) or Markdown (.md, .markdown)." + term_colors.ENDC)
+
+    if options['type'] == "post":
+        output = {"format": fformat, "title": options['title'], "categories": options['categories'], "tags": options['tags'],
+                  "image": options['image'], "date": options['date'], "type": options['type'], "content": options.content}
+    elif options['type'] == "page":
+        output = {"format": fformat, "title": options['title'], "image": options['image'],
+                  "date": options['date'], "type": options['type'], "content": options.content}
+    else:
+        sys.exit(term_colors.FAIL +
+                 "That content type is not recognized!" + term_colors.ENDC)
+
+    return output
+
+
+def build_site(outdir):
     config_file_dir = os.path.join(cwd, "config.py")
     if not os.path.exists(config_file_dir):
         sys.exit(term_colors.FAIL +
@@ -40,3 +65,8 @@ def build_site():
     elif theme.strip() == "":
         sys.exit(term_colors.FAIL +
                  "ERROR: You must have a theme!" + term_colors.ENDC)
+
+    for root, dirs, files in os.walk(os.path.join(cwd, "content")):
+        for filename in files:
+            content = get_content(os.path.join(root, filename))
+            print(content)
