@@ -44,6 +44,7 @@ def create_config(app_version=6.0, site_title="", site_tagline=""):
         config_file.write('plugins = []\n')
         config_file.close()
 
+
 def generate_required_folders():
     """Creates the standard folders for a Blended website"""
     create_folder(os.path.join(cwd, "content"))

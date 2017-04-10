@@ -23,6 +23,7 @@ except:
 def cli():
     """Blended: Static Website Generator"""
 
+
 @cli.command('init', short_help='Initiate a new website')
 def init():
     """Initiates a new website"""
@@ -39,11 +40,13 @@ def init():
         site_tagline = raw_input("Tagline: ")
 
     # Populate the configuration file
-    create_config(app_version=app_version, site_title=site_title, site_tagline=site_tagline)
+    create_config(app_version=app_version, site_title=site_title,
+                  site_tagline=site_tagline)
 
     generate_required_folders()
 
     print("\nThe required files for your website have been generated.")
+
 
 if __name__ == '__main__':
     cli()
