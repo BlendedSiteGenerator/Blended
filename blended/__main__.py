@@ -6,7 +6,7 @@ import sys
 from sys import platform
 import shutil
 import pkg_resources
-from config_gen import check_config, create_config
+from site_config import check_config, create_config, generate_required_folders
 
 # Very important, get the directory that the user wants to run commands in
 cwd = os.getcwd()
@@ -29,15 +29,19 @@ def init():
 
     print("Blended: Static Website Generator -\n")
 
-    checkConfig()
+    check_config()
 
     if (sys.version_info > (3, 0)):
         site_title = input("Site Title: ")
+        site_tagline = input("Tagline: ")
     else:
         site_title = raw_input("Site Title: ")
+        site_tagline = raw_input("Tagline: ")
 
     # Populate the configuration file
-    createConfig(app_version=app_version, site_title=site_title)
+    create_config(app_version=app_version, site_title=site_title, site_tagline=site_tagline)
+
+    generate_required_folders()
 
     print("\nThe required files for your website have been generated.")
 
