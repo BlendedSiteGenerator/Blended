@@ -6,7 +6,12 @@ import sys
 from sys import platform
 import shutil
 import pkg_resources
+from colorama import init as cinit
 from site_config import check_config, create_config, generate_required_folders
+from build_site import build_site
+from term_colors import term_colors
+
+cinit()
 
 # Very important, get the directory that the user wants to run commands in
 cwd = os.getcwd()
@@ -16,7 +21,7 @@ try:
     app_version = app_version[:3]
 except:
     app_version = "NOTSET"
-    print("WARNING: app_version not set.\n")
+    print(term_colors.WARNING + "WARNING: app_version not set.\n" + term_colors.ENDC)
 
 
 @click.group()
@@ -28,7 +33,8 @@ def cli():
 def init():
     """Initiates a new website"""
 
-    print("Blended: Static Website Generator -\n")
+    print(term_colors.HEADER +
+          "Blended: Static Website Generator -\n" + term_colors.ENDC)
 
     check_config()
 
@@ -45,7 +51,22 @@ def init():
 
     generate_required_folders()
 
-    print("\nThe required files for your website have been generated.")
+    print(term_colors.OKGREEN +
+          "\nThe required files for your website have been generated." + term_colors.ENDC)
+
+
+@cli.command('build', short_help='Build the website files')
+def build():
+    """Builds the website files"""
+
+    print(term_colors.HEADER +
+          "Blended: Static Website Generator -\n" + term_colors.ENDC)
+
+    print(term_colors.OKBLUE + "Building the files!" + term_colors.ENDC)
+
+    build_site()
+
+    print(term_colors.OKGREEN + "The files are built!" + term_colors.ENDC)
 
 
 if __name__ == '__main__':
