@@ -11,6 +11,7 @@ setup(name='blended',
       install_requires=[
           'click',
           'colorama',
+          'python-frontmatter',
       ],
       entry_points={
           'console_scripts': [
