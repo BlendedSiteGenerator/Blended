@@ -6,12 +6,12 @@ import sys
 from sys import platform
 import shutil
 import pkg_resources
-from colorama import init as cinit
+from colorama import init as colorama_init
 from site_config import check_config, create_config, generate_required_folders
 from build_site import build_site
 from term_colors import term_colors
 
-cinit()
+colorama_init()
 
 # Very important, get the directory that the user wants to run commands in
 cwd = os.getcwd()
