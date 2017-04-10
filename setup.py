@@ -24,6 +24,7 @@ setup(name='blended',
           'jsmin',
           'cssmin',
           'untangle',
+          'python-frontmatter',
       ],
       entry_points={
           'console_scripts': [

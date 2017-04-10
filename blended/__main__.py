@@ -30,6 +30,7 @@ from stylus import Stylus
 import coffeescript
 from jsmin import jsmin
 from cssmin import cssmin
+import frontmatter
 import pip
 from .functions import create_folder, replace_folder, get_html_filename, get_html_clear_filename, getunzipped, checkConfig, createConfig, createBlendedFolders, parseXML
 
