@@ -47,8 +47,7 @@ def create_config(app_version=6.0, site_title="", site_tagline=""):
 
 def generate_required_folders():
     """Creates the standard folders for a Blended website"""
-    create_folder(os.path.join(cwd, "content"))
-    create_folder(os.path.join(cwd, "content", "media"))
+    create_folder(os.path.join(cwd, "content")
     create_folder(os.path.join(cwd, "content", "pages"))
     create_folder(os.path.join(cwd, "content", "posts"))
 
@@ -56,3 +55,4 @@ def generate_required_folders():
     create_folder(os.path.join(cwd, "includes", "authors"))
     create_folder(os.path.join(cwd, "includes", "plugins"))
     create_folder(os.path.join(cwd, "includes", "themes"))
+    create_folder(os.path.join(cwd, "includes", "media"))
