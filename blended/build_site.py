@@ -67,7 +67,8 @@ def build_site(outdir):
         sys.exit(term_colors.FAIL +
                  "ERROR: You must have a theme!" + term_colors.ENDC)
 
-    ntemplates = [os.path.join(cwd, "includes", "themes", theme, "post.html"), os.path.join(cwd, "includes", "themes", theme, "header.html"), os.path.join(cwd, "includes", "themes", theme, "footer.html")]
+    ntemplates = [os.path.join(cwd, "includes", "themes", theme, "post.html"), os.path.join(
+        cwd, "includes", "themes", theme, "header.html"), os.path.join(cwd, "includes", "themes", theme, "footer.html")]
     force_exist(ntemplates, "template")
 
     for root, dirs, files in os.walk(os.path.join(cwd, "content")):
