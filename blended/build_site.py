@@ -79,7 +79,8 @@ def build_site(outdir):
     for root, dirs, files in os.walk(os.path.join(cwd, "content")):
         for filename in files:
             content = get_content(os.path.join(root, filename))
-            template_file = os.path.join(cwd, "includes", "themes", theme, content['type'] + ".html")
+            template_file = os.path.join(
+                cwd, "includes", "themes", theme, content['type'] + ".html")
             if not os.path.exists(template_file):
                 print(term_colors.WARNING +
-                         "WARNING: The "+content['type'] + ".html template does not exist. Using post.html instead." + term_colors.ENDC)
+                      "WARNING: The " + content['type'] + ".html template does not exist. Using post.html instead." + term_colors.ENDC)
