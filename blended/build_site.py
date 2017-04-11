@@ -3,6 +3,7 @@ import sys
 import shutil
 import importlib
 import frontmatter
+from dateutil import parser as date_parser
 from term_colors import term_colors
 from functions import force_exist
 
@@ -24,10 +25,10 @@ def get_content(filepath):
 
     if options['type'] == "post":
         output = {"format": fformat, "title": options['title'], "author": options['author'], "categories": options['categories'], "tags": options['tags'],
-                  "image": options['image'], "date": options['date'], "type": options['type'], "content": options.content}
+                  "image": options['image'], "date": date_parser.parse(options['date']).date(), "type": options['type'], "content": options.content}
     elif options['type'] == "page":
         output = {"format": fformat, "title": options['title'], "author": options['author'], "image": options['image'],
-                  "date": options['date'], "type": options['type'], "content": options.content}
+                  "date": date_parser.parse(options['date']).date(), "type": options['type'], "content": options.content}
     else:
         sys.exit(term_colors.FAIL +
                  "That content type is not recognized!" + term_colors.ENDC)
@@ -67,12 +68,18 @@ def build_site(outdir):
         sys.exit(term_colors.FAIL +
                  "ERROR: You must have a theme!" + term_colors.ENDC)
 
-    ntemplates = [os.path.join(cwd, "includes", "themes", theme, "post.html"), os.path.join(
-        cwd, "includes", "themes", theme, "header.html"), os.path.join(cwd, "includes", "themes", theme, "footer.html")]
-    force_exist(ntemplates, "template")
+    header_file = os.path.join(cwd, "includes", "themes", theme, "header.html")
+    footer_file = os.path.join(cwd, "includes", "themes", theme, "footer.html")
+    post_file = os.path.join(cwd, "includes", "themes", theme, "post.html")
+    force_exist([post_file, header_file, footer_file], "template")
+
+    header_content = open(header_file).read()
+    print(header_content)
 
     for root, dirs, files in os.walk(os.path.join(cwd, "content")):
         for filename in files:
             content = get_content(os.path.join(root, filename))
-            if os.path.exists(os.path.join(cwd, "includes", "themes", theme, content['type'] + ".html")):
-                print(True)
+            template_file = os.path.join(cwd, "includes", "themes", theme, content['type'] + ".html")
+            if not os.path.exists(template_file):
+                print(term_colors.WARNING +
+                         "WARNING: The "+content['type'] + ".html template does not exist. Using post.html instead." + term_colors.ENDC)
