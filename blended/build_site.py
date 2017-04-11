@@ -61,6 +61,8 @@ def build_site(outdir):
             plugins = []
             print(term_colors.WARNING + "WARNING: Some of the optional configuration values could not be found! Maybe your config.py is too old. Run 'blended init' to fix.\n" + term_colors.ENDC)
 
+    create_folder(os.path.join(cwd, "build"))
+
     if site_title.strip() == "":
         sys.exit(term_colors.FAIL +
                  "ERROR: You must have a site_title!" + term_colors.ENDC)
@@ -80,18 +82,22 @@ def build_site(outdir):
     for root, dirs, files in os.walk(os.path.join(cwd, "content")):
         for filename in files:
             content = get_content(os.path.join(root, filename))
-            output_file = content['title'].replace(" ", "_")+".html"
+            title = content['title'].lower()
+            output_file = title.replace(" ", "-")+".html"
             if content['type'] != "post":
                 output_folder = os.path.join(cwd, outdir)
-                print(output_folder)
                 template_file = os.path.join(
                     cwd, "includes", "themes", theme, content['type'] + ".html")
                 if not os.path.exists(template_file):
                     print(term_colors.WARNING +
-                          "WARNING: The ``" + content['type'] + ".html` template does not exist. Using `post.html` instead." + term_colors.ENDC)
+                          "WARNING: The `" + content['type'] + ".html` template does not exist. Using `post.html` instead." + term_colors.ENDC)
                     template_content = post_template_content
                 else:
                     template_content = open(template_file).read()
             elif content['type'] == "post":
                 output_folder = create_folder(os.path.join(cwd, outdir, str(content['date'].year), str(content['date'].month), str(content['date'].day)))
-                print(output_folder)
+
+            with open(os.path.join(output_folder, output_file), 'w') as wfile:
+                wfile.write(header_content)
+                wfile.write(content["content"])
+                wfile.write(footer_content)
