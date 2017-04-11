@@ -4,6 +4,7 @@ import shutil
 import importlib
 import frontmatter
 from term_colors import term_colors
+from functions import force_exist
 
 # Very important, get the directory that the user wants to run commands in
 cwd = os.getcwd()
@@ -22,10 +23,10 @@ def get_content(filepath):
                  " is not recognized! It must be HTML (.html) or Markdown (.md, .markdown)." + term_colors.ENDC)
 
     if options['type'] == "post":
-        output = {"format": fformat, "title": options['title'], "categories": options['categories'], "tags": options['tags'],
+        output = {"format": fformat, "title": options['title'], "author": options['author'], "categories": options['categories'], "tags": options['tags'],
                   "image": options['image'], "date": options['date'], "type": options['type'], "content": options.content}
     elif options['type'] == "page":
-        output = {"format": fformat, "title": options['title'], "image": options['image'],
+        output = {"format": fformat, "title": options['title'], "author": options['author'], "image": options['image'],
                   "date": options['date'], "type": options['type'], "content": options.content}
     else:
         sys.exit(term_colors.FAIL +
@@ -66,7 +67,11 @@ def build_site(outdir):
         sys.exit(term_colors.FAIL +
                  "ERROR: You must have a theme!" + term_colors.ENDC)
 
+    ntemplates = [os.path.join(cwd, "includes", "themes", theme, "post.html"), os.path.join(cwd, "includes", "themes", theme, "header.html"), os.path.join(cwd, "includes", "themes", theme, "footer.html")]
+    force_exist(ntemplates, "template")
+
     for root, dirs, files in os.walk(os.path.join(cwd, "content")):
         for filename in files:
             content = get_content(os.path.join(root, filename))
-            print(content)
+            if os.path.exists(os.path.join(cwd, "includes", "themes", theme, content['type'] + ".html")):
+                print(True)

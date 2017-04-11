@@ -1,6 +1,9 @@
 """This holds all of the functions"""
 import os
+import sys
 import shutil
+import ntpath
+from term_colors import term_colors
 
 
 def create_folder(path):
@@ -16,3 +19,10 @@ def replace_folder(path):
         os.makedirs(path)
     else:
         os.makedirs(path)
+
+
+def force_exist(files, type):
+    for wfile in files:
+        if not os.path.exists(wfile):
+            sys.exit(term_colors.FAIL +
+                     "ERROR: You must have a " + ntpath.basename(wfile) + " " + type + "!" + term_colors.ENDC)
