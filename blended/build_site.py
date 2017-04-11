@@ -5,7 +5,7 @@ import importlib
 import frontmatter
 from dateutil import parser as date_parser
 from term_colors import term_colors
-from functions import force_exist
+from functions import force_exist, create_folder
 
 # Very important, get the directory that the user wants to run commands in
 cwd = os.getcwd()
@@ -71,7 +71,7 @@ def build_site(outdir):
     header_file = os.path.join(cwd, "includes", "themes", theme, "header.html")
     footer_file = os.path.join(cwd, "includes", "themes", theme, "footer.html")
     post_template_file = os.path.join(cwd, "includes", "themes", theme, "post.html")
-    force_exist([post_file, header_file, footer_file], "template")
+    force_exist([post_template_file, header_file, footer_file], "template")
 
     header_content = open(header_file).read()
     footer_content = open(footer_file).read()
@@ -80,12 +80,18 @@ def build_site(outdir):
     for root, dirs, files in os.walk(os.path.join(cwd, "content")):
         for filename in files:
             content = get_content(os.path.join(root, filename))
+            output_file = content['title'].replace(" ", "_")+".html"
             if content['type'] != "post":
+                output_folder = os.path.join(cwd, outdir)
+                print(output_folder)
                 template_file = os.path.join(
                     cwd, "includes", "themes", theme, content['type'] + ".html")
                 if not os.path.exists(template_file):
                     print(term_colors.WARNING +
-                          "WARNING: The " + content['type'] + ".html template does not exist. Using post.html instead." + term_colors.ENDC)
+                          "WARNING: The ``" + content['type'] + ".html` template does not exist. Using `post.html` instead." + term_colors.ENDC)
                     template_content = post_template_content
                 else:
                     template_content = open(template_file).read()
+            elif content['type'] == "post":
+                output_folder = create_folder(os.path.join(cwd, outdir, str(content['date'].year), str(content['date'].month), str(content['date'].day)))
+                print(output_folder)
