@@ -3,6 +3,7 @@ import sys
 import shutil
 import importlib
 import frontmatter
+import markdown
 from dateutil import parser as date_parser
 from term_colors import term_colors
 from functions import force_exist, create_folder
@@ -72,7 +73,8 @@ def build_site(outdir):
 
     header_file = os.path.join(cwd, "includes", "themes", theme, "header.html")
     footer_file = os.path.join(cwd, "includes", "themes", theme, "footer.html")
-    post_template_file = os.path.join(cwd, "includes", "themes", theme, "post.html")
+    post_template_file = os.path.join(
+        cwd, "includes", "themes", theme, "post.html")
     force_exist([post_template_file, header_file, footer_file], "template")
 
     header_content = open(header_file).read()
@@ -83,7 +85,7 @@ def build_site(outdir):
         for filename in files:
             content = get_content(os.path.join(root, filename))
             title = content['title'].lower()
-            output_file = title.replace(" ", "-")+".html"
+            output_file = title.replace(" ", "-") + ".html"
             if content['type'] != "post":
                 output_folder = os.path.join(cwd, outdir)
                 template_file = os.path.join(
@@ -95,9 +97,20 @@ def build_site(outdir):
                 else:
                     template_content = open(template_file).read()
             elif content['type'] == "post":
-                output_folder = create_folder(os.path.join(cwd, outdir, str(content['date'].year), str(content['date'].month), str(content['date'].day)))
+                output_folder = create_folder(os.path.join(cwd, outdir, str(
+                    content['date'].year), str(content['date'].month), str(content['date'].day)))
+
+            if content['format'] == "html":
+                page_content = content['content']
+            elif content['format'] == "markdown":
+                page_content = markdown.markdown(
+                    content['content'], ['markdown.extensions.extra'])
+
+            page = ""
+            page = page + header_content
+            page = page + \
+                template_content.replace("{the_content}", page_content)
+            page = page + footer_content
 
             with open(os.path.join(output_folder, output_file), 'w') as wfile:
-                wfile.write(header_content)
-                wfile.write(content["content"])
-                wfile.write(footer_content)
+                wfile.write(page.encode('utf-8').strip())

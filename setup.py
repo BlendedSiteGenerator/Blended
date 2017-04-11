@@ -11,6 +11,7 @@ setup(name='blended',
       install_requires=[
           'click',
           'colorama',
+          'markdown',
           'python-frontmatter',
       ],
       entry_points={
