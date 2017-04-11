@@ -4,6 +4,7 @@ import shutil
 import importlib
 import frontmatter
 import markdown
+import calendar
 from dateutil import parser as date_parser
 from term_colors import term_colors
 from functions import force_exist, create_folder
@@ -109,8 +110,36 @@ def build_site(outdir):
             page = ""
             page = page + header_content
             page = page + \
-                template_content.replace("{the_content}", page_content)
+                template_content.replace("{{the_content}}", page_content)
             page = page + footer_content
+
+            for i in content:
+                if i != "content":
+                    if i == "date":
+                        day = str(content['date'].day)
+                        if len(day) != "1":
+                            day = "0"+day
+                        month = str(content['date'].month)
+                        if len(month) != "1":
+                            month = "0"+month
+                        month_name = calendar.month_name[int(month)]
+                        year = str(content['date'].year)
+                        if date_format == "F j, Y":
+                            date = month_name.title() + " " + day + ", " + year
+                        elif date_format == "Y-m-d":
+                            date = year + "-" + month + "-" + day
+                        elif date_format == "m/d/Y":
+                            date = month + "/" + day + "/" + year
+                        elif date_format == "d/m/Y":
+                            date = day + "/" + month + "/" + year
+                        else:
+                            print(term_colors.WARNING +
+                                  "WARNING: The date_format `" + date_format + " is not recognized. Using `m/d/Y` instead." + term_colors.ENDC)
+                            date = month + "/" + day + "/" + year
+
+                        page = page.replace("{{date}}", str(date))
+                    else:
+                        page = page.replace("{{"+i+"}}", str(content[i]))
 
             with open(os.path.join(output_folder, output_file), 'w') as wfile:
                 wfile.write(page.encode('utf-8').strip())
