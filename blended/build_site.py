@@ -70,17 +70,22 @@ def build_site(outdir):
 
     header_file = os.path.join(cwd, "includes", "themes", theme, "header.html")
     footer_file = os.path.join(cwd, "includes", "themes", theme, "footer.html")
-    post_file = os.path.join(cwd, "includes", "themes", theme, "post.html")
+    post_template_file = os.path.join(cwd, "includes", "themes", theme, "post.html")
     force_exist([post_file, header_file, footer_file], "template")
 
     header_content = open(header_file).read()
-    print(header_content)
+    footer_content = open(footer_file).read()
+    post_template_content = open(post_template_file).read()
 
     for root, dirs, files in os.walk(os.path.join(cwd, "content")):
         for filename in files:
             content = get_content(os.path.join(root, filename))
-            template_file = os.path.join(
-                cwd, "includes", "themes", theme, content['type'] + ".html")
-            if not os.path.exists(template_file):
-                print(term_colors.WARNING +
-                      "WARNING: The " + content['type'] + ".html template does not exist. Using post.html instead." + term_colors.ENDC)
+            if content['type'] != "post":
+                template_file = os.path.join(
+                    cwd, "includes", "themes", theme, content['type'] + ".html")
+                if not os.path.exists(template_file):
+                    print(term_colors.WARNING +
+                          "WARNING: The " + content['type'] + ".html template does not exist. Using post.html instead." + term_colors.ENDC)
+                    template_content = post_template_content
+                else:
+                    template_content = open(template_file).read()
