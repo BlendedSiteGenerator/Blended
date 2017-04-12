@@ -321,7 +321,7 @@ def convert_text(filename):
     """Convert the post/page content using the converters"""
     text_content = open(filename, "r")
     if ".md" in filename:
-        text_cont1 = "\n" + markdown.markdown(text_content.read()) + "\n"
+        text_cont1 = "\n" + markdown.markdown(text_content.read(), ['markdown.extensions.extra']) + "\n"
     elif ".docx" in filename:
         with open(os.path.join(cwd, "content", filename), "rb") as docx_file:
             result = mammoth.convert_to_html(docx_file)
