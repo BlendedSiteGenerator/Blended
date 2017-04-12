@@ -141,5 +141,18 @@ def build_site(outdir):
                     else:
                         page = page.replace("{{"+i+"}}", str(content[i]))
 
+                page = page.replace("{{site_title}}", site_title).replace("{{site_tagline}}", site_tagline).replace("{{site_language}}", site_language)
+
+                if content['type'] == "post":
+                    page = page.replace("{{relative_root}}", "../../../")
+                else:
+                    page = page.replace("{{relative_root}}", "")
+
             with open(os.path.join(output_folder, output_file), 'w') as wfile:
                 wfile.write(page.encode('utf-8').strip())
+
+            if os.path.exists(os.path.join(cwd, "includes", "themes", theme, "assets")):
+                if os.path.exists(os.path.join(cwd, outdir, "assets")):
+                    shutil.rmtree(os.path.join(cwd, outdir, "assets"))
+                shutil.copytree(os.path.join(cwd, "includes", "themes", theme, "assets"),
+                                os.path.join(cwd, outdir, "assets"))
