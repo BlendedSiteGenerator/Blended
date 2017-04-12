@@ -113,46 +113,19 @@ def build_site(outdir):
                 template_content.replace("{{the_content}}", page_content)
             page = page + footer_content
 
-            for i in content:
-                if i != "content":
-                    if i == "date":
-                        day = str(content['date'].day)
-                        if len(day) != "1":
-                            day = "0"+day
-                        month = str(content['date'].month)
-                        if len(month) != "1":
-                            month = "0"+month
-                        month_name = calendar.month_name[int(month)]
-                        year = str(content['date'].year)
-                        if date_format == "F j, Y":
-                            date = month_name.title() + " " + day + ", " + year
-                        elif date_format == "Y-m-d":
-                            date = year + "-" + month + "-" + day
-                        elif date_format == "m/d/Y":
-                            date = month + "/" + day + "/" + year
-                        elif date_format == "d/m/Y":
-                            date = day + "/" + month + "/" + year
-                        else:
-                            print(term_colors.WARNING +
-                                  "WARNING: The date_format `" + date_format + " is not recognized. Using `m/d/Y` instead." + term_colors.ENDC)
-                            date = month + "/" + day + "/" + year
-
-                        page = page.replace("{{date}}", str(date))
-                    else:
-                        page = page.replace("{{"+i+"}}", str(content[i]))
-
-                page = page.replace("{{site_title}}", site_title).replace("{{site_tagline}}", site_tagline).replace("{{site_language}}", site_language)
-
-                if content['type'] == "post":
-                    page = page.replace("{{relative_root}}", "../../../")
-                else:
-                    page = page.replace("{{relative_root}}", "")
-
             with open(os.path.join(output_folder, output_file), 'w') as wfile:
                 wfile.write(page.encode('utf-8').strip())
 
-            if os.path.exists(os.path.join(cwd, "includes", "themes", theme, "assets")):
-                if os.path.exists(os.path.join(cwd, outdir, "assets")):
-                    shutil.rmtree(os.path.join(cwd, outdir, "assets"))
-                shutil.copytree(os.path.join(cwd, "includes", "themes", theme, "assets"),
-                                os.path.join(cwd, outdir, "assets"))
+    for root, dirs, files in os.walk(os.path.join(cwd, outdir)):
+        for filename in files:
+            with open(os.path.join(root, filename), 'r') as ffile:
+                content = ffile.read()
+
+            with open(os.path.join(root, filename), 'w') as ffile:
+                ffile.write("hi")
+
+    if os.path.exists(os.path.join(cwd, "includes", "themes", theme, "assets")):
+        if os.path.exists(os.path.join(cwd, outdir, "assets")):
+            shutil.rmtree(os.path.join(cwd, outdir, "assets"))
+        shutil.copytree(os.path.join(cwd, "includes", "themes", theme, "assets"),
+                        os.path.join(cwd, outdir, "assets"))
