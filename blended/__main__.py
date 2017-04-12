@@ -33,6 +33,7 @@ from cssmin import cssmin
 import frontmatter
 import pip
 from .functions import create_folder, replace_folder, get_html_filename, get_html_clear_filename, getunzipped, checkConfig, createConfig, createBlendedFolders, parseXML
+from web_ui import web_app
 
 # Very important, get the directory that the user wants to run commands in
 cwd = os.getcwd()
@@ -57,6 +58,13 @@ def version():
     print("You are running Blended v" + app_version)
     print("The current working directory is " + cwd)
 
+
+@cli.command('editor', short_help='Run a website editor in the browser.')
+def start_editor():
+    """Runs a website editor in the browser"""
+
+    print("Starting the web editor!")
+    web_app.run()
 
 @cli.command('install-template', short_help='Install a Blended template from GitHub')
 @click.option('--username', prompt='GitHub username/organization',
