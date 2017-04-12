@@ -15,6 +15,7 @@ import calendar
 import subprocess
 import importlib
 import click
+from colorama import init as colorama_init
 import pkg_resources
 import markdown
 import textile
@@ -33,7 +34,10 @@ from cssmin import cssmin
 import frontmatter
 import pip
 from .functions import create_folder, replace_folder, get_html_filename, get_html_clear_filename, getunzipped, checkConfig, createConfig, createBlendedFolders, parseXML
+from term_colors import term_colors
 from web_ui import web_app
+
+colorama_init()
 
 # Very important, get the directory that the user wants to run commands in
 cwd = os.getcwd()
@@ -65,6 +69,7 @@ def start_editor():
 
     print("Starting the web editor!")
     web_app.run()
+
 
 @cli.command('install-template', short_help='Install a Blended template from GitHub')
 @click.option('--username', prompt='GitHub username/organization',
@@ -329,7 +334,9 @@ def convert_text(filename):
     """Convert the post/page content using the converters"""
     text_content = open(filename, "r")
     if ".md" in filename:
-        text_cont1 = "\n" + markdown.markdown(text_content.read(), ['markdown.extensions.extra']) + "\n"
+        text_cont1 = "\n" + \
+            markdown.markdown(text_content.read(), [
+                              'markdown.extensions.extra']) + "\n"
     elif ".docx" in filename:
         with open(os.path.join(cwd, "content", filename), "rb") as docx_file:
             result = mammoth.convert_to_html(docx_file)
