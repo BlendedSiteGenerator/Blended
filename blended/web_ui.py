@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template
+from flask import Flask, render_template, request, url_for
 web_app = Flask(__name__, template_folder="web_templates")
 
 # Very important, get the directory that the user wants to run commands in
@@ -13,3 +13,8 @@ def hello():
 def edit_file(filename):
     content = open(os.path.join(cwd, "content", filename), 'r').read()
     return render_template('edit.html', content=content)
+
+@web_app.route("/publish/", methods=['POST'])
+def publish():
+    content = request.form['code']
+    return content

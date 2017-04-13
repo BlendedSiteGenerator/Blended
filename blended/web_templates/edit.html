@@ -80,9 +80,9 @@
                 <h3 class="card-header">Edit Page</h3>
                 <div class="card-block">
                     <div class="card-text">
-                        <form action="">
+                        <form method="post" action="{{ url_for('publish') }}">
                             <div class="form-group">
-                                <textarea id="code" class="form-control">{{ content }}</textarea>
+                                <textarea id="code" name="code" class="form-control">{{ content }}</textarea>
                             </div>
                             <button type="submit" class="btn btn-red">Save Page</button>
                         </form>
