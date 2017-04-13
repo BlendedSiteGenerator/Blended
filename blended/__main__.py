@@ -47,7 +47,7 @@ try:
     app_version = app_version[:3]
 except:
     app_version = "NOTSET"
-    print("WARNING: app_version not set.\n")
+    print(term_colors.WARNING + "WARNING: app_version not set.\n" + term_colors.ENDC)
 
 
 @click.group()
@@ -67,7 +67,7 @@ def version():
 def start_editor():
     """Runs a website editor in the browser"""
 
-    print("Starting the web editor!")
+    print(term_colors.OKBLUE + "Starting the web editor!" + term_colors.ENDC)
     web_app.run()
 
 
@@ -78,7 +78,8 @@ def start_editor():
               help='The GitHub repository name.')
 def install_template(username, repo):
     """Installs a Blended template from GitHub"""
-    print("Installing template from " + username + "/" + repo)
+    print(term_colors.OKBLUE + "Installing template from " +
+          username + "/" + repo + term_colors.ENDC)
 
     dpath = os.path.join(cwd, "templates")
     getunzipped(username, repo, dpath)
@@ -89,10 +90,11 @@ def install_template(username, repo):
 def import_wp(filepath):
     """Imports A WordPress export and converts it to a Blended site"""
 
-    print("\nBlended: Static Website Generator -\n")
+    print(term_colors.HEADER +
+          "\nBlended: Static Website Generator -\n" + term_colors.ENDC)
 
     checkConfig()
-    print("Importing from WordPress...")
+    print(term_colors.OKBLUE + "Importing from WordPress..." + term_colors.ENDC)
 
     wp = parseXML(filepath)
 
@@ -112,7 +114,8 @@ def import_wp(filepath):
         with open(os.path.join(cwd, "content", item.title.cdata.replace(" ", "_") + ".html"), 'w') as wfile:
             wfile.write(item.content_encoded.cdata.strip())
 
-    print("\nYour website has been imported from WordPress.")
+    print(term_colors.OKGREEN +
+          "\nYour website has been imported from WordPress." + term_colors.ENDC)
 
 
 @cli.command('import-blogger', short_help='Import a site from Blogger')
@@ -120,10 +123,11 @@ def import_wp(filepath):
 def import_blogger(filepath):
     """Imports A Blogger export and converts it to a Blended site"""
 
-    print("\nBlended: Static Website Generator -\n")
+    print(term_colors.HEADER +
+          "\nBlended: Static Website Generator -\n" + term_colors.ENDC)
 
     checkConfig()
-    print("Importing from Blogger...")
+    print(term_colors.OKBLUE + "Importing from Blogger..." + term_colors.ENDC)
 
     blogger = parseXML(filepath)
 
@@ -140,7 +144,8 @@ def import_blogger(filepath):
             with open(os.path.join(cwd, "content", entry.title.cdata.replace(" ", "_") + ".html"), 'w') as wfile:
                 wfile.write(entry.content.cdata.strip())
 
-    print("\nYour website has been imported from Blogger.")
+    print(term_colors.OKGREEN +
+          "\nYour website has been imported from Blogger." + term_colors.ENDC)
 
 
 @cli.command('install-plugin', short_help='Install a Blended plugin from GitHub')
@@ -150,7 +155,8 @@ def import_blogger(filepath):
               help='The GitHub repository name.')
 def install_plugin(username, repo):
     """Installs a Blended plugin from GitHub"""
-    print("Installing plugin from " + username + "/" + repo)
+    print(term_colors.OKBLUE + "Installing plugin from " +
+          username + "/" + repo + term_colors.ENDC)
 
     pip.main(['install', '-U', "git+git://github.com/" +
               username + "/" + repo + ".git"])
@@ -160,7 +166,8 @@ def install_plugin(username, repo):
 def init():
     """Initiates a new website"""
 
-    print("Blended: Static Website Generator -\n")
+    print(term_colors.HEADER +
+          "Blended: Static Website Generator -\n" + term_colors.ENDC)
 
     checkConfig()
 
@@ -183,7 +190,8 @@ def init():
     createConfig(app_version=app_version, wname=wname,
                  wdesc=wdesc, wlic=wlic, wlan=wlan, aname=aname)
 
-    print("\nThe required files for your website have been generated.")
+    print(term_colors.OKGREEN +
+          "\nThe required files for your website have been generated." + term_colors.ENDC)
 
 
 def placeFiles(ftp, path):
@@ -216,20 +224,20 @@ def placeFiles(ftp, path):
 @click.option('--outdir', default="build", help='Choose which folder the built files are in. Default is `build`.')
 def send_ftp(outdir):
     """Upload the built website to FTP"""
-    print("Uploading the files in the " + outdir + "/ directory!\n")
+    print(term_colors.OKBLUE + "Uploading the files in the " +
+          outdir + "/ directory!\n" + term_colors.ENDC)
 
     # Make sure there is actually a configuration file
     config_file_dir = os.path.join(cwd, "config.py")
     if not os.path.exists(config_file_dir):
-        sys.exit(
-            "There dosen't seem to be a configuration file. Have you run the init command?")
+        sys.exit(term_colors.FAIL +
+                 "There dosen't seem to be a configuration file. Have you run the init command?" + term_colors.ENDC)
     else:
         sys.path.insert(0, cwd)
         try:
             from config import ftp_server, ftp_username, ftp_password, ftp_port, ftp_upload_path
         except:
-            sys.exit(
-                "The FTP settings could not be found. Maybe your config file is too old. Re-run 'blended init' to fix it.")
+            sys.exit(term_colors.FAIL + "The FTP settings could not be found. Maybe your config file is too old. Re-run 'blended init' to fix it." + term_colors.ENDC)
 
     server = ftp_server
     username = ftp_username
@@ -246,18 +254,19 @@ def send_ftp(outdir):
         placeFiles(ftp, filenameCV)
     except:
         ftp.quit()
-        sys.exit("Files not able to be uploaded! Are you sure the directory exists?")
+        sys.exit(term_colors.FAIL +
+                 "Files not able to be uploaded! Are you sure the directory exists?" + term_colors.ENDC)
 
     ftp.quit()
 
-    print("\nFTP Done!")
+    print(term_colors.OKGREEN + "\nFTP Done!" + term_colors.ENDC)
 
 
 @cli.command('clean', short_help='Remove the build folder')
 @click.option('--outdir', default="build", help='Choose which folder the built files are in. Default is `build`.')
 def clean_built(outdir):
     """Removes all built files"""
-    print("Removing the built files!")
+    print(term_colors.OKBLUE + "Removing the built files!" + term_colors.ENDC)
 
     # Remove the  build folder
     build_dir = os.path.join(cwd, outdir)
@@ -269,19 +278,18 @@ def clean_built(outdir):
 @click.option('--outdir', default="build", help='Choose which folder the built files are in. Default is `build`.')
 def zip_built(outdir):
     """Packages the build folder into a zip"""
-    print("Zipping the built files!")
+    print(term_colors.OKBLUE + "Zipping the built files!" + term_colors.ENDC)
 
     config_file_dir = os.path.join(cwd, "config.py")
     if not os.path.exists(config_file_dir):
-        sys.exit(
-            "There dosen't seem to be a configuration file. Have you run the init command?")
+        sys.exit(term_colors.FAIL +
+                 "There dosen't seem to be a configuration file. Have you run the init command?" + term_colors.ENDC)
     else:
         sys.path.insert(0, cwd)
         try:
             from config import website_name
         except:
-            sys.exit(
-                "Some of the configuration values could not be found! Maybe your config.py is too old. Run 'blended init' to fix.")
+            sys.exit(term_colors.FAIL + "Some of the configuration values could not be found! Maybe your config.py is too old. Run 'blended init' to fix." + term_colors.ENDC)
 
     # Remove the  build folder
     build_dir = os.path.join(cwd, outdir)
@@ -290,14 +298,14 @@ def zip_built(outdir):
     if os.path.exists(build_dir):
         shutil.make_archive(zip_dir, 'zip', build_dir)
     else:
-        print("The " + outdir +
-              "/ folder could not be found! Have you run 'blended build' yet?")
+        print(term_colors.FAIL + "The " + outdir +
+              "/ folder could not be found! Have you run 'blended build' yet?" + term_colors.ENDC)
 
 
 @cli.command('purge', short_help='Purge all the files created by Blended')
 def purge():
     """Removes all files generated by Blended"""
-    print("Purging the Blended files!")
+    print(term_colors.OKBLUE + "Purging the Blended files!" + term_colors.ENDC)
 
     # Remove the templates folder
     templ_dir = os.path.join(cwd, "templates")
@@ -355,7 +363,8 @@ def convert_text(filename):
     elif ".txt" in filename:
         text_cont1 = text_content.read()
     else:
-        print(filename + " is not a valid file type!")
+        print(term_colors.FAIL + filename +
+              " is not a valid file type!" + term_colors.ENDC)
         text_cont1 = "NULL"
 
     return text_cont1 + "\n\n"
@@ -366,15 +375,14 @@ def build_files(outdir):
     # Make sure there is actually a configuration file
     config_file_dir = os.path.join(cwd, "config.py")
     if not os.path.exists(config_file_dir):
-        sys.exit(
-            "There dosen't seem to be a configuration file. Have you run the init command?")
+        sys.exit(term_colors.FAIL +
+                 "There dosen't seem to be a configuration file. Have you run the init command?" + term_colors.ENDC)
     else:
         sys.path.insert(0, cwd)
         try:
             from config import website_name, website_description, website_language, home_page_list
         except:
-            sys.exit(
-                "ERROR: Some of the crucial configuration values could not be found! Maybe your config.py is too old. Run 'blended init' to fix.")
+            sys.exit(term_colors.FAIL + "ERROR: Some of the crucial configuration values could not be found! Maybe your config.py is too old. Run 'blended init' to fix." + term_colors.ENDC)
         try:
             from config import website_description_long, website_license, website_url, author_name, author_bio, plugins, minify_css, minify_js, custom_variables
         except:
@@ -387,7 +395,7 @@ def build_files(outdir):
             custom_variables = {}
             minify_css = False
             minify_js = False
-            print("WARNING: Some of the optional configuration values could not be found! Maybe your config.py is too old. Run 'blended init' to fix.\n")
+            print(term_colors.WARNING + "WARNING: Some of the optional configuration values could not be found! Maybe your config.py is too old. Run 'blended init' to fix.\n" + term_colors.ENDC)
 
     # Create the build folder
     build_dir = os.path.join(cwd, outdir)
@@ -397,14 +405,14 @@ def build_files(outdir):
     # Make sure there is actually a header template file
     header_file_dir = os.path.join(cwd, "templates", "header.html")
     if not os.path.exists(header_file_dir):
-        sys.exit(
-            "There dosen't seem to be a header template file. You need one to generate.")
+        sys.exit(term_colors.FAIL +
+                 "There dosen't seem to be a header template file. You need one to generate." + term_colors.ENDC)
 
     # Make sure there is actually a footer template file
     footer_file_dir = os.path.join(cwd, "templates", "footer.html")
     if not os.path.exists(footer_file_dir):
-        sys.exit(
-            "There dosen't seem to be a footer template file. You need one to generate.")
+        sys.exit(term_colors.FAIL +
+                 "There dosen't seem to be a footer template file. You need one to generate." + term_colors.ENDC)
 
     # Open the header and footer files for reading
     header_file = open(header_file_dir, "r")
@@ -482,7 +490,8 @@ def build_files(outdir):
             home_templ_file = open(home_templ_dir, "r")
             home_working_file.write(home_templ_file.read())
         else:
-            print("\nNo home page template file found. Writing page list to index.html")
+            print(term_colors.WARNING +
+                  "\nNo home page template file found. Writing page list to index.html" + term_colors.ENDC)
             home_working_file.write(page_list)
 
         home_working_file.write(footer_file.read())
@@ -678,7 +687,8 @@ def build_files(outdir):
                     if sass_text != "":
                         text_file.write(sass.compile(string=sass_text))
                     else:
-                        print(file + " is empty! Not compiling Sass.")
+                        print(term_colors.WARNING + file +
+                              " is empty! Not compiling Sass." + term_colors.ENDC)
                     text_file.close()
                 if file.endswith(".less"):
                     less_text = open(os.path.join(root, file)).read()
@@ -687,7 +697,8 @@ def build_files(outdir):
                     if less_text != "":
                         text_file.write(lesscpy.compile(StringIO(less_text)))
                     else:
-                        print(file + " is empty! Not compiling Less.")
+                        print(term_colors.WARNING + file +
+                              " is empty! Not compiling Less." + term_colors.ENDC)
                     text_file.close()
                 if file.endswith(".styl"):
                     try:
@@ -697,21 +708,25 @@ def build_files(outdir):
                         if styl_text != "":
                             text_file.write(Stylus().compile(styl_text))
                         else:
-                            print(file + " is empty! Not compiling Styl.")
+                            print(term_colors.WARNING + file +
+                                  " is empty! Not compiling Styl." + term_colors.ENDC)
                         text_file.close()
                     except:
-                        print("Not able to build with Stylus! Is it installed?")
+                        print(
+                            term_colors.FAIL + "Not able to build with Stylus! Is it installed?" + term_colors.ENDC)
                         try:
                             subprocess.call["npm", "install", "-g", "stylus"]
                         except:
-                            print("NPM (NodeJS) not working. Is it installed?")
+                            print(
+                                term_colors.FAIL + "NPM (NodeJS) not working. Is it installed?" + term_colors.ENDC)
                 if file.endswith(".coffee"):
                     coffee_text = open(os.path.join(root, file)).read()
                     text_file = open(os.path.join(root, file[:-6] + "js"), "w")
                     if coffee_text != "":
                         text_file.write(coffeescript.compile(coffee_text))
                     else:
-                        print(file + " is empty! Not compiling CoffeeScript.")
+                        print(term_colors.WARNING + file +
+                              " is empty! Not compiling CoffeeScript." + term_colors.ENDC)
                     text_file.close()
                 if minify_css:
                     if file.endswith(".css"):
@@ -734,15 +749,16 @@ def build_files(outdir):
 def build(outdir):
     """Blends the generated files and outputs a HTML website"""
 
-    print("Building your Blended files into a website!")
+    print(term_colors.OKBLUE +
+          "Building your Blended files into a website!" + term_colors.ENDC)
 
     reload(sys)
     sys.setdefaultencoding('utf8')
 
     build_files(outdir)
 
-    print("The files are built! You can find them in the " + outdir +
-          "/ directory. Run the view command to see what you have created in a web browser.")
+    print(term_colors.OKGREEN + "The files are built! You can find them in the " + outdir +
+          "/ directory. Run the view command to see what you have created in a web browser." + term_colors.ENDC)
 
 
 outdir_type = "build"
@@ -773,7 +789,7 @@ class Watcher:
                 time.sleep(5)
         except:
             self.observer.stop()
-            print("\nObserver stopped.")
+            print(term_colors.OKGREEN + "\nObserver stopped." + term_colors.ENDC)
 
         self.observer.join()
 
@@ -790,17 +806,20 @@ class Handler(FileSystemEventHandler):
         elif event.event_type == 'created':
             # Take any action here when a file is first created.
             build_files(outdir_type)
-            print("%s created" % event.src_path)
+            print(term_colors.OKBLUE + "%s created" +
+                  term_colors.ENDC % event.src_path)
 
         elif event.event_type == 'modified':
             # Taken any action here when a file is modified.
             build_files(outdir_type)
-            print("%s modified" % event.src_path)
+            print(term_colors.OKBLUE + "%s modified" +
+                  term_colors.ENDC % event.src_path)
 
         elif event.event_type == 'deleted':
             # Taken any action here when a file is modified.
             build_files(outdir_type)
-            print("%s deleted" % event.src_path)
+            print(term_colors.OKBLUE + "%s deleted" +
+                  term_colors.ENDC % event.src_path)
 
 
 @cli.command('interactive', short_help='Build the Blended files into a website on each file change')
@@ -808,7 +827,8 @@ class Handler(FileSystemEventHandler):
 def interactive(outdir):
     """Blends the generated files and outputs a HTML website on file change"""
 
-    print("Building your Blended files into a website!")
+    print(term_colors.OKBLUE +
+          "Building your Blended files into a website!" + term_colors.ENDC)
 
     global outdir_type
     outdir_type = outdir
@@ -818,7 +838,8 @@ def interactive(outdir):
 
     build_files(outdir)
 
-    print("Watching the content and templates directories for changes, press CTRL+C to stop...\n")
+    print(term_colors.OKBLUE +
+          "Watching the content and templates directories for changes, press CTRL+C to stop...\n" + term_colors.ENDC)
 
     w = Watcher()
     w.run()
@@ -833,8 +854,8 @@ def view(outdir):
     if os.path.exists(index_path):
         webbrowser.open('file://' + index_path)
     else:
-        print("The index.html file could not be found in the " + outdir +
-              "/ folder! Have you deleted it or have you built with home_page_list set to 'no' in config.py?")
+        print(term_colors.FAIL + "The index.html file could not be found in the " + outdir +
+              "/ folder! Have you deleted it or have you built with home_page_list set to 'no' in config.py?" + term_colors.ENDC)
 
 
 if __name__ == '__main__':
