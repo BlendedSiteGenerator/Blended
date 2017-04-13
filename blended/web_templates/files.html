@@ -35,8 +35,9 @@
 
     <div class="container-fluid" style="margin-top: 1rem;">
         <div class="col-md-12">
-            <h1>Published: {{ published }}</h1>
-            <h1>Unpublished: {{ unpublished }}</h1>
+          <div class="list-group">
+            {{ file_list|safe }}
+          </div>
         </div>
     </div>
     <!-- jQuery first, then Tether, then Bootstrap JS. -->

@@ -23,17 +23,19 @@ def dashboard():
 
 @web_app.route("/files/")
 def files():
-    published_files = 0
-    unpublished_files = 0
+    file_list = ""
     for root, dirs, files in os.walk(os.path.join(cwd, "content")):
         dirs[:] = [d for d in dirs if "_" not in d]
         for filename in files:
-            if not filename.startswith("_"):
-                published_files = published_files + 1
+            dirname = root.split(os.path.sep)[-1]
+            if dirname == "content":
+                output = filename
             else:
-                unpublished_files = unpublished_files + 1
+                output = os.path.join(dirname, filename)
 
-    return render_template('files.html', published=published_files, unpublished=unpublished_files)
+            file_list = file_list + "<a href=\"/edit/"+output.replace("\\", "/")+"\" class=\"list-group-item list-group-item-action\">"+filename+"</a>\n"
+
+    return render_template('files.html', file_list=file_list)
 
 
 @web_app.route("/edit/<path:filename>")
