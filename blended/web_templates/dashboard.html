@@ -34,10 +34,15 @@
     </nav>
 
     <div class="container-fluid" style="margin-top: 1rem;">
-        <div class="col-md-12">
-            <h1>Published: {{ published }}</h1>
-            <h1>Unpublished: {{ unpublished }}</h1>
+        <div class="col-md-6">
+            <ul class="list-group">
+              <li class="list-group-item">Published Pages: {{ published }}</li>
+              <li class="list-group-item">Unpublished Pages: {{ unpublished }}</li>
+            </ul>
         </div>
+        <!--<div class="col-md-6">
+          <a href="/build/">Build Files</a>
+        </div>-->
     </div>
     <!-- jQuery first, then Tether, then Bootstrap JS. -->
     <script src="{{ url_for('static', filename='js/jquery-3.1.1.min.js') }}"></script>
