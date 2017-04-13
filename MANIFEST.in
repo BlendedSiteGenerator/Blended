@@ -1,1 +1,3 @@
 include blended/web_templates/*
+include blended/static/*
+include blended/static/lib/*
