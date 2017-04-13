@@ -8,6 +8,7 @@ setup(name='blended',
       author_email='johnroper100@gmail.com',
       license='GPL3.0',
       packages=['blended'],
+      include_package_data=True,
       install_requires=[
           'click',
           'colorama',
