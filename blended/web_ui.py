@@ -33,7 +33,9 @@ def files():
             else:
                 output = os.path.join(dirname, filename)
 
-            file_list = file_list + "<a href=\"/edit/"+output.replace("\\", "/")+"\" class=\"list-group-item list-group-item-action\">"+filename+"</a>\n"
+            file_list = file_list + "<a href=\"/edit/" + \
+                output.replace(
+                    "\\", "/") + "\" class=\"list-group-item list-group-item-action\">" + filename + "</a>\n"
 
     return render_template('files.html', file_list=file_list)
 
@@ -49,10 +51,28 @@ def edit_redirect():
     return redirect("/files/", code=302)
 
 
+@web_app.route("/new/")
+def new_file():
+    return render_template('new.html')
+
+
+@web_app.route("/save/", methods=['POST'])
+def save():
+    content = request.form['code']
+    filename = request.form['filename']
+
+    with open(os.path.join(cwd, "content", filename), 'w') as wfile:
+        wfile.write(content)
+
+    return redirect("/edit/" + filename + "?finished=yes", code=302)
+
 @web_app.route("/publish/", methods=['POST'])
 def publish():
     content = request.form['code']
-    filename = request.form['filename']
+    title = request.form['title']
+    ftype = request.form['type']
+
+    filename = title.replace(" ", "_")+"."+ftype
 
     with open(os.path.join(cwd, "content", filename), 'w') as wfile:
         wfile.write(content)
