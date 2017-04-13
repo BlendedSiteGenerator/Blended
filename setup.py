@@ -26,6 +26,7 @@ setup(name='blended',
           'cssmin',
           'untangle',
           'python-frontmatter',
+          'Flask',
       ],
       entry_points={
           'console_scripts': [
