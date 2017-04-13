@@ -9,7 +9,7 @@ cwd = os.getcwd()
 def hello():
     return "Hello World! The cwd is: %s" % cwd
 
-@web_app.route("/edit/<filename>")
+@web_app.route("/edit/<path:filename>")
 def edit_file(filename):
     content = open(os.path.join(cwd, "content", filename), 'r').read()
     return render_template('edit.html', content=content, filename=filename)
