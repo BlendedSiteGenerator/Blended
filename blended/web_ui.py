@@ -22,4 +22,4 @@ def publish():
     with open(os.path.join(cwd, "content", filename), 'w') as wfile:
         wfile.write(content)
 
-    return redirect("/edit/"+filename, code=302)
+    return redirect("/edit/"+filename+"?finished=yes", code=302)
