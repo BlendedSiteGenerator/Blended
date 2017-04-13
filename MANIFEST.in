@@ -1,3 +1,6 @@
 include blended/web_templates/*
 include blended/static/*
 include blended/static/lib/*
+include blended/static/css/*
+include blended/static/js/*
+include blended/static/fonts/*
