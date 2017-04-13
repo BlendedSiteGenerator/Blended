@@ -7,7 +7,6 @@ import urllib
 import zipfile
 from distutils.dir_util import copy_tree
 import untangle
-import frontmatter
 
 # Very important, get the directory that the user wants to run commands in
 cwd = os.getcwd()
@@ -65,6 +64,7 @@ def get_html_clear_filename(filename):
     newFilename = newFilename.title()
 
     return newFilename
+
 
 def getunzipped(username, repo, thedir):
     """Downloads and unzips a zip file"""

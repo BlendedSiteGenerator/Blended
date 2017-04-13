@@ -31,7 +31,6 @@ from stylus import Stylus
 import coffeescript
 from jsmin import jsmin
 from cssmin import cssmin
-import frontmatter
 import pip
 from .functions import create_folder, replace_folder, get_html_filename, get_html_clear_filename, getunzipped, checkConfig, createConfig, createBlendedFolders, parseXML
 from term_colors import term_colors
@@ -375,7 +374,8 @@ def build_files(outdir):
     # Make sure there is actually a configuration file
     config_file_dir = os.path.join(cwd, "config.py")
     if not os.path.exists(config_file_dir):
-        sys.exit("There dosen't seem to be a configuration file. Have you run the init command?")
+        sys.exit(
+            "There dosen't seem to be a configuration file. Have you run the init command?")
     else:
         sys.path.insert(0, cwd)
         try:
@@ -404,12 +404,14 @@ def build_files(outdir):
     # Make sure there is actually a header template file
     header_file_dir = os.path.join(cwd, "templates", "header.html")
     if not os.path.exists(header_file_dir):
-        sys.exit("There dosen't seem to be a header template file. You need one to generate.")
+        sys.exit(
+            "There dosen't seem to be a header template file. You need one to generate.")
 
     # Make sure there is actually a footer template file
     footer_file_dir = os.path.join(cwd, "templates", "footer.html")
     if not os.path.exists(footer_file_dir):
-        sys.exit("There dosen't seem to be a footer template file. You need one to generate.")
+        sys.exit(
+            "There dosen't seem to be a footer template file. You need one to generate.")
 
     # Open the header and footer files for reading
     header_file = open(header_file_dir, "r")
