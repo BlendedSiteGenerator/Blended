@@ -64,11 +64,12 @@ def version():
 
 
 @cli.command('editor', short_help='Run a website editor in the browser.')
-def start_editor():
+@click.option('--port', default=5000, help='Choose which port the editor runs on. Default is `5000`.')
+def start_editor(port):
     """Runs a website editor in the browser"""
 
     print(term_colors.OKBLUE + "Starting the web editor!" + term_colors.ENDC)
-    web_app.run()
+    web_app.run(port=port)
 
 
 @cli.command('install-template', short_help='Install a Blended template from GitHub')
