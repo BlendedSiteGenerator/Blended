@@ -363,8 +363,7 @@ def convert_text(filename):
     elif ".txt" in filename:
         text_cont1 = text_content.read()
     else:
-        print(term_colors.FAIL + filename +
-              " is not a valid file type!" + term_colors.ENDC)
+        print(filename + " is not a valid file type!")
         text_cont1 = "NULL"
 
     return text_cont1 + "\n\n"
@@ -375,14 +374,13 @@ def build_files(outdir):
     # Make sure there is actually a configuration file
     config_file_dir = os.path.join(cwd, "config.py")
     if not os.path.exists(config_file_dir):
-        sys.exit(term_colors.FAIL +
-                 "There dosen't seem to be a configuration file. Have you run the init command?" + term_colors.ENDC)
+        sys.exit("There dosen't seem to be a configuration file. Have you run the init command?")
     else:
         sys.path.insert(0, cwd)
         try:
             from config import website_name, website_description, website_language, home_page_list
         except:
-            sys.exit(term_colors.FAIL + "ERROR: Some of the crucial configuration values could not be found! Maybe your config.py is too old. Run 'blended init' to fix." + term_colors.ENDC)
+            sys.exit("ERROR: Some of the crucial configuration values could not be found! Maybe your config.py is too old. Run 'blended init' to fix.")
         try:
             from config import website_description_long, website_license, website_url, author_name, author_bio, plugins, minify_css, minify_js, custom_variables
         except:
@@ -395,7 +393,7 @@ def build_files(outdir):
             custom_variables = {}
             minify_css = False
             minify_js = False
-            print(term_colors.WARNING + "WARNING: Some of the optional configuration values could not be found! Maybe your config.py is too old. Run 'blended init' to fix.\n" + term_colors.ENDC)
+            print("WARNING: Some of the optional configuration values could not be found! Maybe your config.py is too old. Run 'blended init' to fix.\n")
 
     # Create the build folder
     build_dir = os.path.join(cwd, outdir)
@@ -405,14 +403,12 @@ def build_files(outdir):
     # Make sure there is actually a header template file
     header_file_dir = os.path.join(cwd, "templates", "header.html")
     if not os.path.exists(header_file_dir):
-        sys.exit(term_colors.FAIL +
-                 "There dosen't seem to be a header template file. You need one to generate." + term_colors.ENDC)
+        sys.exit("There dosen't seem to be a header template file. You need one to generate.")
 
     # Make sure there is actually a footer template file
     footer_file_dir = os.path.join(cwd, "templates", "footer.html")
     if not os.path.exists(footer_file_dir):
-        sys.exit(term_colors.FAIL +
-                 "There dosen't seem to be a footer template file. You need one to generate." + term_colors.ENDC)
+        sys.exit("There dosen't seem to be a footer template file. You need one to generate.")
 
     # Open the header and footer files for reading
     header_file = open(header_file_dir, "r")
@@ -490,8 +486,7 @@ def build_files(outdir):
             home_templ_file = open(home_templ_dir, "r")
             home_working_file.write(home_templ_file.read())
         else:
-            print(term_colors.WARNING +
-                  "\nNo home page template file found. Writing page list to index.html" + term_colors.ENDC)
+            print("\nNo home page template file found. Writing page list to index.html")
             home_working_file.write(page_list)
 
         home_working_file.write(footer_file.read())
@@ -687,8 +682,7 @@ def build_files(outdir):
                     if sass_text != "":
                         text_file.write(sass.compile(string=sass_text))
                     else:
-                        print(term_colors.WARNING + file +
-                              " is empty! Not compiling Sass." + term_colors.ENDC)
+                        print(file + " is empty! Not compiling Sass.")
                     text_file.close()
                 if file.endswith(".less"):
                     less_text = open(os.path.join(root, file)).read()
@@ -697,8 +691,7 @@ def build_files(outdir):
                     if less_text != "":
                         text_file.write(lesscpy.compile(StringIO(less_text)))
                     else:
-                        print(term_colors.WARNING + file +
-                              " is empty! Not compiling Less." + term_colors.ENDC)
+                        print(file + " is empty! Not compiling Less.")
                     text_file.close()
                 if file.endswith(".styl"):
                     try:
@@ -708,25 +701,22 @@ def build_files(outdir):
                         if styl_text != "":
                             text_file.write(Stylus().compile(styl_text))
                         else:
-                            print(term_colors.WARNING + file +
-                                  " is empty! Not compiling Styl." + term_colors.ENDC)
+                            print(file + " is empty! Not compiling Styl.")
                         text_file.close()
                     except:
-                        print(
-                            term_colors.FAIL + "Not able to build with Stylus! Is it installed?" + term_colors.ENDC)
+                        print("Not able to build with Stylus! Is it installed?")
                         try:
                             subprocess.call["npm", "install", "-g", "stylus"]
                         except:
-                            print(
-                                term_colors.FAIL + "NPM (NodeJS) not working. Is it installed?" + term_colors.ENDC)
+                            print("NPM (NodeJS) not working. Is it installed?")
                 if file.endswith(".coffee"):
                     coffee_text = open(os.path.join(root, file)).read()
                     text_file = open(os.path.join(root, file[:-6] + "js"), "w")
                     if coffee_text != "":
                         text_file.write(coffeescript.compile(coffee_text))
                     else:
-                        print(term_colors.WARNING + file +
-                              " is empty! Not compiling CoffeeScript." + term_colors.ENDC)
+                        print(file +
+                              " is empty! Not compiling CoffeeScript.")
                     text_file.close()
                 if minify_css:
                     if file.endswith(".css"):
@@ -757,8 +747,8 @@ def build(outdir):
 
     build_files(outdir)
 
-    print(term_colors.OKGREEN + "The files are built! You can find them in the " + outdir +
-          "/ directory. Run the view command to see what you have created in a web browser." + term_colors.ENDC)
+    print("The files are built! You can find them in the " + outdir +
+          "/ directory. Run the view command to see what you have created in a web browser.")
 
 
 outdir_type = "build"
@@ -789,7 +779,7 @@ class Watcher:
                 time.sleep(5)
         except:
             self.observer.stop()
-            print(term_colors.OKGREEN + "\nObserver stopped." + term_colors.ENDC)
+            print("\nObserver stopped.")
 
         self.observer.join()
 
@@ -806,20 +796,17 @@ class Handler(FileSystemEventHandler):
         elif event.event_type == 'created':
             # Take any action here when a file is first created.
             build_files(outdir_type)
-            print(term_colors.OKBLUE + "%s created" +
-                  term_colors.ENDC % event.src_path)
+            print("%s created" % event.src_path)
 
         elif event.event_type == 'modified':
             # Taken any action here when a file is modified.
             build_files(outdir_type)
-            print(term_colors.OKBLUE + "%s modified" +
-                  term_colors.ENDC % event.src_path)
+            print("%s modified" % event.src_path)
 
         elif event.event_type == 'deleted':
             # Taken any action here when a file is modified.
             build_files(outdir_type)
-            print(term_colors.OKBLUE + "%s deleted" +
-                  term_colors.ENDC % event.src_path)
+            print("%s deleted" % event.src_path)
 
 
 @cli.command('interactive', short_help='Build the Blended files into a website on each file change')
@@ -838,8 +825,7 @@ def interactive(outdir):
 
     build_files(outdir)
 
-    print(term_colors.OKBLUE +
-          "Watching the content and templates directories for changes, press CTRL+C to stop...\n" + term_colors.ENDC)
+    print("Watching the content and templates directories for changes, press CTRL+C to stop...\n")
 
     w = Watcher()
     w.run()
