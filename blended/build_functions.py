@@ -52,6 +52,9 @@ def buildFiles():
                     filei = frontmatter.load(f)
                     if filei['type'] == "post":
                         date = str(filei['date'])
+                        permalink = date.split("-")[0] + "/" + date.split("-")[1] + "/" + date.split(
+                            "-")[2] + "/" + filei['title'].replace(" ", "_").replace("?", "") + ".html"
+                        filei['permalink'] = permalink
                         blog_posts.append(filei)
 
                         if os.path.exists(os.path.join(cwd, "_themes", config['theme'], filei['subtype'] + ".html")):
