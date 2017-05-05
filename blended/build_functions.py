@@ -38,7 +38,6 @@ def buildFiles():
         dirs[:] = [d for d in dirs if "_" not in d and d != "build"]
         for filename in files:
             if not filename.startswith("_") and filename != "config.json":
-                print(filename)
                 with open(os.path.join(root, filename)) as f:
                     filei = frontmatter.load(f)
                     if filei['type'] == "post":
@@ -59,6 +58,22 @@ def buildFiles():
                             output.write(template.render(
                                 post=filei, root="../../../", is_home=False, is_page=False, is_post=True))
 
+                    elif filei['type'] == "page":
+                        date = str(filei['date'])
+
+                        if os.path.exists(os.path.join(cwd, "_themes", config['theme'], filei['subtype'] + ".html")):
+                            template = env.get_template(
+                                filei['subtype'] + ".html")
+                        elif os.path.exists(os.path.join(cwd, "_themes", config['theme'], "page.html")):
+                            template = env.get_template('page.html')
+                        else:
+                            template = env.get_template('index.html')
+
+                        createFolder(os.path.join(cwd, "build"))
+                        with open(os.path.join(cwd, "build", filei['title'].replace(" ", "_").replace("?", "") + ".html"), 'w') as output:
+                            output.write(template.render(
+                                page=filei, root="", is_home=False, is_page=True, is_post=False))
+
     if os.path.exists(os.path.join(cwd, "_themes", config['theme'], "posts.html")):
         template = env.get_template('posts.html')
     else:
@@ -70,7 +85,7 @@ def buildFiles():
 
 
 def generateBuildDir(site_theme):
-    createFolder(os.path.join(cwd, "build"))
+    replaceFolder(os.path.join(cwd, "build"))
 
     if os.path.exists(os.path.join(cwd, "_themes", site_theme, "assets")):
         if os.path.exists(os.path.join(cwd, "build", "assets")):
