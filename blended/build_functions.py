@@ -33,6 +33,16 @@ def buildFiles():
 
     env.globals['siteinfo'] = config
 
+        menus = {}
+    for root, dirs, files in os.walk(os.path.join(cwd, "swp-content", "menus")):
+        for filename in files:
+            if not filename.startswith("_"):
+                with open(os.path.join(root, filename)) as f:
+                    menu = json.load(f)
+                    menus[filename.replace(".json", "")] = menu
+
+    env.globals['menus'] = menus
+
     blog_posts = []
     for root, dirs, files in os.walk(cwd):
         dirs[:] = [d for d in dirs if "_" not in d and d != "build"]
