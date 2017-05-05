@@ -91,7 +91,7 @@ def buildFiles():
 
     with open(os.path.join(cwd, "build", "index.html"), 'w') as output:
         output.write(template.render(
-            posts=blog_posts, root="", is_home=True, is_page=False, is_post=False))
+            posts=sorted(blog_posts, key=lambda post: post['date'], reverse=True), root="", is_home=True, is_page=False, is_post=False))
 
 
 def generateBuildDir(site_theme):
