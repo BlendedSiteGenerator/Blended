@@ -7,7 +7,7 @@ import click
 import frontmatter
 from jinja2 import Environment, PackageLoader, select_autoescape
 
-from .app_functions import createFolder, replaceFolder
+from .app_functions import createFolder, getVersion, replaceFolder
 
 # Very important, get the directory that the user wants to run commands in
 cwd = os.getcwd()
@@ -32,6 +32,10 @@ def buildFiles():
     )
 
     env.globals['siteinfo'] = config
+
+    header = "<meta name=\"generator\" content=\"Blended v" + getVersion() + "\" />"
+
+    env.globals['blended_header'] = header
 
     menus = {}
     for root, dirs, files in os.walk(os.path.join(cwd, "_menus")):
@@ -82,7 +86,6 @@ def buildFiles():
                         else:
                             template = env.get_template('index.html')
 
-                        createFolder(os.path.join(cwd, "build"))
                         with open(os.path.join(cwd, "build", filei['title'].replace(" ", "_").replace("?", "") + ".html"), 'w') as output:
                             output.write(template.render(
                                 page=filei, root="", is_home=False, is_page=True, is_post=False))

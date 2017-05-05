@@ -10,7 +10,7 @@ def createFolder(folder):
 
 
 def getVersion():
-    return str(pkg_resources.require("staticWP")[0].version)
+    return str(pkg_resources.require("blended")[0].version)
 
 
 def replaceFolder(folder):
