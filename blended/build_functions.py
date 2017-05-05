@@ -33,8 +33,8 @@ def buildFiles():
 
     env.globals['siteinfo'] = config
 
-        menus = {}
-    for root, dirs, files in os.walk(os.path.join(cwd, "swp-content", "menus")):
+    menus = {}
+    for root, dirs, files in os.walk(os.path.join(cwd, "_menus")):
         for filename in files:
             if not filename.startswith("_"):
                 with open(os.path.join(root, filename)) as f:
