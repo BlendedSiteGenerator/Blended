@@ -95,7 +95,7 @@ def buildFiles():
 
 
 def generateBuildDir(site_theme):
-    replaceFolder(os.path.join(cwd, "build"))
+    createFolder(os.path.join(cwd, "build"))
 
     if os.path.exists(os.path.join(cwd, "_themes", site_theme, "assets")):
         if os.path.exists(os.path.join(cwd, "build", "assets")):
