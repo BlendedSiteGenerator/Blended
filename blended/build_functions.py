@@ -46,7 +46,8 @@ def buildFiles():
 
     env.globals['menus'] = menus
 
-    blog_posts = []
+    posts = []
+    pages = []
     for root, dirs, files in os.walk(os.path.join(cwd, "content")):
         dirs[:] = [d for d in dirs if "_" not in d]
         for filename in files:
@@ -58,43 +59,41 @@ def buildFiles():
                         permalink = date.split("-")[0] + "/" + date.split("-")[1] + "/" + date.split(
                             "-")[2] + "/" + filei['title'].replace(" ", "_").replace("?", "") + ".html"
                         filei['permalink'] = permalink
-                        blog_posts.append(filei)
+                        posts.append(filei)
 
-                        if os.path.exists(os.path.join(cwd, "themes", config['theme'], filei['subtype'] + ".html")):
-                            template = env.get_template(
-                                filei['subtype'] + ".html")
-                        elif os.path.exists(os.path.join(cwd, "themes", config['theme'], "post.html")):
-                            template = env.get_template('post.html')
-                        else:
-                            template = env.get_template('index.html')
-
-                        createFolder(os.path.join(cwd, "build", date.split(
-                            "-")[0], date.split("-")[1], date.split("-")[2]))
-                        with open(os.path.join(cwd, "build", date.split("-")[0], date.split("-")[1], date.split("-")[2], filei['title'].replace(" ", "_").replace("?", "") + ".html"), 'w') as output:
-                            output.write(template.render(
-                                post=filei, root="../../../", is_home=False, is_page=False, is_post=True))
-
-    for root, dirs, files in os.walk(os.path.join(cwd, "content")):
-        dirs[:] = [d for d in dirs if "_" not in d]
-        for filename in files:
-            if not filename.startswith("_"):
-                with open(os.path.join(root, filename)) as f:
-                    filei = frontmatter.load(f)
-                    if filei['type'] == "page":
+                    elif filei['type'] == "page":
                         date = str(filei['date'])
+                        pages.append(filei)
 
-                        if os.path.exists(os.path.join(cwd, "themes", config['theme'], filei['subtype'] + ".html")):
-                            template = env.get_template(
-                                filei['subtype'] + ".html")
-                        elif os.path.exists(os.path.join(cwd, "themes", config['theme'], "page.html")):
-                            template = env.get_template('page.html')
-                        else:
-                            template = env.get_template('index.html')
+    for post in posts:
+        date = str(post['date'])
+        if os.path.exists(os.path.join(cwd, "themes", config['theme'], post['subtype'] + ".html")):
+            template = env.get_template(
+                post['subtype'] + ".html")
+        elif os.path.exists(os.path.join(cwd, "themes", config['theme'], "post.html")):
+            template = env.get_template('post.html')
+        else:
+            template = env.get_template('index.html')
 
-                        with open(os.path.join(cwd, "build", filei['title'].replace(" ", "_").replace("?", "") + ".html"), 'w') as output:
-                            output.write(template.render(
-                                page=filei,
-                                posts=sorted(blog_posts, key=lambda post: post['date'], reverse=True), root="", is_home=False, is_page=True, is_post=False))
+        createFolder(os.path.join(cwd, "build", date.split(
+            "-")[0], date.split("-")[1], date.split("-")[2]))
+        with open(os.path.join(cwd, "build", date.split("-")[0], date.split("-")[1], date.split("-")[2], post['title'].replace(" ", "_").replace("?", "") + ".html"), 'w') as output:
+            output.write(template.render(
+                post=post, root="../../../", is_home=False, is_page=False, is_post=True))
+
+    for page in pages:
+        if os.path.exists(os.path.join(cwd, "themes", config['theme'], page['subtype'] + ".html")):
+            template = env.get_template(
+                page['subtype'] + ".html")
+        elif os.path.exists(os.path.join(cwd, "themes", config['theme'], "page.html")):
+            template = env.get_template('page.html')
+        else:
+            template = env.get_template('index.html')
+
+        with open(os.path.join(cwd, "build", page['title'].replace(" ", "_").replace("?", "") + ".html"), 'w') as output:
+            output.write(template.render(
+                page=page,
+                posts=sorted(posts, key=lambda post: post['date'], reverse=True), root="", is_home=False, is_page=True, is_post=False))
 
     if os.path.exists(os.path.join(cwd, "themes", config['theme'], "posts.html")):
         template = env.get_template('posts.html')
@@ -103,7 +102,7 @@ def buildFiles():
 
     with open(os.path.join(cwd, "build", "index.html"), 'w') as output:
         output.write(template.render(
-            posts=sorted(blog_posts, key=lambda post: post['date'], reverse=True), root="", is_home=True, is_page=False, is_post=False))
+            posts=sorted(posts, key=lambda post: post['date'], reverse=True), root="", is_home=True, is_page=False, is_post=False))
 
 
 def generateBuildDir(site_theme):
