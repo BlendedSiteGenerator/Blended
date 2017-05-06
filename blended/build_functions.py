@@ -78,6 +78,9 @@ def buildFiles():
                         date = str(filei['date'])
                         pages.append(filei)
 
+    tags = list(set(tags))
+    categories = list(set(categories))
+
     if config['build_posts']:
         for post in posts:
             date = str(post['date'])
@@ -93,7 +96,7 @@ def buildFiles():
                 "-")[0], date.split("-")[1], date.split("-")[2]))
             with open(os.path.join(cwd, "build", date.split("-")[0], date.split("-")[1], date.split("-")[2], post['title'].replace(" ", "_").replace("?", "") + ".html"), 'w') as output:
                 output.write(template.render(
-                    post=post, root="../../../", is_home=False, is_page=False, is_post=True, is_author=False))
+                    post=post, tags=tags, categories=categories, root="../../../", is_home=False, is_page=False, is_post=True, is_author=False))
 
     if config['build_pages']:
         for page in pages:
@@ -108,7 +111,7 @@ def buildFiles():
             with open(os.path.join(cwd, "build", page['title'].replace(" ", "_").replace("?", "") + ".html"), 'w') as output:
                 output.write(template.render(
                     page=page,
-                    posts=sorted(posts, key=lambda post: post['date'], reverse=True), root="", is_home=False, is_page=True, is_post=False, is_author=False))
+                    posts=sorted(posts, key=lambda post: post['date'], reverse=True), tags=tags, categories=categories, root="", is_home=False, is_page=True, is_post=False, is_author=False))
 
     if config['build_home']:
         if os.path.exists(os.path.join(cwd, "themes", config['theme'], "posts.html")):
@@ -118,7 +121,7 @@ def buildFiles():
 
         with open(os.path.join(cwd, "build", "index.html"), 'w') as output:
             output.write(template.render(
-                posts=sorted(posts, key=lambda post: post['date'], reverse=True), root="", is_home=True, is_page=False, is_post=False, is_author=False))
+                posts=sorted(posts, key=lambda post: post['date'], reverse=True), tags=tags, categories=categories, root="", is_home=True, is_page=False, is_post=False, is_author=False))
 
     if config['build_authors']:
         for author in authors:
@@ -127,7 +130,7 @@ def buildFiles():
                 createFolder(os.path.join(cwd, "build", "authors"))
                 with open(os.path.join(cwd, "build", "authors", author.replace(" ", "_").replace("?", "") + ".html"), 'w') as output:
                     output.write(template.render(
-                        page={"title": author}, author=authors[author], root="../", is_home=False, is_page=True, is_post=False, is_author=True))
+                        page={"title": author}, author=authors[author], tags=tags, categories=categories, root="../", is_home=False, is_page=True, is_post=False, is_author=True))
 
 
 def generateBuildDir(site_theme):
