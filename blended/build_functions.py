@@ -25,7 +25,7 @@ def buildFiles():
     generateBuildDir(site_theme=config['theme'])
 
     root_templates_folder = os.path.join(
-        cwd, "_themes", config['theme'])
+        cwd, "themes", config['theme'])
 
     env = Environment(
         loader=PackageLoader('blended', root_templates_folder)
@@ -34,11 +34,10 @@ def buildFiles():
     env.globals['siteinfo'] = config
 
     header = "<meta name=\"generator\" content=\"Blended v" + getVersion() + "\" />"
-
     env.globals['blended_header'] = header
 
     menus = {}
-    for root, dirs, files in os.walk(os.path.join(cwd, "_menus")):
+    for root, dirs, files in os.walk(os.path.join(cwd, "data", "menus")):
         for filename in files:
             if not filename.startswith("_"):
                 with open(os.path.join(root, filename)) as f:
@@ -48,10 +47,11 @@ def buildFiles():
     env.globals['menus'] = menus
 
     blog_posts = []
-    for root, dirs, files in os.walk(cwd):
-        dirs[:] = [d for d in dirs if "_" not in d and d != "build"]
+    for root, dirs, files in os.walk(os.path.join(cwd, "content")):
+        dirs[:] = [d for d in dirs if "_" not in d]
         for filename in files:
-            if not filename.startswith("_") and filename != "config.json":
+            print(filename)
+            if not filename.startswith("_"):
                 with open(os.path.join(root, filename)) as f:
                     filei = frontmatter.load(f)
                     if filei['type'] == "post":
@@ -61,10 +61,10 @@ def buildFiles():
                         filei['permalink'] = permalink
                         blog_posts.append(filei)
 
-                        if os.path.exists(os.path.join(cwd, "_themes", config['theme'], filei['subtype'] + ".html")):
+                        if os.path.exists(os.path.join(cwd, "themes", config['theme'], filei['subtype'] + ".html")):
                             template = env.get_template(
                                 filei['subtype'] + ".html")
-                        elif os.path.exists(os.path.join(cwd, "_themes", config['theme'], "post.html")):
+                        elif os.path.exists(os.path.join(cwd, "themes", config['theme'], "post.html")):
                             template = env.get_template('post.html')
                         else:
                             template = env.get_template('index.html')
@@ -78,19 +78,20 @@ def buildFiles():
                     elif filei['type'] == "page":
                         date = str(filei['date'])
 
-                        if os.path.exists(os.path.join(cwd, "_themes", config['theme'], filei['subtype'] + ".html")):
+                        if os.path.exists(os.path.join(cwd, "themes", config['theme'], filei['subtype'] + ".html")):
                             template = env.get_template(
                                 filei['subtype'] + ".html")
-                        elif os.path.exists(os.path.join(cwd, "_themes", config['theme'], "page.html")):
+                        elif os.path.exists(os.path.join(cwd, "themes", config['theme'], "page.html")):
                             template = env.get_template('page.html')
                         else:
                             template = env.get_template('index.html')
 
                         with open(os.path.join(cwd, "build", filei['title'].replace(" ", "_").replace("?", "") + ".html"), 'w') as output:
                             output.write(template.render(
-                                page=filei, root="", is_home=False, is_page=True, is_post=False))
+                                page=filei,
+                                posts=sorted(blog_posts, key=lambda post: post['date'], reverse=True), root="", is_home=False, is_page=True, is_post=False))
 
-    if os.path.exists(os.path.join(cwd, "_themes", config['theme'], "posts.html")):
+    if os.path.exists(os.path.join(cwd, "themes", config['theme'], "posts.html")):
         template = env.get_template('posts.html')
     else:
         template = env.get_template('index.html')
@@ -103,14 +104,14 @@ def buildFiles():
 def generateBuildDir(site_theme):
     createFolder(os.path.join(cwd, "build"))
 
-    if os.path.exists(os.path.join(cwd, "_themes", site_theme, "assets")):
+    if os.path.exists(os.path.join(cwd, "themes", site_theme, "assets")):
         if os.path.exists(os.path.join(cwd, "build", "assets")):
             shutil.rmtree(os.path.join(cwd, "build", "assets"))
-        shutil.copytree(os.path.join(cwd, "_themes", site_theme, "assets"),
+        shutil.copytree(os.path.join(cwd, "themes", site_theme, "assets"),
                         os.path.join(cwd, "build", "assets"))
 
-    if os.path.exists(os.path.join(cwd, "_media")):
+    if os.path.exists(os.path.join(cwd, "media")):
         if os.path.exists(os.path.join(cwd, "build", "media")):
             shutil.rmtree(os.path.join(cwd, "build", "media"))
-        shutil.copytree(os.path.join(cwd, "_media"),
+        shutil.copytree(os.path.join(cwd, "media"),
                         os.path.join(cwd, "build", "media"))
