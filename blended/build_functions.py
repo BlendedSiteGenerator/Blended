@@ -74,46 +74,49 @@ def buildFiles():
                         date = str(filei['date'])
                         pages.append(filei)
 
-    for post in posts:
-        date = str(post['date'])
-        if os.path.exists(os.path.join(cwd, "themes", config['theme'], post['subtype'] + ".html")):
-            template = env.get_template(
-                post['subtype'] + ".html")
-        elif os.path.exists(os.path.join(cwd, "themes", config['theme'], "post.html")):
-            template = env.get_template('post.html')
+    if config['build_posts']:
+        for post in posts:
+            date = str(post['date'])
+            if os.path.exists(os.path.join(cwd, "themes", config['theme'], post['subtype'] + ".html")):
+                template = env.get_template(
+                    post['subtype'] + ".html")
+            elif os.path.exists(os.path.join(cwd, "themes", config['theme'], "post.html")):
+                template = env.get_template('post.html')
+            else:
+                template = env.get_template('index.html')
+
+            createFolder(os.path.join(cwd, "build", date.split(
+                "-")[0], date.split("-")[1], date.split("-")[2]))
+            with open(os.path.join(cwd, "build", date.split("-")[0], date.split("-")[1], date.split("-")[2], post['title'].replace(" ", "_").replace("?", "") + ".html"), 'w') as output:
+                output.write(template.render(
+                    post=post, root="../../../", is_home=False, is_page=False, is_post=True, is_author=False))
+
+    if config['build_pages']:
+        for page in pages:
+            if os.path.exists(os.path.join(cwd, "themes", config['theme'], page['subtype'] + ".html")):
+                template = env.get_template(
+                    page['subtype'] + ".html")
+            elif os.path.exists(os.path.join(cwd, "themes", config['theme'], "page.html")):
+                template = env.get_template('page.html')
+            else:
+                template = env.get_template('index.html')
+
+            with open(os.path.join(cwd, "build", page['title'].replace(" ", "_").replace("?", "") + ".html"), 'w') as output:
+                output.write(template.render(
+                    page=page,
+                    posts=sorted(posts, key=lambda post: post['date'], reverse=True), root="", is_home=False, is_page=True, is_post=False, is_author=False))
+
+    if config['build_home']:
+        if os.path.exists(os.path.join(cwd, "themes", config['theme'], "posts.html")):
+            template = env.get_template('posts.html')
         else:
             template = env.get_template('index.html')
 
-        createFolder(os.path.join(cwd, "build", date.split(
-            "-")[0], date.split("-")[1], date.split("-")[2]))
-        with open(os.path.join(cwd, "build", date.split("-")[0], date.split("-")[1], date.split("-")[2], post['title'].replace(" ", "_").replace("?", "") + ".html"), 'w') as output:
+        with open(os.path.join(cwd, "build", "index.html"), 'w') as output:
             output.write(template.render(
-                post=post, root="../../../", is_home=False, is_page=False, is_post=True, is_author=False))
+                posts=sorted(posts, key=lambda post: post['date'], reverse=True), root="", is_home=True, is_page=False, is_post=False, is_author=False))
 
-    for page in pages:
-        if os.path.exists(os.path.join(cwd, "themes", config['theme'], page['subtype'] + ".html")):
-            template = env.get_template(
-                page['subtype'] + ".html")
-        elif os.path.exists(os.path.join(cwd, "themes", config['theme'], "page.html")):
-            template = env.get_template('page.html')
-        else:
-            template = env.get_template('index.html')
-
-        with open(os.path.join(cwd, "build", page['title'].replace(" ", "_").replace("?", "") + ".html"), 'w') as output:
-            output.write(template.render(
-                page=page,
-                posts=sorted(posts, key=lambda post: post['date'], reverse=True), root="", is_home=False, is_page=True, is_post=False, is_author=False))
-
-    if os.path.exists(os.path.join(cwd, "themes", config['theme'], "posts.html")):
-        template = env.get_template('posts.html')
-    else:
-        template = env.get_template('index.html')
-
-    with open(os.path.join(cwd, "build", "index.html"), 'w') as output:
-        output.write(template.render(
-            posts=sorted(posts, key=lambda post: post['date'], reverse=True), root="", is_home=True, is_page=False, is_post=False, is_author=False))
-
-    if config['build_authors'] == "true":
+    if config['build_authors']:
         for author in authors:
             if os.path.exists(os.path.join(cwd, "themes", config['theme'], "author.html")):
                 template = env.get_template("author.html")
