@@ -33,6 +33,15 @@ def buildFiles():
 
     env.globals['siteinfo'] = config
 
+    # Authors
+    authors_file = os.path.join(cwd, "data", "authors.json")
+    if os.path.exists(authors_file):
+        with open(authors_file) as f:
+            authors = json.load(f)
+            env.globals['authors'] = authors
+    else:
+        authors = []
+
     header = "<meta name=\"generator\" content=\"Blended v" + getVersion() + "\" />"
     env.globals['blended_header'] = header
 
@@ -79,7 +88,7 @@ def buildFiles():
             "-")[0], date.split("-")[1], date.split("-")[2]))
         with open(os.path.join(cwd, "build", date.split("-")[0], date.split("-")[1], date.split("-")[2], post['title'].replace(" ", "_").replace("?", "") + ".html"), 'w') as output:
             output.write(template.render(
-                post=post, root="../../../", is_home=False, is_page=False, is_post=True))
+                post=post, root="../../../", is_home=False, is_page=False, is_post=True, is_author=False))
 
     for page in pages:
         if os.path.exists(os.path.join(cwd, "themes", config['theme'], page['subtype'] + ".html")):
@@ -93,7 +102,7 @@ def buildFiles():
         with open(os.path.join(cwd, "build", page['title'].replace(" ", "_").replace("?", "") + ".html"), 'w') as output:
             output.write(template.render(
                 page=page,
-                posts=sorted(posts, key=lambda post: post['date'], reverse=True), root="", is_home=False, is_page=True, is_post=False))
+                posts=sorted(posts, key=lambda post: post['date'], reverse=True), root="", is_home=False, is_page=True, is_post=False, is_author=False))
 
     if os.path.exists(os.path.join(cwd, "themes", config['theme'], "posts.html")):
         template = env.get_template('posts.html')
@@ -102,7 +111,16 @@ def buildFiles():
 
     with open(os.path.join(cwd, "build", "index.html"), 'w') as output:
         output.write(template.render(
-            posts=sorted(posts, key=lambda post: post['date'], reverse=True), root="", is_home=True, is_page=False, is_post=False))
+            posts=sorted(posts, key=lambda post: post['date'], reverse=True), root="", is_home=True, is_page=False, is_post=False, is_author=False))
+
+    if config['build_authors'] == "true":
+        for author in authors:
+            if os.path.exists(os.path.join(cwd, "themes", config['theme'], "author.html")):
+                template = env.get_template("author.html")
+                createFolder(os.path.join(cwd, "build", "authors"))
+                with open(os.path.join(cwd, "build", "authors", author.replace(" ", "_").replace("?", "") + ".html"), 'w') as output:
+                    output.write(template.render(
+                        page={"title": author}, author=authors[author], root="../", is_home=False, is_page=True, is_post=False, is_author=True))
 
 
 def generateBuildDir(site_theme):
