@@ -58,24 +58,25 @@ def buildFiles():
     pages = []
     tags = []
     categories = []
-    for root, dirs, files in os.walk(os.path.join(cwd, "content")):
-        dirs[:] = [d for d in dirs if "_" not in d]
-        for filename in files:
-            if not filename.startswith("_"):
-                with open(os.path.join(root, filename)) as f:
-                    filei = frontmatter.load(f)
-                    if filei['type'] == "post":
-                        date = str(filei['date'])
-                        permalink = date.split("-")[0] + "/" + date.split("-")[1] + "/" + date.split(
-                            "-")[2] + "/" + filei['title'].replace(" ", "_").replace("?", "") + ".html"
-                        filei['permalink'] = permalink
-                        tags.append(filei['tags'].split(", "))
-                        categories.append(filei['categories'].split(", "))
-                        posts.append(filei)
+    if config['build_posts'] or config['build_pages']:
+        for root, dirs, files in os.walk(os.path.join(cwd, "content")):
+            dirs[:] = [d for d in dirs if "_" not in d]
+            for filename in files:
+                if not filename.startswith("_"):
+                    with open(os.path.join(root, filename)) as f:
+                        filei = frontmatter.load(f)
+                        if filei['type'] == "post":
+                            date = str(filei['date'])
+                            permalink = date.split("-")[0] + "/" + date.split("-")[1] + "/" + date.split(
+                                "-")[2] + "/" + filei['title'].replace(" ", "_").replace("?", "") + ".html"
+                            filei['permalink'] = permalink
+                            tags.append(filei['tags'].split(", "))
+                            categories.append(filei['categories'].split(", "))
+                            posts.append(filei)
 
-                    elif filei['type'] == "page":
-                        date = str(filei['date'])
-                        pages.append(filei)
+                        elif filei['type'] == "page":
+                            date = str(filei['date'])
+                            pages.append(filei)
 
     tags = list(set(tags))
     categories = list(set(categories))
