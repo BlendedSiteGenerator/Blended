@@ -3,7 +3,6 @@ import os
 import shutil
 import sys
 
-import click
 import frontmatter
 from jinja2 import Environment, PackageLoader, select_autoescape
 
