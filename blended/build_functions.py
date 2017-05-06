@@ -57,6 +57,8 @@ def buildFiles():
 
     posts = []
     pages = []
+    tags = []
+    categories = []
     for root, dirs, files in os.walk(os.path.join(cwd, "content")):
         dirs[:] = [d for d in dirs if "_" not in d]
         for filename in files:
@@ -68,6 +70,8 @@ def buildFiles():
                         permalink = date.split("-")[0] + "/" + date.split("-")[1] + "/" + date.split(
                             "-")[2] + "/" + filei['title'].replace(" ", "_").replace("?", "") + ".html"
                         filei['permalink'] = permalink
+                        tags.append(filei['tags'].split(", "))
+                        categories.append(filei['categories'].split(", "))
                         posts.append(filei)
 
                     elif filei['type'] == "page":
