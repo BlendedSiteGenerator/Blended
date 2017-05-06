@@ -8,6 +8,7 @@ from .app_functions import getVersion
 from .build_functions import buildFiles
 from .config_functions import (backupConfig, checkConfig, createConfig,
                                generateReqFolders)
+from .theme_functions import setupTheme
 
 # Very important, get the directory that the user wants to run commands in
 cwd = os.getcwd()
@@ -28,6 +29,14 @@ def init():
 
     createConfig()
     generateReqFolders()
+
+
+@cli.command('setup-theme', short_help='Setup a theme')
+@click.argument('theme')
+def theme(theme):
+    """Setup a downloaded theme"""
+
+    setupTheme(theme)
 
 
 @cli.command('build', short_help="Build the website")

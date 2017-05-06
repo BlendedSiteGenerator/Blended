@@ -27,18 +27,18 @@ def createConfig():
     if sys.version_info < (3, 0):
         title = raw_input("Site Title: ")
         subtitle = raw_input("Site Subtitle: ")
-        language = raw_input("Language: ")
+        language = raw_input("Site Language: ")
     else:
         title = input("Site Title: ")
         subtitle = input("Site Subtitle: ")
-        language = input("Language: ")
+        language = input("Site Language: ")
 
     config_file = os.path.join(cwd, "config.json")
 
     with open(config_file, 'w') as cfile:
         cfile.write("{")
         cfile.write("\n")
-        cfile.write("\"blended_version\": " + getVersion() + ",")
+        cfile.write("\"blended_version\": \"" + getVersion() + "\",")
         cfile.write("\n")
         cfile.write("\"title\": \"" + title + "\",")
         cfile.write("\n")
