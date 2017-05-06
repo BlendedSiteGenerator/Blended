@@ -74,7 +74,13 @@ def buildFiles():
                             output.write(template.render(
                                 post=filei, root="../../../", is_home=False, is_page=False, is_post=True))
 
-                    elif filei['type'] == "page":
+    for root, dirs, files in os.walk(os.path.join(cwd, "content")):
+        dirs[:] = [d for d in dirs if "_" not in d]
+        for filename in files:
+            if not filename.startswith("_"):
+                with open(os.path.join(root, filename)) as f:
+                    filei = frontmatter.load(f)
+                    if filei['type'] == "page":
                         date = str(filei['date'])
 
                         if os.path.exists(os.path.join(cwd, "themes", config['theme'], filei['subtype'] + ".html")):
