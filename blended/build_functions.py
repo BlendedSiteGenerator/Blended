@@ -50,7 +50,6 @@ def buildFiles():
     for root, dirs, files in os.walk(os.path.join(cwd, "content")):
         dirs[:] = [d for d in dirs if "_" not in d]
         for filename in files:
-            print(filename)
             if not filename.startswith("_"):
                 with open(os.path.join(root, filename)) as f:
                     filei = frontmatter.load(f)
