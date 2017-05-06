@@ -78,9 +78,6 @@ def buildFiles():
                             date = str(filei['date'])
                             pages.append(filei)
 
-    tags = list(set(tags))
-    categories = list(set(categories))
-
     if config['build_posts']:
         for post in posts:
             date = str(post['date'])
