@@ -68,7 +68,7 @@ def buildFiles():
                         if filei['type'] == "post":
                             date = str(filei['date'])
                             permalink = date.split("-")[0] + "/" + date.split("-")[1] + "/" + date.split(
-                                "-")[2] + "/" + filei['title'].replace(" ", "_").replace("?", "") + ".html"
+                                "-")[2] + "/" + filei['title'].replace(" ", "_").replace("?", "").replace("!", "") + ".html"
                             filei['permalink'] = permalink
                             tags.append(filei['tags'].split(", "))
                             categories.append(filei['categories'].split(", "))
@@ -91,7 +91,7 @@ def buildFiles():
 
             createFolder(os.path.join(cwd, "build", date.split(
                 "-")[0], date.split("-")[1], date.split("-")[2]))
-            with open(os.path.join(cwd, "build", date.split("-")[0], date.split("-")[1], date.split("-")[2], post['title'].replace(" ", "_").replace("?", "") + ".html"), 'w') as output:
+            with open(os.path.join(cwd, "build", date.split("-")[0], date.split("-")[1], date.split("-")[2], post['title'].replace(" ", "_").replace("?", "").replace("!", "") + ".html"), 'w') as output:
                 output.write(template.render(
                     post=post, tags=tags, categories=categories, root="../../../", is_home=False, is_page=False, is_post=True, is_author=False))
 
@@ -105,7 +105,7 @@ def buildFiles():
             else:
                 template = env.get_template('index.html')
 
-            with open(os.path.join(cwd, "build", page['title'].replace(" ", "_").replace("?", "") + ".html"), 'w') as output:
+            with open(os.path.join(cwd, "build", page['title'].replace(" ", "_").replace("?", "").replace("!", "") + ".html"), 'w') as output:
                 output.write(template.render(
                     page=page,
                     posts=sorted(posts, key=lambda post: post['date'], reverse=True), tags=tags, categories=categories, root="", is_home=False, is_page=True, is_post=False, is_author=False))
@@ -125,7 +125,7 @@ def buildFiles():
             if os.path.exists(os.path.join(cwd, "themes", config['theme'], "author.html")):
                 template = env.get_template("author.html")
                 createFolder(os.path.join(cwd, "build", "authors"))
-                with open(os.path.join(cwd, "build", "authors", author.replace(" ", "_").replace("?", "") + ".html"), 'w') as output:
+                with open(os.path.join(cwd, "build", "authors", author.replace(" ", "_").replace("?", "").replace("!", "") + ".html"), 'w') as output:
                     output.write(template.render(
                         page={"title": author}, author=authors[author], tags=tags, categories=categories, root="../", is_home=False, is_page=True, is_post=False, is_author=True))
 

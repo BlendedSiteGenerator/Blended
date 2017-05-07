@@ -19,3 +19,8 @@ def replaceFolder(folder):
         os.makedirs(folder)
     else:
         os.makedirs(folder)
+
+
+def returnNone(text):
+    if text == "":
+        return "NONE"
