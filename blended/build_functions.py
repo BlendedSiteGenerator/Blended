@@ -21,6 +21,9 @@ def buildFiles():
         with open(config_file_dir) as config_file:
             config = json.load(config_file)
 
+    if not os.path.exists(os.path.join(cwd, "themes", config['theme'], "index.html")):
+        sys.exit("The theme you have chosen does not have an index.html file!")
+
     generateBuildDir(site_theme=config['theme'])
 
     root_templates_folder = os.path.join(
@@ -116,6 +119,8 @@ def buildFiles():
     if config['build_home']:
         if os.path.exists(os.path.join(cwd, "themes", config['theme'], "posts.html")):
             template = env.get_template('posts.html')
+        elif os.path.exists(os.path.join(cwd, "themes", config['theme'], "home.html")):
+            template = env.get_template('home.html')
         else:
             template = env.get_template('index.html')
 
