@@ -27,5 +27,19 @@ def setupTheme(theme):
     config['theme_params'] = theme_config
 
     with open(config_file_dir, 'w') as config_file:
-        config_file.write(json.dumps(OrderedDict([("blended_version", config['blended_version']), ("title", config['title']), ("subtitle", config['subtitle']), ("description", config['description']), ("language", config['language']),
-                                                  ("theme", config['theme']), ("build_home", config['build_home']), ("build_posts", config['build_home']), ("build_pages", config['build_pages']), ("build_authors", config['build_authors']), ("theme_params", config['theme_params'])]), indent=4))
+        config_file.write(json.dumps(OrderedDict([("blended_version", config['blended_version']),
+                                                  ("title", config['title']),
+                                                  ("subtitle",
+                                                   config['subtitle']),
+                                                  ("language",
+                                                   config['language']),
+                                                  ("theme", config['theme']),
+                                                  ("build_home",
+                                                   config['build_home']),
+                                                  ("build_posts",
+                                                   config['build_home']),
+                                                  ("build_pages",
+                                                   config['build_pages']),
+                                                  ("build_authors",
+                                                   config['build_authors']),
+                                                  ("theme_params", config['theme_params'])]), indent=4))

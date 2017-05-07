@@ -2,6 +2,7 @@ import json
 import os
 import shutil
 import sys
+import time
 
 import frontmatter
 from jinja2 import Environment, PackageLoader, select_autoescape
@@ -34,6 +35,16 @@ def buildFiles():
     )
 
     env.globals['siteinfo'] = config
+
+    buildinfo = {"date": time.strftime("%Y-%m-%d"),
+                 "day": time.strftime("%d"),
+                 "month": time.strftime("%m"),
+                 "year": time.strftime("%Y"),
+                 "time24": time.strftime("%H:%M:%S"),
+                 "time12": time.strftime("%I:%M:%S %p"),
+                 "blended_version": getVersion()
+                 }
+    env.globals['buildinfo'] = buildinfo
 
     # Authors
     authors_file = os.path.join(cwd, "data", "authors.json")
@@ -132,10 +143,15 @@ def buildFiles():
         for author in authors:
             if os.path.exists(os.path.join(cwd, "themes", config['theme'], "author.html")):
                 template = env.get_template("author.html")
-                createFolder(os.path.join(cwd, "build", "authors"))
-                with open(os.path.join(cwd, "build", "authors", author.replace(" ", "_").replace("?", "").replace("!", "") + ".html"), 'w') as output:
-                    output.write(template.render(
-                        content={"title": author}, author=authors[author], tags=tags, categories=categories, root="../", is_home=False, is_page=True, is_post=False, is_author=True))
+            elif os.path.exists(os.path.join(cwd, "themes", config['theme'], "single.html")):
+                template = env.get_template('single.html')
+            else:
+                template = env.get_template('index.html')
+
+            createFolder(os.path.join(cwd, "build", "authors"))
+            with open(os.path.join(cwd, "build", "authors", author.replace(" ", "_").replace("?", "").replace("!", "") + ".html"), 'w') as output:
+                output.write(template.render(
+                    content={"title": author}, author=authors[author], tags=tags, categories=categories, root="../", is_home=False, is_page=True, is_post=False, is_author=True))
 
 
 def generateBuildDir(site_theme):

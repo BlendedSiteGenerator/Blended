@@ -56,7 +56,7 @@ def createConfig():
         cfile.write("\n")
         cfile.write("\"build_authors\": false,")
         cfile.write("\n")
-        cfile.write("\"theme_params\": {},")
+        cfile.write("\"theme_params\": {}")
         cfile.write("\n")
         cfile.write("}")
 
