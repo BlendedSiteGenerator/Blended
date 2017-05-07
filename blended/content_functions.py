@@ -68,4 +68,31 @@ def createPost():
 
 
 def createPage():
-    print("Creating a page!")
+    if sys.version_info < (3, 0):
+        subtype = raw_input("Page Subtype: ")
+        title = raw_input("Page Title: ")
+        subtitle = raw_input("Page Subtitle: ")
+        date = raw_input("Page Date: ")
+        image = raw_input("Page Image: ")
+        content = raw_input("Page Content: ")
+    else:
+        subtype = input("Page Subtype: ")
+        title = input("Page Title: ")
+        subtitle = input("Page Subtitle: ")
+        date = input("Page Date: ")
+        image = input("Page Image: ")
+        content = input("Page Content: ")
+
+    filename = getUnused(os.path.join(
+        cwd, "content", "pages", title.replace(" ", "_").replace("?", "").replace("!", "") + ".html"))
+
+    with open(filename, 'w') as wfile:
+        wfile.write("---\n")
+        wfile.write("type: page\n")
+        wfile.write("subtype: " + returnNone(subtype) + "\n")
+        wfile.write("title: " + title + "\n")
+        wfile.write("subtitle: " + subtitle + "\n")
+        wfile.write("date: " + date + "\n")
+        wfile.write("image: " + image + "\n")
+        wfile.write("---\n")
+        wfile.write(content)
