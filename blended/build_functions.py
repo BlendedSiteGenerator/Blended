@@ -75,7 +75,6 @@ def buildFiles():
                             posts.append(filei)
 
                         elif filei['type'] == "page":
-                            date = str(filei['date'])
                             pages.append(filei)
 
     if config['build_posts']:
