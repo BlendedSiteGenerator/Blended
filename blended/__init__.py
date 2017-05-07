@@ -8,6 +8,7 @@ from .app_functions import getVersion
 from .build_functions import buildFiles
 from .config_functions import (backupConfig, checkConfig, createConfig,
                                generateReqFolders)
+from .content_functions import createPage, createPost
 from .theme_functions import setupTheme
 
 # Very important, get the directory that the user wants to run commands in
@@ -37,6 +38,19 @@ def theme(theme):
     """Setup a downloaded theme"""
 
     setupTheme(theme)
+
+
+@cli.command('create', short_help='Create content')
+@click.argument('type')
+def theme(type):
+    """Create content for the website"""
+
+    if type == "post":
+        createPost()
+    elif type == "page":
+        createPage()
+    else:
+        print("The type you entered was not recognized!")
 
 
 @cli.command('build', short_help="Build the website")
