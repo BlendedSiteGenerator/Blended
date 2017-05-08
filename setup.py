@@ -12,6 +12,11 @@ setup(name='blended',
       install_requires=[
           'click',
           'python-frontmatter',
+          'mammoth',
+          'Markdown',
+          'pyjade',
+          'textile',
+          'docutils',
       ],
       entry_points={
           'console_scripts': [

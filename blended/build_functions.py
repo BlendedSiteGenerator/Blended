@@ -8,6 +8,7 @@ import frontmatter
 from jinja2 import Environment, PackageLoader, select_autoescape
 
 from .app_functions import createFolder, getVersion, replaceFolder
+from .content_functions import convertContent
 
 # Very important, get the directory that the user wants to run commands in
 cwd = os.getcwd()
@@ -84,11 +85,15 @@ def buildFiles():
                             permalink = date.split("-")[0] + "/" + date.split("-")[1] + "/" + date.split(
                                 "-")[2] + "/" + filei['title'].replace(" ", "_").replace("?", "").replace("!", "") + ".html"
                             filei['permalink'] = permalink
+                            filei.content = convertContent(
+                                filei.content, filename)
                             tags.append(filei['tags'].split(", "))
                             categories.append(filei['categories'].split(", "))
                             posts.append(filei)
 
                         elif filei['type'] == "page":
+                            filei.content = convertContent(
+                                filei.content, filename)
                             pages.append(filei)
 
     if config['build_posts']:
