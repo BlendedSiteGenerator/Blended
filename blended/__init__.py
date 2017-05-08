@@ -6,8 +6,7 @@ import click
 
 from .app_functions import getVersion
 from .build_functions import buildFiles
-from .config_functions import (backupConfig, checkConfig, createConfig,
-                               generateReqFolders)
+from .config_functions import createConfig, generateReqFolders
 from .content_functions import createPage, createPost
 from .ftp_functions import sendFTP
 from .theme_functions import downloadTheme, setupTheme
@@ -25,9 +24,6 @@ def cli():
 @cli.command('init', short_help="Initate a new website")
 def init():
     """Initiates a new website"""
-
-    if checkConfig():
-        backupConfig()
 
     createConfig()
     generateReqFolders()

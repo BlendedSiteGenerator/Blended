@@ -39,7 +39,7 @@ def setupTheme(theme):
                                                   ("build_home",
                                                    config['build_home']),
                                                   ("build_posts",
-                                                   config['build_home']),
+                                                   config['build_posts']),
                                                   ("build_pages",
                                                    config['build_pages']),
                                                   ("build_authors",
