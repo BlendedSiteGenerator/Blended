@@ -1,10 +1,11 @@
+import json
 import os
 import sys
-import json
 from ftplib import FTP, error_perm
 
 # Very important, get the directory that the user wants to run commands in
 cwd = os.getcwd()
+
 
 def placeFiles(ftp, path):
     """Upload the built files to FTP"""
