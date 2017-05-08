@@ -33,6 +33,8 @@ def setupTheme(theme):
                                                   ("title", config['title']),
                                                   ("subtitle",
                                                    config['subtitle']),
+                                                  ("description",
+                                                   config['description']),
                                                   ("language",
                                                    config['language']),
                                                   ("theme", config['theme']),
