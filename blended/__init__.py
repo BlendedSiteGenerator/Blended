@@ -1,9 +1,9 @@
 import os
 import sys
 import time
+import webbrowser
 
 import click
-import webbrowser
 
 from .app_functions import getVersion
 from .build_functions import buildFiles
