@@ -9,6 +9,7 @@ from .build_functions import buildFiles
 from .config_functions import (backupConfig, checkConfig, createConfig,
                                generateReqFolders)
 from .content_functions import createPage, createPost
+from .ftp_functions import sendFTP
 from .theme_functions import downloadTheme, setupTheme
 
 # Very important, get the directory that the user wants to run commands in
@@ -46,6 +47,13 @@ def setup_theme(theme):
     """Setup a downloaded theme"""
 
     setupTheme(theme)
+
+
+@cli.command('ftp', short_help='Upload the build files via ftp')
+def send_ftp():
+    """Upload the built website to FTP"""
+
+    sendFTP()
 
 
 @cli.command('create', short_help='Create content')
