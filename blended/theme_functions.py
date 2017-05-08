@@ -1,6 +1,8 @@
 import json
 import os
 import sys
+import urllib
+import zipfile
 from collections import OrderedDict
 
 # Very important, get the directory that the user wants to run commands in
@@ -18,12 +20,12 @@ def setupTheme(theme):
 
     theme_config_file_dir = os.path.join(cwd, "themes", theme, "settings.json")
     if not os.path.exists(theme_config_file_dir):
-        sys.exit(
-            "There dosen't seem to be a theme settings file!")
+        theme_config = {}
     else:
         with open(theme_config_file_dir) as theme_config_file:
             theme_config = json.load(theme_config_file)
 
+    config['theme'] = theme
     config['theme_params'] = theme_config
 
     with open(config_file_dir, 'w') as config_file:
@@ -43,3 +45,24 @@ def setupTheme(theme):
                                                   ("build_authors",
                                                    config['build_authors']),
                                                   ("theme_params", config['theme_params'])]), indent=4))
+
+
+def downloadTheme(theme):
+    thedir = os.path.join(cwd, "themes")
+    theurl = "https://github.com/BlendedSiteGenerator/BlendedThemes/blob/master/" + \
+        theme + ".zip?raw=true"
+    name = os.path.join(thedir, 'temp.zip')
+    try:
+        name = urllib.urlretrieve(theurl, name)
+        name = os.path.join(thedir, 'temp.zip')
+    except IOError, e:
+        print "Can't retrieve %r to %r: %s" % (theurl, thedir, e)
+        return
+    try:
+        z = zipfile.ZipFile(name)
+    except zipfile.error, e:
+        print "Bad zipfile (from %r): %s" % (theurl, e)
+        return
+    z.extractall(thedir)
+    z.close()
+    os.remove(name)

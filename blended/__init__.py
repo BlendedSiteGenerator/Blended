@@ -9,7 +9,7 @@ from .build_functions import buildFiles
 from .config_functions import (backupConfig, checkConfig, createConfig,
                                generateReqFolders)
 from .content_functions import createPage, createPost
-from .theme_functions import setupTheme
+from .theme_functions import downloadTheme, setupTheme
 
 # Very important, get the directory that the user wants to run commands in
 cwd = os.getcwd()
@@ -32,9 +32,17 @@ def init():
     generateReqFolders()
 
 
+@cli.command('download-theme', short_help='Download a theme')
+@click.argument('theme')
+def download_theme(theme):
+    """Download a theme from the Blended themes repository"""
+
+    downloadTheme(theme)
+
+
 @cli.command('setup-theme', short_help='Setup a theme')
 @click.argument('theme')
-def theme(theme):
+def setup_theme(theme):
     """Setup a downloaded theme"""
 
     setupTheme(theme)
