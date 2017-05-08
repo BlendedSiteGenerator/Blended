@@ -3,6 +3,7 @@ import sys
 import time
 
 import click
+import webbrowser
 
 from .app_functions import getVersion
 from .build_functions import buildFiles
@@ -43,6 +44,17 @@ def setup_theme(theme):
     """Setup a downloaded theme"""
 
     setupTheme(theme)
+
+
+@cli.command('view', short_help='View the finished Blended website')
+def view():
+    """Opens the built index.html file in a web browser"""
+
+    index_path = os.path.realpath(os.path.join(cwd, "build", "index.html"))
+    if os.path.exists(index_path):
+        webbrowser.open('file://' + index_path)
+    else:
+        print("The index.html file could not be found in the build folder! Have you deleted it or have you built with buid_homr set to 'false' in config.json?")
 
 
 @cli.command('ftp', short_help='Upload the build files via ftp')
