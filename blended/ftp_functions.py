@@ -1,7 +1,10 @@
 import os
 import sys
+import json
 from ftplib import FTP, error_perm
 
+# Very important, get the directory that the user wants to run commands in
+cwd = os.getcwd()
 
 def placeFiles(ftp, path):
     """Upload the built files to FTP"""
@@ -37,11 +40,12 @@ def sendFTP():
         with open(config_file_dir) as config_file:
             ftp_config = json.load(config_file)
 
-    server = ftp_config['server']
-    username = ftp_config['username']
-    password = ftp_config['password']
-    port = ftp_config['port']
-    upload_path = ftp_config['upload_path']
+    server = str(ftp_config['server'])
+    username = str(ftp_config['username'])
+    password = str(ftp_config['password'])
+    port = int(ftp_config['port'])
+    upload_path = str(ftp_config['upload_path'])
+    print(ftp_config)
 
     ftp = FTP()
     ftp.connect(server, port)
@@ -49,7 +53,7 @@ def sendFTP():
     filenameCV = os.path.join(cwd, outdir)
 
     try:
-        ftp.cwd(ftp_upload_path)
+        ftp.cwd(upload_path)
         placeFiles(ftp, filenameCV)
     except:
         ftp.quit()
