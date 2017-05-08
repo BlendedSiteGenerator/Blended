@@ -45,7 +45,6 @@ def sendFTP():
     password = str(ftp_config['password'])
     port = int(ftp_config['port'])
     upload_path = str(ftp_config['upload_path'])
-    print(ftp_config)
 
     ftp = FTP()
     ftp.connect(server, port)
