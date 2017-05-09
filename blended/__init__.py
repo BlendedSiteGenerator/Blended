@@ -26,8 +26,8 @@ def cli():
 def init():
     """Initiates a new website"""
 
-    createConfig()
     generateReqFolders()
+    createConfig()
 
 
 @cli.command('download-theme', short_help='Download a theme')
