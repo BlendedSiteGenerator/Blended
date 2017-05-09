@@ -56,7 +56,7 @@ def createConfig():
         cfile.write(json.dumps(OrderedDict([("blended_version", str(getVersion())),
                                             ("title", title),
                                             ("subtitle", subtitle),
-                                            ("description,", "")
+                                            ("description,", ""),
                                             ("language", language),
                                             ("theme", ""),
                                             ("build_home", True),
