@@ -43,6 +43,7 @@ def createPost():
         tags = raw_input("Post Tags: ")
         categories = raw_input("Post Categories: ")
         image = raw_input("Post Image: ")
+        cpermalink = raw_input("Post Custom Permalink: ")
         content = raw_input("Post Content: ")
     else:
         subtype = input("Post Subtype: ")
@@ -53,6 +54,7 @@ def createPost():
         tags = input("Post Tags: ")
         categories = input("Post Categories: ")
         image = input("Post Image: ")
+        cpermalink = input("Post Custom Permalink: ")
         content = input("Post Content: ")
 
     createFolder(os.path.join(cwd, "content", "posts"))
@@ -70,6 +72,7 @@ def createPost():
         wfile.write("tags: " + tags + "\n")
         wfile.write("categories: " + categories + "\n")
         wfile.write("image: " + image + "\n")
+        wfile.write("custom_permalink: " + cpermalink + "\n")
         wfile.write("---\n")
         wfile.write(content)
 
@@ -80,12 +83,14 @@ def createPage():
         title = raw_input("Page Title: ")
         subtitle = raw_input("Page Subtitle: ")
         image = raw_input("Page Image: ")
+        cpermalink = raw_input("Page Custom Permalink: ")
         content = raw_input("Page Content: ")
     else:
         subtype = input("Page Subtype: ")
         title = input("Page Title: ")
         subtitle = input("Page Subtitle: ")
         image = input("Page Image: ")
+        cpermalink = input("Page Custom Permalink: ")
         content = input("Page Content: ")
 
     filename = getUnused(os.path.join(
@@ -99,6 +104,7 @@ def createPage():
         wfile.write("title: " + title + "\n")
         wfile.write("subtitle: " + subtitle + "\n")
         wfile.write("image: " + image + "\n")
+        wfile.write("custom_permalink: " + cpermalink + "\n")
         wfile.write("---\n")
         wfile.write(content)
 
