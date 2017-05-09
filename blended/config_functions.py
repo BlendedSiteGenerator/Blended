@@ -16,11 +16,13 @@ def backupConfig():
         copyfile(os.path.join(cwd, "config.json"),
                  os.path.join(cwd, "config.json.backup"))
 
+
 def backupAuthors():
     """If the authors.json file exists, it backs it up to authors.json.blackup"""
     if checkAuthors():
         copyfile(os.path.join(cwd, "data", "authors.json"),
                  os.path.join(cwd, "data", "authors.json.backup"))
+
 
 def checkConfig():
     """Check if the config file exists"""
@@ -29,12 +31,14 @@ def checkConfig():
     else:
         return False
 
+
 def checkAuthors():
     """Check if the authors file exists"""
     if os.path.exists(os.path.join(cwd, "data", "authors.json")):
         return True
     else:
         return False
+
 
 def createConfig():
     backupConfig()
@@ -56,7 +60,7 @@ def createConfig():
         cfile.write(json.dumps(OrderedDict([("blended_version", str(getVersion())),
                                             ("title", title),
                                             ("subtitle", subtitle),
-                                            ("description,", ""),
+                                            ("description", ""),
                                             ("language", language),
                                             ("theme", ""),
                                             ("build_home", True),
