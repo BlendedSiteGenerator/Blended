@@ -1,5 +1,5 @@
 # Blended
-Blended is a static website generator written in Python and licensed under the GPL 3.0 open-source license.
+Blended is a static website generator written in Python and licensed under the GPL 3.0 open-source license. It uses the Jinja2 templating language and has full support for HTML, Markdown, Textile, reStructuredText, Jade, Microsoft Word, and Plain Text documents. In addition, Blended has tools to support easy website management such as direct-to-server FTP transfer.
 
 ## Projects That Use Blended
 
