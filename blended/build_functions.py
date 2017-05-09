@@ -109,8 +109,12 @@ def buildFiles():
             else:
                 template = env.get_template('index.html')
 
-            createFolder(os.path.join(cwd, "build", date.split(
-                "-")[0], date.split("-")[1], date.split("-")[2]))
+            if post['custom_path']:
+                folder = os.path.join(cwd, "build", post['custom_path'])
+            else:
+                folder = os.path.join(cwd, "build", date.split("-")[0], date.split("-")[1], date.split("-")[2])
+
+            createFolder(folder)
             with open(os.path.join(cwd, "build", date.split("-")[0], date.split("-")[1], date.split("-")[2], post['title'].replace(" ", "_").replace("?", "").replace("!", "") + ".html"), 'w') as output:
                 output.write(template.render(
                     content=post, tags=tags, categories=categories, root="../../../", is_home=False, is_page=False, is_post=True, is_author=False))
