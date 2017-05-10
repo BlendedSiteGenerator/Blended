@@ -110,14 +110,22 @@ def buildFiles():
                 template = env.get_template('index.html')
 
             if post['custom_path']:
-                folder = os.path.join(cwd, "build", post['custom_path'])
+                pathsk = post['custom_path'].split("/")
+                folder = os.path.join(cwd, "build", *pathsk)
+                title = post['title'].replace(" ", "_").replace("?", "").replace("!", "") + ".html"
+                ffile = os.path.join(cwd, "build", post['custom_path'], title)
+                root = ""
+                for item in pathsk:
+                    root = root + "../"
             else:
                 folder = os.path.join(cwd, "build", date.split("-")[0], date.split("-")[1], date.split("-")[2])
+                ffile = os.path.join(cwd, "build", date.split("-")[0], date.split("-")[1], date.split("-")[2], post['title'].replace(" ", "_").replace("?", "").replace("!", "") + ".html")
+                root = "../../../"
 
             createFolder(folder)
-            with open(os.path.join(cwd, "build", date.split("-")[0], date.split("-")[1], date.split("-")[2], post['title'].replace(" ", "_").replace("?", "").replace("!", "") + ".html"), 'w') as output:
+            with open(ffile, 'w') as output:
                 output.write(template.render(
-                    content=post, tags=tags, categories=categories, root="../../../", is_home=False, is_page=False, is_post=True, is_author=False))
+                    content=post, tags=tags, categories=categories, root=root, is_home=False, is_page=False, is_post=True, is_author=False))
 
     if config['build_pages']:
         for page in pages:
@@ -131,10 +139,21 @@ def buildFiles():
             else:
                 template = env.get_template('index.html')
 
-            with open(os.path.join(cwd, "build", page['title'].replace(" ", "_").replace("?", "").replace("!", "") + ".html"), 'w') as output:
+            if page['custom_path']:
+                pathsk = page['custom_path'].split("/")
+                createFolder(os.path.join(cwd, "build", page['custom_path']))
+                ffile = os.path.join(cwd, "build", page['custom_path'], page['title'].replace(" ", "_").replace("?", "").replace("!", "") + ".html")
+                root = ""
+                for item in pathsk:
+                    root = root + "../"
+            else:
+                ffile = os.path.join(cwd, "build", page['title'].replace(" ", "_").replace("?", "").replace("!", "") + ".html")
+                root = ""
+
+            with open(ffile, 'w') as output:
                 output.write(template.render(
                     content=page,
-                    posts=sorted(posts, key=lambda post: post['date'], reverse=True), tags=tags, categories=categories, root="", is_home=False, is_page=True, is_post=False, is_author=False))
+                    posts=sorted(posts, key=lambda post: post['date'], reverse=True), tags=tags, categories=categories, root=root, is_home=False, is_page=True, is_post=False, is_author=False))
 
     if config['build_home']:
         if os.path.exists(os.path.join(cwd, "themes", config['theme'], "posts.html")):
