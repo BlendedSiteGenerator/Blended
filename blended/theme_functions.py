@@ -55,15 +55,18 @@ def downloadTheme(theme):
         theme + ".zip?raw=true"
     name = os.path.join(thedir, 'temp.zip')
     try:
-        name = urllib.urlretrieve(theurl, name)
+        if sys.version_info < (3, 0):
+            name = urllib.urlretrieve(theurl, name)
+        else:
+            name = urllib.request.urlretrieve(theurl, name)
         name = os.path.join(thedir, 'temp.zip')
-    except IOError, e:
-        print "Can't retrieve %r to %r: %s" % (theurl, thedir, e)
+    except IOError:
+        print("Can't retrieve the file")
         return
     try:
         z = zipfile.ZipFile(name)
-    except zipfile.error, e:
-        print "Bad zipfile (from %r): %s" % (theurl, e)
+    except zipfile.error:
+        print("Bad zipfile (from %r): %s" % (theurl))
         return
     z.extractall(thedir)
     z.close()

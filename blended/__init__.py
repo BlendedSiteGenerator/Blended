@@ -81,8 +81,9 @@ def theme(type):
 def build():
     """Builds the website"""
 
-    reload(sys)
-    sys.setdefaultencoding('utf8')
+    if sys.version_info < (3, 0):
+        reload(sys)
+        sys.setdefaultencoding('utf8')
 
     buildFiles()
 
