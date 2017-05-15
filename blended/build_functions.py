@@ -93,9 +93,15 @@ def buildFiles():
                         filei = frontmatter.load(f)
                         if filei['type'] == "post":
                             date = str(filei['date'])
-                            permalink = date.split("-")[0] + "/" + date.split("-")[1] + "/" + date.split(
-                                "-")[2] + "/" + filei['title'].replace(" ", "_").replace("?", "").replace("!", "") + ".html"
-                            filei['permalink'] = permalink
+                            if not filei['custom_path']:
+                                permalink = date.split("-")[0] + "/" + date.split("-")[1] + "/" + date.split(
+                                    "-")[2] + "/" + filei['title'].replace(" ", "_").replace("?", "").replace("!", "") + ".html"
+                                filei['permalink'] = permalink
+                            else:
+                                pathsk = filei['custom_path'].split("/")
+                                ffile = os.path.join(filei['custom_path'], filei['title'].replace(
+                                    " ", "_").replace("?", "").replace("!", "") + ".html")
+                                filei['permalink'] = ffile
                             filei.content = convertContent(
                                 filei.content, filename)
                             tags1 = filei['tags'].split(", ")
