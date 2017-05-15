@@ -83,6 +83,8 @@ def createConfig():
                                             ("build_posts", True),
                                             ("build_pages", True),
                                             ("build_authors", False),
+                                            ("build_categories", False),
+                                            ("build_tags", False),
                                             ("theme_params", {})]), indent=4))
 
     authors_list = {}
@@ -98,7 +100,8 @@ def createConfig():
     with open(authors_file, 'w') as afile:
         afile.write(json.dumps(authors_list, indent=4))
 
-    ftp = {"server": "serverurl", "username": "yourusername", "password": "yourpassword", "port": 21, "upload_path": "public_html/"}
+    ftp = {"server": "serverurl", "username": "yourusername",
+           "password": "yourpassword", "port": 21, "upload_path": "public_html/"}
 
     ftp_file = os.path.join(cwd, "data", "ftp.json")
     with open(ftp_file, 'w') as ftpfile:

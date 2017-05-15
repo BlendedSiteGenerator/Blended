@@ -46,6 +46,10 @@ def setupTheme(theme):
                                                    config['build_pages']),
                                                   ("build_authors",
                                                    config['build_authors']),
+                                                  ("build_categories",
+                                                   config['build_categories']),
+                                                  ("build_tags",
+                                                   config['build_tags']),
                                                   ("theme_params", config['theme_params'])]), indent=4))
 
 

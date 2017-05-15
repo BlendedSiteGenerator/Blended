@@ -5,13 +5,14 @@ import sys
 import time
 
 import frontmatter
-from jinja2 import Environment, PackageLoader, select_autoescape, Template
+from jinja2 import Environment, PackageLoader, Template, select_autoescape
 
 from .app_functions import createFolder, getVersion, replaceFolder
 from .content_functions import convertContent
 
 # Very important, get the directory that the user wants to run commands in
 cwd = os.getcwd()
+
 
 def buildFiles():
     config_file_dir = os.path.join(cwd, "config.json")
@@ -70,13 +71,14 @@ def buildFiles():
     env.globals['menus'] = menus
 
     def render(template, values):
-         prev = template.render(**values)
-         while True:
-             curr = Template(prev).render(siteinfo=config, menus=menus, blended_header=header, authors=authors, buildinfo=buildinfo, **values)
-             if curr != prev:
-                 prev = curr
-             else:
-                 return curr
+        prev = template.render(**values)
+        while True:
+            curr = Template(prev).render(siteinfo=config, menus=menus,
+                                         blended_header=header, authors=authors, buildinfo=buildinfo, **values)
+            if curr != prev:
+                prev = curr
+            else:
+                return curr
 
     posts = []
     pages = []
@@ -96,8 +98,12 @@ def buildFiles():
                             filei['permalink'] = permalink
                             filei.content = convertContent(
                                 filei.content, filename)
-                            tags.append(filei['tags'].split(", "))
-                            categories.append(filei['categories'].split(", "))
+                            tags1 = filei['tags'].split(", ")
+                            for tag in tags1:
+                                tags.append(tag)
+                            categories1 = filei['categories'].split(", ")
+                            for category in categories1:
+                                categories.append(category)
                             posts.append(filei)
 
                         elif filei['type'] == "page":
@@ -121,14 +127,17 @@ def buildFiles():
             if post['custom_path']:
                 pathsk = post['custom_path'].split("/")
                 folder = os.path.join(cwd, "build", *pathsk)
-                title = post['title'].replace(" ", "_").replace("?", "").replace("!", "") + ".html"
+                title = post['title'].replace(" ", "_").replace(
+                    "?", "").replace("!", "") + ".html"
                 ffile = os.path.join(cwd, "build", post['custom_path'], title)
                 root = ""
                 for item in pathsk:
                     root = root + "../"
             else:
-                folder = os.path.join(cwd, "build", date.split("-")[0], date.split("-")[1], date.split("-")[2])
-                ffile = os.path.join(cwd, "build", date.split("-")[0], date.split("-")[1], date.split("-")[2], post['title'].replace(" ", "_").replace("?", "").replace("!", "") + ".html")
+                folder = os.path.join(cwd, "build", date.split(
+                    "-")[0], date.split("-")[1], date.split("-")[2])
+                ffile = os.path.join(cwd, "build", date.split("-")[0], date.split("-")[1], date.split(
+                    "-")[2], post['title'].replace(" ", "_").replace("?", "").replace("!", "") + ".html")
                 root = "../../../"
 
             createFolder(folder)
@@ -151,12 +160,14 @@ def buildFiles():
             if page['custom_path']:
                 pathsk = page['custom_path'].split("/")
                 createFolder(os.path.join(cwd, "build", page['custom_path']))
-                ffile = os.path.join(cwd, "build", page['custom_path'], page['title'].replace(" ", "_").replace("?", "").replace("!", "") + ".html")
+                ffile = os.path.join(cwd, "build", page['custom_path'], page['title'].replace(
+                    " ", "_").replace("?", "").replace("!", "") + ".html")
                 root = ""
                 for item in pathsk:
                     root = root + "../"
             else:
-                ffile = os.path.join(cwd, "build", page['title'].replace(" ", "_").replace("?", "").replace("!", "") + ".html")
+                ffile = os.path.join(cwd, "build", page['title'].replace(
+                    " ", "_").replace("?", "").replace("!", "") + ".html")
                 root = ""
 
             with open(ffile, 'w') as output:
@@ -189,6 +200,38 @@ def buildFiles():
             with open(os.path.join(cwd, "build", "authors", author.replace(" ", "_").replace("?", "").replace("!", "") + ".html"), 'w') as output:
                 output.write(render(template, dict(
                     content={"title": author}, author=authors[author], tags=tags, categories=categories, root="../", is_home=False, is_page=True, is_post=False, is_author=True)))
+
+    if config['build_categories']:
+        for category in list(set(categories)):
+            if os.path.exists(os.path.join(cwd, "themes", config['theme'], "categories.html")):
+                template = env.get_template("categories.html")
+            elif os.path.exists(os.path.join(cwd, "themes", config['theme'], "archives.html")):
+                template = env.get_template('archives.html')
+            elif os.path.exists(os.path.join(cwd, "themes", config['theme'], "posts.html")):
+                template = env.get_template('posts.html')
+            else:
+                template = env.get_template('index.html')
+
+            createFolder(os.path.join(cwd, "build", "categories"))
+            with open(os.path.join(cwd, "build", "categories", category.replace(" ", "_").replace("?", "").replace("!", "") + ".html"), 'w') as output:
+                output.write(render(template, dict(posts=(item for item in posts if category in item['categories']),
+                content={"title": category}, tags=tags, categories=categories, root="../", is_home=False, is_page=True, is_post=False, is_author=False, is_archive=True)))
+
+    if config['build_tags']:
+        for tag in list(set(tags)):
+            if os.path.exists(os.path.join(cwd, "themes", config['theme'], "tags.html")):
+                template = env.get_template("tags.html")
+            elif os.path.exists(os.path.join(cwd, "themes", config['theme'], "archives.html")):
+                template = env.get_template('archives.html')
+            elif os.path.exists(os.path.join(cwd, "themes", config['theme'], "posts.html")):
+                template = env.get_template('posts.html')
+            else:
+                template = env.get_template('index.html')
+
+            createFolder(os.path.join(cwd, "build", "tags"))
+            with open(os.path.join(cwd, "build", "tags", tag.replace(" ", "_").replace("?", "").replace("!", "") + ".html"), 'w') as output:
+                output.write(render(template, dict(posts=(item for item in posts if tag in item['tags']),
+                content={"title": tag}, tags=tags, categories=categories, root="../", is_home=False, is_page=True, is_post=False, is_author=False, is_archive=True)))
 
 
 def generateBuildDir(site_theme):
