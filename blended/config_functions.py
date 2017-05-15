@@ -24,6 +24,13 @@ def backupAuthors():
                  os.path.join(cwd, "data", "authors.json.backup"))
 
 
+def backupFTP():
+    """If the ftp.json file exists, it backs it up to ftp.json.blackup"""
+    if checkFTP():
+        copyfile(os.path.join(cwd, "data", "ftp.json"),
+                 os.path.join(cwd, "data", "ftp.json.backup"))
+
+
 def checkConfig():
     """Check if the config file exists"""
     if os.path.exists(os.path.join(cwd, "config.json")):
@@ -40,9 +47,18 @@ def checkAuthors():
         return False
 
 
+def checkFTP():
+    """Check if the FTP file exists"""
+    if os.path.exists(os.path.join(cwd, "data", "ftp.json")):
+        return True
+    else:
+        return False
+
+
 def createConfig():
     backupConfig()
     backupAuthors()
+    backupFTP()
 
     if sys.version_info < (3, 0):
         title = raw_input("Site Title: ")
@@ -81,6 +97,12 @@ def createConfig():
     authors_file = os.path.join(cwd, "data", "authors.json")
     with open(authors_file, 'w') as afile:
         afile.write(json.dumps(authors_list, indent=4))
+
+    ftp = {"server": "serverurl", "username": "yourusername", "password": "yourpassword", "port": 21, "upload_path": "public_html/"}
+
+    ftp_file = os.path.join(cwd, "data", "ftp.json")
+    with open(ftp_file, 'w') as ftpfile:
+        ftpfile.write(json.dumps(ftp, indent=4))
 
 
 def generateReqFolders():
