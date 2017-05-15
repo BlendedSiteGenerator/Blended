@@ -215,7 +215,7 @@ def buildFiles():
             createFolder(os.path.join(cwd, "build", "categories"))
             with open(os.path.join(cwd, "build", "categories", category.replace(" ", "_").replace("?", "").replace("!", "") + ".html"), 'w') as output:
                 output.write(render(template, dict(posts=(item for item in posts if category in item['categories']),
-                content={"title": category}, tags=tags, categories=categories, root="../", is_home=False, is_page=True, is_post=False, is_author=False, is_archive=True)))
+                                                   content={"title": category}, tags=tags, categories=categories, root="../", is_home=False, is_page=True, is_post=False, is_author=False, is_archive=True)))
 
     if config['build_tags']:
         for tag in list(set(tags)):
@@ -231,7 +231,7 @@ def buildFiles():
             createFolder(os.path.join(cwd, "build", "tags"))
             with open(os.path.join(cwd, "build", "tags", tag.replace(" ", "_").replace("?", "").replace("!", "") + ".html"), 'w') as output:
                 output.write(render(template, dict(posts=(item for item in posts if tag in item['tags']),
-                content={"title": tag}, tags=tags, categories=categories, root="../", is_home=False, is_page=True, is_post=False, is_author=False, is_archive=True)))
+                                                   content={"title": tag}, tags=tags, categories=categories, root="../", is_home=False, is_page=True, is_post=False, is_author=False, is_archive=True)))
 
 
 def generateBuildDir(site_theme):
