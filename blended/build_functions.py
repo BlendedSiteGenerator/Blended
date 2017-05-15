@@ -5,14 +5,13 @@ import sys
 import time
 
 import frontmatter
-from jinja2 import Environment, PackageLoader, select_autoescape
+from jinja2 import Environment, PackageLoader, select_autoescape, Template
 
 from .app_functions import createFolder, getVersion, replaceFolder
 from .content_functions import convertContent
 
 # Very important, get the directory that the user wants to run commands in
 cwd = os.getcwd()
-
 
 def buildFiles():
     config_file_dir = os.path.join(cwd, "config.json")
@@ -52,12 +51,10 @@ def buildFiles():
     if os.path.exists(authors_file):
         with open(authors_file) as f:
             authors = json.load(f)
-            env.globals['authors'] = authors
     else:
         authors = []
 
     header = "<meta name=\"generator\" content=\"Blended v" + getVersion() + "\" />"
-    env.globals['blended_header'] = header
 
     menus = {}
     for root, dirs, files in os.walk(os.path.join(cwd, "data", "menus")):
@@ -67,7 +64,14 @@ def buildFiles():
                     menu = json.load(f)
                     menus[filename.replace(".json", "")] = menu
 
-    env.globals['menus'] = menus
+    def render(template, values):
+         prev = template.render(**values)
+         while True:
+             curr = Template(prev).render(siteinfo=config, menus=menus, blended_header=header, authors=authors, buildinfo=buildinfo, **values)
+             if curr != prev:
+                 prev = curr
+             else:
+                 return curr
 
     posts = []
     pages = []
@@ -124,8 +128,8 @@ def buildFiles():
 
             createFolder(folder)
             with open(ffile, 'w') as output:
-                output.write(template.render(
-                    content=post, tags=tags, categories=categories, root=root, is_home=False, is_page=False, is_post=True, is_author=False))
+                output.write(render(template, dict(
+                    content=post, tags=tags, categories=categories, root=root, is_home=False, is_page=False, is_post=True, is_author=False)))
 
     if config['build_pages']:
         for page in pages:
@@ -151,9 +155,9 @@ def buildFiles():
                 root = ""
 
             with open(ffile, 'w') as output:
-                output.write(template.render(
+                output.write(render(template, dict(
                     content=page,
-                    posts=sorted(posts, key=lambda post: post['date'], reverse=True), tags=tags, categories=categories, root=root, is_home=False, is_page=True, is_post=False, is_author=False))
+                    posts=sorted(posts, key=lambda post: post['date'], reverse=True), tags=tags, categories=categories, root=root, is_home=False, is_page=True, is_post=False, is_author=False)))
 
     if config['build_home']:
         if os.path.exists(os.path.join(cwd, "themes", config['theme'], "posts.html")):
@@ -164,8 +168,8 @@ def buildFiles():
             template = env.get_template('index.html')
 
         with open(os.path.join(cwd, "build", "index.html"), 'w') as output:
-            output.write(template.render(
-                posts=sorted(posts, key=lambda post: post['date'], reverse=True), tags=tags, categories=categories, root="", is_home=True, is_page=False, is_post=False, is_author=False))
+            output.write(render(template, dict(
+                posts=sorted(posts, key=lambda post: post['date'], reverse=True), tags=tags, categories=categories, root="", is_home=True, is_page=False, is_post=False, is_author=False)))
 
     if config['build_authors']:
         for author in authors:
@@ -178,8 +182,8 @@ def buildFiles():
 
             createFolder(os.path.join(cwd, "build", "authors"))
             with open(os.path.join(cwd, "build", "authors", author.replace(" ", "_").replace("?", "").replace("!", "") + ".html"), 'w') as output:
-                output.write(template.render(
-                    content={"title": author}, author=authors[author], tags=tags, categories=categories, root="../", is_home=False, is_page=True, is_post=False, is_author=True))
+                output.write(render(template, dict(
+                    content={"title": author}, author=authors[author], tags=tags, categories=categories, root="../", is_home=False, is_page=True, is_post=False, is_author=True)))
 
 
 def generateBuildDir(site_theme):
