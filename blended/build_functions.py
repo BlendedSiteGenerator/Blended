@@ -54,7 +54,10 @@ def buildFiles():
     else:
         authors = []
 
+    env.globals['authors'] = authors
+
     header = "<meta name=\"generator\" content=\"Blended v" + getVersion() + "\" />"
+    env.globals['blended_header'] = header
 
     menus = {}
     for root, dirs, files in os.walk(os.path.join(cwd, "data", "menus")):
@@ -63,6 +66,8 @@ def buildFiles():
                 with open(os.path.join(root, filename)) as f:
                     menu = json.load(f)
                     menus[filename.replace(".json", "")] = menu
+
+    env.globals['menus'] = menus
 
     def render(template, values):
          prev = template.render(**values)
