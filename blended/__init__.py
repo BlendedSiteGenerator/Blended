@@ -10,6 +10,7 @@ from .build_functions import buildFiles
 from .config_functions import createConfig, generateReqFolders
 from .content_functions import createPage, createPost
 from .ftp_functions import sendFTP
+from .import_functions import importWordPress
 from .theme_functions import downloadTheme, setupTheme
 
 # Very important, get the directory that the user wants to run commands in
@@ -75,6 +76,14 @@ def theme(type):
         createPage()
     else:
         print("The type you entered was not recognized!")
+
+
+@cli.command('import-wp', short_help='Import posts from WordPress')
+@click.argument('filepath')
+def import_wp(filepath):
+    """Import all of the posts from a WordPress export"""
+
+    importWordPress(filepath)
 
 
 @cli.command('build', short_help="Build the website")

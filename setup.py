@@ -17,6 +17,7 @@ setup(name='blended',
           'pyjade',
           'textile',
           'docutils',
+          'untangle',
       ],
       entry_points={
           'console_scripts': [

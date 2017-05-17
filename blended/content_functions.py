@@ -6,6 +6,7 @@ import mammoth
 import markdown
 import pyjade
 import textile
+import untangle
 from docutils.core import publish_parts
 
 from .app_functions import createFolder, returnNone
@@ -126,3 +127,13 @@ def convertContent(content, filename):
         return publish_parts(content, writer_name='html')['html_body']
     else:
         print(filename + " is not a supported file type! HTML, TXT, MD, TILE, DOCX, JADE, and RST are supported.")
+
+
+def parseXML(filepath):
+    """Parses an XML file using untangle"""
+    try:
+        output = untangle.parse(filepath)
+    except:
+        sys.exit("The XML file could not be found or read!")
+
+    return output

@@ -8,6 +8,7 @@ import frontmatter
 from jinja2 import Environment, PackageLoader, Template, select_autoescape
 
 from .app_functions import createFolder, getVersion, replaceFolder
+from .config_functions import checkConfig
 from .content_functions import convertContent
 
 # Very important, get the directory that the user wants to run commands in
@@ -16,7 +17,7 @@ cwd = os.getcwd()
 
 def buildFiles():
     config_file_dir = os.path.join(cwd, "config.json")
-    if not os.path.exists(config_file_dir):
+    if not checkConfig:
         sys.exit(
             "There dosen't seem to be a configuration file. Have you run the init command?")
     else:
@@ -104,10 +105,18 @@ def buildFiles():
                                 filei['permalink'] = ffile
                             filei.content = convertContent(
                                 filei.content, filename)
-                            tags1 = filei['tags'].split(", ")
+
+                            if filei['tags']:
+                                tags1 = filei['tags'].split(", ")
+                            else:
+                                tags1 = []
                             for tag in tags1:
                                 tags.append(tag)
-                            categories1 = filei['categories'].split(", ")
+
+                            if filei['categories']:
+                                categories1 = filei['categories'].split(", ")
+                            else:
+                                categories1 = []
                             for category in categories1:
                                 categories.append(category)
                             posts.append(filei)
@@ -220,8 +229,8 @@ def buildFiles():
 
             createFolder(os.path.join(cwd, "build", "categories"))
             with open(os.path.join(cwd, "build", "categories", category.replace(" ", "_").replace("?", "").replace("!", "") + ".html"), 'w') as output:
-                output.write(render(template, dict(posts=(item for item in posts if category in item['categories']),
-                                                   content={"title": category}, tags=tags, categories=categories, root="../", is_home=False, is_page=True, is_post=False, is_author=False, is_archive=True)))
+                output.write(render(template, dict(posts=(item for item in posts if category in item['categories'] if item['categories']), content={
+                             "title": category}, tags=tags, categories=categories, root="../", is_home=False, is_page=True, is_post=False, is_author=False, is_archive=True)))
 
     if config['build_tags']:
         for tag in list(set(tags)):
