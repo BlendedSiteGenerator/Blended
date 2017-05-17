@@ -15,6 +15,10 @@ If you see a theme you would like in [the themes repository](https://github.com/
 
 Once you have a theme, run `blended setup-theme <theme_name>` to configure your website to use it.
 
+## Importing from WordPress
+
+Blended has built-in tools to help you import your WordPress posts. Note that the tool only supports posts at this time. To do so, in WordPress export just your posts. Then, download the file to the root of your Blended blog. Let's call the file `export.xml`. Finally, on the command line, run `blended import-wp export.xml` and the posts should be created.
+
 ## Building your website
 
 To build, simply run the `blended build` command.
