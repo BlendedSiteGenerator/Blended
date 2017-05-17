@@ -24,7 +24,7 @@ def importWordPress(filepath):
             wfile.write("subtitle: \n")
             wfile.write("author: " + item.dc_creator.cdata + "\n")
             wfile.write("date: " + item.wp_post_date.cdata[0:10] + "\n")
-            wfile.write("tags: NONE\n")
+            wfile.write("tags: \n")
             wfile.write("categories: Uncategorized\n")
             wfile.write("image: \n")
             wfile.write("custom_path: \n")
