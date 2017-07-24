@@ -1,4 +1,7 @@
 """This holds all of the functions"""
+
+from __future__ import print_function
+
 import os
 import shutil
 from shutil import copyfile
@@ -73,13 +76,13 @@ def getunzipped(username, repo, thedir):
     try:
         name = urllib.urlretrieve(theurl, name)
         name = os.path.join(thedir, 'temp.zip')
-    except IOError, e:
-        print "Can't retrieve %r to %r: %s" % (theurl, thedir, e)
+    except IOError as e:
+        print("Can't retrieve %r to %r: %s" % (theurl, thedir, e))
         return
     try:
         z = zipfile.ZipFile(name)
-    except zipfile.error, e:
-        print "Bad zipfile (from %r): %s" % (theurl, e)
+    except zipfile.error as e:
+        print("Bad zipfile (from %r): %s" % (theurl, e))
         return
     z.extractall(thedir)
     z.close()
