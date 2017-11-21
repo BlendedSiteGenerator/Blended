@@ -16,6 +16,7 @@ cwd = os.getcwd()
 
 
 def buildFiles():
+    """Generate the website"""
     config_file_dir = os.path.join(cwd, "config.json")
     if not checkConfig:
         sys.exit(
@@ -250,6 +251,7 @@ def buildFiles():
 
 
 def generateBuildDir(site_theme):
+    """Create the output folders"""
     createFolder(os.path.join(cwd, "build"))
 
     if os.path.exists(os.path.join(cwd, "themes", site_theme, "assets")):

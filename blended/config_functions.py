@@ -11,21 +11,21 @@ cwd = os.getcwd()
 
 
 def backupConfig():
-    """If the config.json file exists, it backs it up to config.json.blackup"""
+    """If the config.json file exists, back it up to config.json.blackup"""
     if checkConfig():
         copyfile(os.path.join(cwd, "config.json"),
                  os.path.join(cwd, "config.json.backup"))
 
 
 def backupAuthors():
-    """If the authors.json file exists, it backs it up to authors.json.blackup"""
+    """If the authors.json file exists, back it up to authors.json.blackup"""
     if checkAuthors():
         copyfile(os.path.join(cwd, "data", "authors.json"),
                  os.path.join(cwd, "data", "authors.json.backup"))
 
 
 def backupFTP():
-    """If the ftp.json file exists, it backs it up to ftp.json.blackup"""
+    """If the ftp.json file exists, back it up to ftp.json.blackup"""
     if checkFTP():
         copyfile(os.path.join(cwd, "data", "ftp.json"),
                  os.path.join(cwd, "data", "ftp.json.backup"))
@@ -56,6 +56,7 @@ def checkFTP():
 
 
 def createConfig():
+    """Create the config file"""
     backupConfig()
     backupAuthors()
     backupFTP()
@@ -109,6 +110,7 @@ def createConfig():
 
 
 def generateReqFolders():
+    """Create the needed folders for a new website"""
     createFolder(os.path.join(cwd, "content"))
     createFolder(os.path.join(cwd, "content", "pages"))
     createFolder(os.path.join(cwd, "content", "posts"))

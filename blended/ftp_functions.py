@@ -33,6 +33,7 @@ def placeFiles(ftp, path):
 
 
 def sendFTP():
+    """Setup the FTP connection"""
     outdir = "build"
     config_file_dir = os.path.join(cwd, "data", "ftp.json")
     if not os.path.exists(config_file_dir):

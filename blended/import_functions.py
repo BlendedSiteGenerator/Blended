@@ -9,6 +9,7 @@ cwd = os.getcwd()
 
 
 def importWordPress(filepath):
+    """Import posts from WordPress"""
     if not checkConfig():
         sys.exit(
             "There dosen't seem to be a configuration file. Have you run the init command?")

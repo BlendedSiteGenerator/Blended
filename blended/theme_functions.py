@@ -10,6 +10,7 @@ cwd = os.getcwd()
 
 
 def setupTheme(theme):
+    """Import the settings for the chosen theme"""
     config_file_dir = os.path.join(cwd, "config.json")
     if not os.path.exists(config_file_dir):
         sys.exit(
@@ -54,6 +55,7 @@ def setupTheme(theme):
 
 
 def downloadTheme(theme):
+    """Download the chosen theme"""
     thedir = os.path.join(cwd, "themes")
     theurl = "https://github.com/BlendedSiteGenerator/BlendedThemes/blob/master/" + \
         theme + ".zip?raw=true"

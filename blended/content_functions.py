@@ -16,6 +16,7 @@ cwd = os.getcwd()
 
 
 def incrementFilename(path):
+    """Increment the number on a filename if there is one"""
     fn, extension = os.path.splitext(path)
 
     n = 1
@@ -25,6 +26,7 @@ def incrementFilename(path):
 
 
 def getUnused(path):
+    """See if the file is unused"""
     useable_file = ""
     for filename in incrementFilename(path):
         if not os.path.isfile(filename):
@@ -35,6 +37,7 @@ def getUnused(path):
 
 
 def createPost():
+    """Create the template for a new post from input"""
     if sys.version_info < (3, 0):
         subtype = raw_input("Post Subtype: ")
         title = raw_input("Post Title: ")
@@ -79,6 +82,7 @@ def createPost():
 
 
 def createPage():
+    """Create the template for a new page from input"""
     if sys.version_info < (3, 0):
         subtype = raw_input("Page Subtype: ")
         title = raw_input("Page Title: ")
@@ -111,6 +115,7 @@ def createPage():
 
 
 def convertContent(content, filename):
+    """Convert the filename and content type to html"""
     if filename.endswith(".html"):
         return content
     elif filename.endswith(".txt"):
